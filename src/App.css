@@ -55,6 +55,7 @@
   border-radius: 10px;
   transition-duration: 0.2s;
 }
+
 .FoodItem:hover {
   background-color: lightsalmon;
   color: white;

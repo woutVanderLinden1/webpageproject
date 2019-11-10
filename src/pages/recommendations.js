@@ -2,9 +2,9 @@ import React from 'react';
 //import './App.css';
 import { Link } from 'react-router-dom';
 
-function Recommendations() {
+class Recommentations extends React.Component {
 
-    function generateMeal() {
+    generateMeal() {
         let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Ice cream sundae", "Veggie green smoothie"];
         let html = [];
 
@@ -13,18 +13,20 @@ function Recommendations() {
         }
         return html
     }
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    Here are your recommendations.
+                    <div>
+                        {this.generateMeal()}
+                    </div>
+                    <Link to="/"><button className="Button">Go back</button></Link>
+                </header>
+            </div>
+        );
+    }
 
-    return (
-        <div className="App">
-            <header className="App-header">
-                Here are your recommendations.
-                <div>
-                    {generateMeal()}
-                </div>
-                <Link to="/"><button className="Button">Go back</button></Link>
-            </header>
-        </div>
-    );
 }
 
-export default Recommendations;
+export default Recommentations;
