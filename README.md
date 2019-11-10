@@ -4,6 +4,7 @@
 Voor de app te editen en te runnen, heb je het volgende nodig:
 - WebStorm (download [hier](https://www.jetbrains.com/webstorm/promo/?gclsrc=aw.ds&&gclid=EAIaIQobChMIstTb0bTf5QIVyOR3Ch0pbAHUEAAYASAAEgLtx_D_BwE)).
 - Installeer Node.js (nodig voor `npm` uit te voeren).
+
 Ga naar de directory van de recommender app. Voer eerst `npm install` uit om eventueel nieuw toegevoegde packages lokaal te installeren. Voer dan `npm start` uit om de app te starten.
 
 ### `npm start`
@@ -75,4 +76,6 @@ Dit is de homepagina van de webapp, en dus ook de eerste pagina die de gebruiker
 
 ### Recommender.js
 Hierin worden de recommendations weergegeven. Enkele interessante opmerkingen:
- - Hierin staat een voorbeeld van een `JavaScript` functie
+ - Hierin staat een voorbeeld van een user-defined  `JavaScript` functie
+ - Een `constructor` functie wordt gebruikt.
+ - `State` wordt gebruikt.
