@@ -2,7 +2,7 @@ import React from 'react';
 //import './App.css';
 import { Link } from 'react-router-dom';
 
-class Recommentations extends React.Component {
+class Recommendations extends React.Component {
     constructor() {
         super();
         this.state = {
