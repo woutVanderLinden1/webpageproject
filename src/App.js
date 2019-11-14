@@ -5,6 +5,7 @@ import Home from './pages/home';
 import Recommendations from './pages/recommendations';
 
 import './App.css';
+import Profile from "./pages/profile";
 
 
 
@@ -16,6 +17,8 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" component={Home}></Route>
                         <Route exact path="/recommendations" component={Recommendations}></Route>
+                        <Route exact path="/profile" component={Profile}></Route>
+
                     </Switch>
                 </div>
             </Router>

@@ -11,6 +11,9 @@ class Home extends React.Component {
                     <Link to="/recommendations">
                         <button className="Button">Go to recommendations</button>
                     </Link>
+                    <Link to="/profile">
+                        <button className="Button">Go to your profile</button>
+                    </Link>
                 </header>
             </div>
         );
