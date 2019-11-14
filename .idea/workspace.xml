@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54380610-af5a-4e23-b570-f583f46afa01" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/checkBox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/recipe.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
