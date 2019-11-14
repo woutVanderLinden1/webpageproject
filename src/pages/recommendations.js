@@ -1,6 +1,7 @@
 import React from 'react';
 //import './App.css';
 import { Link } from 'react-router-dom';
+import Popup from "reactjs-popup";
 
 class Recommendations extends React.Component {
     constructor() {
@@ -22,7 +23,9 @@ class Recommendations extends React.Component {
         let html = [];
 
         for (let i = 1; i <= 5; i++) {
-            html.push(<div><button key={i} className="FoodItem" onClick={this.increaseCounter}>{foods[i-1]}</button></div>)
+            html.push(<Popup trigger={<div><button key={i} className="FoodItem" onClick={this.increaseCounter}>{foods[i-1]}</button></div>} position="right center">
+                <div><p className="DarkText">Recipe for {foods[i-1]} goes here.</p></div>
+            </Popup>)
         }
         return html
     }

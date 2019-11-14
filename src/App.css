@@ -35,6 +35,11 @@
   transition-duration: 0.4s;
 }
 
+.DarkText {
+  color:#282c34;
+  font-size: 16px;
+}
+
 .Button:hover {
   background-color: white;
   color: #09d3ac;
