@@ -1,3 +1,8 @@
+h2 {
+  color: black;
+}
+
+
 .App {
   text-align: center;
 }
@@ -73,4 +78,73 @@
   color: white;
   margin: 10px;
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.FoodBadge {
+  background-size: 65% 65%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  width: 24px;
+  height:24px;
+  margin: 10px;
+}
+
+.Fish {
+  background-image: url(assets/fish.png);
+  background-color: dodgerblue;
+}
+
+.Meat {
+   background-image: url(assets/meat.png);
+   background-color: darkred;
+ }
+
+.Veggie {
+   background-image: url(assets/veggie.png);
+   background-color: darkgreen;
+ }
+
+.Oven {
+  background-image: url(assets/oven.png);
+  background-color: orange;
+}
+
+.DairyFree {
+  background-image: url(assets/dairyfree.png);
+  background-color: lightblue;
+}
+
+.Cheap {
+  background-image: url(assets/cheap.png);
+  background-color: yellowgreen;
+}
+
+.FoodPhoto {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  width: 70px;
+  height:70px;
+  margin-right: 20px;
+  object-fit: cover;
+}
+
+.FoodTitle {
+  font-family: "Verdana";
+  font-size: 20px;
+  float: left;
+}
+
+.left {
+  clear: left;
+  align:left;
+  width: 100vh;
 }

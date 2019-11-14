@@ -19,13 +19,37 @@ class Recommendations extends React.Component {
     }
 
     generateMeal() {
-        let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Ice cream sundae", "Veggie green smoothie"];
+        let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
+        let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
+        "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
+        "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",
+        "https://assets.epicurious.com/photos/57978b27c9298e54495917d5/master/pass/black-bean-and-vegetable-burritos.jpg",
+        "https://www.soscuisine.com/media/images/recettes/very_large/36.jpg?lang=en"];
+        let assets = [
+            ["Meat"],
+            ["Meat", "Cheap"],
+            ["Veggie", "DairyFree"],
+            ["Veggie", "Cheap"],
+            ["Fish", "Oven"]
+        ]
         let html = [];
 
         for (let i = 1; i <= 5; i++) {
-            html.push(<Popup trigger={<div><button key={i} className="FoodItem" onClick={this.increaseCounter}>{foods[i-1]}</button></div>} position="right center">
-                <div><p className="DarkText">Recipe for {foods[i-1]} goes here.</p></div>
-            </Popup>)
+            let badges = [];
+            assets[i-1].forEach(function (item, index) {
+                let badgeName = "FoodBadge " + item;
+                console.log(badgeName);
+                badges.push(<button className={badgeName}> </button>);
+            });
+            html.push(<Popup modal trigger={<div>
+                                                <button className="FoodItem" onClick={this.increaseCounter}>
+                                                    <img className="FoodPhoto" align="left" src={images[i-1]}/>
+                                                    <b className="FoodTitle">{foods[i-1]}</b> <br/>
+                                                    {badges}
+                                                </button>
+                                            </div>} position="right center">
+                        <div><h2>Recipe for {foods[i-1]}</h2></div>
+                    </Popup>)
         }
         return html
     }
@@ -39,6 +63,7 @@ class Recommendations extends React.Component {
                     </div>
                     Times clicked: {this.state.timesClicked}
                     <Link to="/"><button className="Button">Go back</button></Link>
+
                 </header>
             </div>
         );
