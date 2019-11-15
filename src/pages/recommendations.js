@@ -19,7 +19,7 @@ class Recommendations extends React.Component {
     }
 
     getRecomendations(){
-        
+
     }
 
     generateMeal() {

@@ -3,10 +3,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
 
-let amountOfPref = 4;
-let amountOfAllergies = 4;
+
 let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
 let namesAllergies = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
+let amountOfPref = namesPref.length;
+let amountOfAllergies = namesAllergies.length;
 class Profile extends React.Component {
     constructor() {
         super();
@@ -36,7 +37,7 @@ class Profile extends React.Component {
         }
         returnVal.push(<h3> Allergies </h3>);
         for (let i = amountOfPref; i < this.state.boxes.length; i++) {
-            returnVal.push(<Checkbox name={namesAllergies[i-amountOfAllergies]} checked={this.state.boxes[i]} id={i}/>)
+            returnVal.push(<Checkbox name={namesAllergies[i-amountOfPref]} checked={this.state.boxes[i]} id={i}/>)
         }
         return returnVal
 
