@@ -18,6 +18,10 @@ class Recommendations extends React.Component {
         this.setState({timesClicked: clicked})
     }
 
+    getRecomendations(){
+        
+    }
+
     generateMeal() {
         let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
         let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
