@@ -3,81 +3,57 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
 
+let amountOfPref = 4;
+let amountOfAllergies = 4;
+let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
+let namesAllergies = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
 class Profile extends React.Component {
     constructor() {
         super();
+        if(localStorage.getItem("boxes")===null){
+            let list = [];
+            for (let i = 0; i<amountOfAllergies+amountOfPref;i++){
+                list[i] = false;
+            }
+            localStorage.setItem("boxes", JSON.stringify(list))
+        }
         this.state = {
-            box1: this.getState("box11"),
-            box2: this.getState("box12"),
-            box3: this.getState("box13"),
-            box4: this.getState("box14"),
-            box5: this.getState("box21"),
-            box6: this.getState("box22"),
-            box7: this.getState("box23"),
-            box8: this.getState("box24")
+            boxes: this.getItemLocal("boxes"),
         };
 
-}
+    }
 
 
-    getState(name){
-        if (localStorage.getItem(name)==="true"){
-            return true
+    getItemLocal(name) {
+        return (JSON.parse(localStorage.getItem(name)))
+    }
+
+    getRender() {
+        let returnVal = [];
+        returnVal.push(<h3> Preferences </h3>);
+        for (let i = 0; i < amountOfPref; i++) {
+            returnVal.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
         }
-        else {
-            return false
+        returnVal.push(<h3> Allergies </h3>);
+        for (let i = amountOfPref; i < this.state.boxes.length; i++) {
+            returnVal.push(<Checkbox name={namesAllergies[i-amountOfAllergies]} checked={this.state.boxes[i]} id={i}/>)
         }
+        return returnVal
+
     }
 
     render() {
         return (
             <div className="App">
                 <header className="App-header">
-                    <div>
-                        Food preferences
-                        <table>
-                            <tr>
-                                <td><div> <Checkbox name={"Vegetarian"} checked={this.state.box1} id={"box11"}/></div></td>
-                                <td><div> <Checkbox name={"Gluten"} checked={this.state.box2} id={"box12"}/></div></td>
-
-                            </tr>
-                            <tr>
-                                <td><div><Checkbox name={"Vegan"} checked={this.state.box3} id={"box13"}/></div></td>
-                                <td><div><Checkbox name={"Halal"} checked={this.state.box4} id={"box14"}/></div></td>
-                            </tr>
-
-                        </table>
-                    </div>
-
-                    <br/>
-
-                    Allergies
-                    <table>
-                        <tr>
-                            <td><div> <Checkbox name={"Vegetarian"} checked={this.state.box5} id={"box21"}/></div></td>
-                            <td><div> <Checkbox name={"Gluten"} checked={this.state.box6} id={"box22"}/></div></td>
-
-                        </tr>
-                        <tr>
-                            <td><div><Checkbox name={"Vegan"} checked={this.state.box7} id={"box23"}/></div></td>
-                            <td><div><Checkbox name={"Halal"} checked={this.state.box8} id={"box24"}/></div></td>
-                        </tr>
-
-                    </table>
-                    <div>
-                    </div>
-
-
-
-
-
+                    <h3>Your profile</h3>
+                    {this.getRender()}
                     <Link to="/"><button className="Button">Go back</button></Link>
-
                 </header>
             </div>
+
         );
     }
-
 }
 
 export default Profile;

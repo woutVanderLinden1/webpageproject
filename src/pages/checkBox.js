@@ -14,7 +14,14 @@ class Checkbox extends React.Component {
         this.setState({
             isChecked: !this.state.isChecked,
         });
-        localStorage.setItem(this.state.id, !this.state.isChecked)
+        let boxesCopy = JSON.parse(localStorage.getItem("boxes"));
+        for(let i = 0; i<boxesCopy.length;i++){
+
+                boxesCopy[this.state.id] = !boxesCopy[this.state.id];
+                break;
+
+        }
+        localStorage.setItem("boxes", JSON.stringify(boxesCopy))
     }
     render() {
         return (
