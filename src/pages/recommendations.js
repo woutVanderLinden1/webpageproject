@@ -18,7 +18,7 @@ class Recommendations extends React.Component {
         this.setState({timesClicked: clicked})
     }
 
-    getRecomendations(){
+    getRecommendations(){
 
     }
 
@@ -45,9 +45,10 @@ class Recommendations extends React.Component {
                 console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
             });
+            let className = "FoodItem fadeInLeft" + i;
             html.push(<Popup modal trigger={<div>
-                                                <button className="FoodItem" onClick={this.increaseCounter}>
-                                                    <img className="FoodPhoto" align="left" src={images[i-1]}/>
+                                                <button className={className} onClick={this.increaseCounter}>
+                                                    <img className="FoodPhoto" align="left" src={images[i-1]} alt="Food"/>
                                                     <b className="FoodTitle">{foods[i-1]}</b> <br/>
                                                     {badges}
                                                 </button>
@@ -66,7 +67,7 @@ class Recommendations extends React.Component {
                         {this.generateMeal()}
                     </div>
                     Times clicked: {this.state.timesClicked}
-                    <Link to="/"><button className="Button">Go back</button></Link>
+                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
 
                 </header>
             </div>

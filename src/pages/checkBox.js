@@ -1,5 +1,5 @@
 import React from 'react';
-//import './App.css';
+import './Profile.css';
 
 class Checkbox extends React.Component {
     constructor(props) {

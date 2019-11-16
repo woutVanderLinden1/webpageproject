@@ -1,7 +1,6 @@
-h2 {
-  color: black;
+html, body {
+  overflow: auto;
 }
-
 
 .App {
   text-align: center;
@@ -12,7 +11,7 @@ h2 {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -52,9 +51,9 @@ h2 {
 }
 
 .FoodItem {
-  background-color: white;
+  background-color: green;
   border: none;
-  color: black;
+  color: white;
   padding: 15px;
   width: 400px;
   margin: 10px;
@@ -67,14 +66,14 @@ h2 {
 }
 
 .FoodItem:hover {
-  background-color: salmon;
+  background-color: darkgreen;
   color: white;
   margin: 12px;
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 .FoodItem:active {
-  background-color: lightsalmon;
+  background-color: green;
   color: white;
   margin: 10px;
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -147,4 +146,92 @@ h2 {
   clear: left;
   align:left;
   width: 100vh;
+}
+
+.NextButton {
+  position: absolute;
+  background-color: transparent;
+  border: 5px solid green;
+  color: green;
+  text-align: center;
+  border-radius: 100px;
+  transition-duration: 0.4s;
+  width: 200px;
+  height: 55px;
+  font-size: 22px;
+  font-family: Avenir;
+}
+
+/* Animations */
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hideComp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.fadeInRight1 {
+  animation: hideComp 100ms, fadeInRight 1000ms 100ms;
+}
+
+.fadeInRight2 {
+  animation: hideComp 200ms, fadeInRight 1000ms 200ms;
+}
+
+.fadeInRight3 {
+  animation: hideComp 300ms, fadeInRight 1000ms 300ms;
+}
+
+.fadeInRight4 {
+  animation: hideComp 400ms, fadeInRight 1000ms 400ms;
+}
+
+.fadeInRight5 {
+  animation: hideComp 500ms, fadeInRight 1000ms 500ms;
+}
+
+.fadeInLeft1 {
+  animation: hideComp 100ms, fadeInLeft 1000ms 100ms;
+}
+
+.fadeInLeft2 {
+  animation: hideComp 200ms, fadeInLeft 1000ms 200ms;
+}
+
+.fadeInLeft3 {
+  animation: hideComp 300ms, fadeInLeft 1000ms 300ms;
+}
+
+.fadeInLeft4 {
+  animation: hideComp 400ms, fadeInLeft 1000ms 400ms;
+}
+
+.fadeInLeft5 {
+  animation: hideComp 500ms, fadeInLeft 1000ms 500ms;
 }

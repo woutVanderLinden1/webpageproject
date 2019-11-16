@@ -1,0 +1,86 @@
+html, body {
+    overflow: hidden;
+}
+
+.Circle {
+    width: 140vw;
+    height: 160vh;
+    top: -50vh;
+    left: -70vw;
+    background-color: green;
+    border-radius: 140vw;
+    position: relative;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.plate1 {
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 25vw;
+    height: 25vw;
+    bottom: 45vh;
+    right: 13vw;
+    background-image: url(../assets/plate1.png);
+}
+
+.plate2 {
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 32vw;
+    height: 32vw;
+    bottom: -5vh;
+    right: -5vw;
+    background-image: url(../assets/plate2.png);
+}
+
+.plate3 {
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20vw;
+    height: 20vw;
+    bottom: 13vh;
+    right: 27vw;
+    background-image: url(../assets/plate3.png);
+}
+
+.StartButton {
+    position: absolute;
+    background-color: transparent;
+    border: 5px solid white;
+    color: white;
+    text-align: center;
+    border-radius: 100px;
+    transition-duration: 0.4s;
+    bottom: 13vh;
+    left: 10vw;
+    width: 15vw;
+    height: 5vw;
+    font-size: 2vw;
+    font-family: Avenir;
+}
+
+h1 {
+    color: white;
+    position: absolute;
+    bottom: 22vh;
+    left: 10vw;
+    font-size: 7vw;
+    font-family: Avenir;
+}
+
+p {
+    color: white;
+    position: absolute;
+    bottom: 20vh;
+    left: 10vw;
+    font-size: 3vw;
+    font-family: Avenir;
+}
+
+

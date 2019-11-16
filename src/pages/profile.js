@@ -1,5 +1,5 @@
 import React from 'react';
-//import './App.css';
+import './Profile.css';
 import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
 
@@ -49,7 +49,7 @@ class Profile extends React.Component {
                 <header className="App-header">
                     <h3>Your profile</h3>
                     {this.getRender()}
-                    <Link to="/"><button className="Button">Go back</button></Link>
+                    <Link to="/recommendations"><button className="NextButton"><b>NEXT</b></button></Link>
                 </header>
             </div>
 
