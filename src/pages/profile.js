@@ -46,8 +46,9 @@ class Profile extends React.Component {
     render() {
         return (
             <div className="App">
+                <div className="Profile"> <b className="PageTitle">Profile</b>
+                </div>
                 <header className="App-header">
-                    <h3>Your profile</h3>
                     {this.getRender()}
                     <Link to="/recommendations"><button className="NextButton"><b>NEXT</b></button></Link>
                 </header>

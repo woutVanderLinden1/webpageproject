@@ -1,5 +1,5 @@
 import React from 'react';
-//import './App.css';
+import './FoodPage.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 
