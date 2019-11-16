@@ -43,31 +43,6 @@ html, body {
   color: white;
 }
 
-.Button {
-  background-color: #09d3ac;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  margin: 30px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 10px;
-  transition-duration: 0.4s;
-}
-
-.DarkText {
-  color:#282c34;
-  font-size: 16px;
-}
-
-.Button:hover {
-  background-color: white;
-  color: #09d3ac;
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
-
 
 .left {
   clear: left;
@@ -76,9 +51,10 @@ html, body {
 }
 
 .NextButton {
-  position: absolute;
+  position: relative;
   background-color: transparent;
   border: 5px solid green;
+  top: 50px;
   color: green;
   text-align: center;
   border-radius: 100px;

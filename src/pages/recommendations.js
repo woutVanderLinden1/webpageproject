@@ -62,7 +62,8 @@ class Recommendations extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    Here are your recommendations.
+                    <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
+                    </div>
                     <div>
                         {this.generateMeal()}
                     </div>

@@ -46,7 +46,7 @@ class Profile extends React.Component {
     render() {
         return (
             <div className="App">
-                <div className="Profile"> <b className="PageTitle">Profile</b>
+                <div className="PageHeader"> <b className="PageTitle">Profile</b>
                 </div>
                 <header className="App-header">
                     {this.getRender()}
