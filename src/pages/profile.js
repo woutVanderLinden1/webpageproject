@@ -4,20 +4,21 @@ import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
 
 
-let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
-let namesAllergies = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
+let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher","Kip","Vis","Inspiratie op","meer dingen", "nog meer dingen"];
+let namesAllergies = ["Vegetarian", "Gluten", "Vegan", "Kosher","Kip","Vis","Inspiratie op","meer dingen", "nog meer dingen"];
 let amountOfPref = namesPref.length;
 let amountOfAllergies = namesAllergies.length;
 class Profile extends React.Component {
     constructor() {
         super();
-        if(localStorage.getItem("boxes")===null){
+        if(localStorage.getItem("boxes") === null || JSON.parse(localStorage.getItem("boxes")).length != amountOfAllergies+amountOfPref){
             let list = [];
             for (let i = 0; i<amountOfAllergies+amountOfPref;i++){
                 list[i] = false;
             }
-            localStorage.setItem("boxes", JSON.stringify(list))
+            localStorage.setItem("boxes", JSON.stringify(list));
         }
+
         this.state = {
             boxes: this.getItemLocal("boxes"),
         };
@@ -31,14 +32,19 @@ class Profile extends React.Component {
 
     getRender() {
         let returnVal = [];
+        let returnList = [];
         returnVal.push(<h3> Preferences </h3>);
         for (let i = 0; i < amountOfPref; i++) {
-            returnVal.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
+            returnList.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
         }
+
+        returnVal.push(<test> {returnList} </test>);
         returnVal.push(<h3> Allergies </h3>);
+        returnList = [];
         for (let i = amountOfPref; i < this.state.boxes.length; i++) {
-            returnVal.push(<Checkbox name={namesAllergies[i-amountOfPref]} checked={this.state.boxes[i]} id={i}/>)
+            returnList.push(<Checkbox name={namesAllergies[i-amountOfPref]} checked={this.state.boxes[i]} id={i}/>)
         }
+        returnVal.push(<test>{returnList}</test>);
         return returnVal
 
     }
