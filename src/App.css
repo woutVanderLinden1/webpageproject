@@ -36,7 +36,7 @@ html, body {
 
 .PageTitle {
   position: absolute;
-  font-family: Avenir;
+  font-family: Avenir, sans-serif;
   font-size: 50px;
   left: 30px;
   top: 10px;
@@ -62,7 +62,7 @@ html, body {
   width: 200px;
   height: 55px;
   font-size: 22px;
-  font-family: Avenir;
+  font-family: Avenir, sans-serif;
 }
 
 /* Animations */
