@@ -2,6 +2,7 @@ import React from 'react';
 import './Profile.css';
 import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
+import Swal from 'sweetalert2';
 
 
 let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher"];
@@ -21,6 +22,7 @@ class Profile extends React.Component {
         this.state = {
             boxes: this.getItemLocal("boxes"),
         };
+        this.success = this.success.bind(this);
 
     }
 
@@ -30,6 +32,12 @@ class Profile extends React.Component {
     }
 
     getRender() {
+        Swal.fire({
+            title: 'Welcome!',
+            text: "Let's set you up! First, choose your preferences and your allergies if you have some.",
+            icon: 'info',
+            confirmButtonText: 'Okay!'
+        });
         let returnVal = [];
         returnVal.push(<h3> Preferences </h3>);
         for (let i = 0; i < amountOfPref; i++) {
@@ -43,6 +51,15 @@ class Profile extends React.Component {
 
     }
 
+    success() {
+        Swal.fire({
+            title: 'Saved!',
+            text: "Great, now let's choose some of your liked or disliked meals, so we can get a small glimpse into your preferences.",
+            icon: 'success',
+            confirmButtonText: 'Okay!'
+        });
+    }
+
     render() {
         return (
             <div className="App">
@@ -50,7 +67,7 @@ class Profile extends React.Component {
                 </div>
                 <header className="App-header">
                     {this.getRender()}
-                    <Link to="/recommendations"><button className="NextButton"><b>NEXT</b></button></Link>
+                    <Link to="/recommendations"><button className="NextButton" onClick={this.success}><b>NEXT</b></button></Link>
                 </header>
             </div>
 
