@@ -1,7 +1,19 @@
 h3 {
     color: green;
+    text-align: left;
+    float: left;
+    width: 90vh;
 }
 
 label {
     color: green;
+}
+
+test {
+    column-count: 3;
+}
+
+label  {
+    display: block;
+    text-align: left;
 }

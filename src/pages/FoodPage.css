@@ -91,3 +91,44 @@
     font-size: 20px;
     float: left;
 }
+
+.RecipeTitle {
+    background-color: darkgrey;
+    text-align: center;
+    font-family: "Verdana";
+    font-size: 30px;
+    float: snap;
+}
+
+.Recipe {
+    text-align: center;
+    background-color: dimgrey;
+}
+
+.IconLayout {
+    background-size: 65% 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    width: 24px;
+    height: 24px;
+
+}
+
+.RecipeIcon{
+     background-image: url(../assets/recipes.png);
+     background-color: black;
+ }
+.NutritionIcon {
+    background-image: url(../assets/info.png);
+    background-color: darkslategrey;
+}
+
+.Nutrition {
+    text-align: center;
+    float: left;
+    background-color: dimgrey;
+
+}
