@@ -62,7 +62,7 @@ html, body {
     width: 15vw;
     height: 5vw;
     font-size: 2vw;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
 }
 
 h1 {
@@ -71,7 +71,7 @@ h1 {
     bottom: 22vh;
     left: 10vw;
     font-size: 7vw;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
 }
 
 p {
@@ -80,7 +80,7 @@ p {
     bottom: 20vh;
     left: 10vw;
     font-size: 3vw;
-    font-family: Avenir;
+    font-family: Avenir, sans-serif;
 }
 
 
