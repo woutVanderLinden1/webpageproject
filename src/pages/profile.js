@@ -46,13 +46,13 @@ class Profile extends React.Component {
             returnList.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
         }
 
-        returnVal.push(<checkBoxContainer> {returnList} </checkBoxContainer>);
+        returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
         returnVal.push(<h3> Allergies </h3>);
         returnList = [];
         for (let i = amountOfPref; i < this.state.boxes.length; i++) {
             returnList.push(<Checkbox name={namesAllergies[i-amountOfPref]} checked={this.state.boxes[i]} id={i}/>)
         }
-        returnVal.push(<checkBoxContainer>{returnList}</checkBoxContainer>);
+        returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
         return returnVal
 
     }
@@ -68,6 +68,7 @@ class Profile extends React.Component {
 
     render() {
         return (
+
             <div className="App">
                 <div className="PageHeader"> <b className="PageTitle">Profile</b>
                 </div>
