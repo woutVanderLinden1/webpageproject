@@ -15,12 +15,11 @@ class TinderCards extends Component {
         cards: ["Spicy Rice", "Ice Cream", "Chicken Tikka Masala"],
         likedItems: [],
         dislikedItems: [],
-        counter: 0
     };
 
-    constructor() {
-        super();
-        this.swipeItem()
+    constructor(props) {
+        super(props);
+        this.swipeItem = this.swipeItem.bind(this)
     }
 
     remove = () =>
@@ -28,14 +27,19 @@ class TinderCards extends Component {
             cards: cards.slice(1, cards.length),
         }));
 
+
     swipeItem(action) {
-        this.setState({counter: this.state.counter + 1})
         if (action === 'left') {
-            this.setState({likedItems: this.state.likedItems.add(this.state.cards[this.state.counter])})
+            let liked = this.state.likedItems;
+            liked.push(this.state.cards[0]);
+            this.setState({likedItems: liked});
         }
         else if (action === 'right') {
-
+            let disliked = this.state.dislikedItems;
+            disliked.push(this.state.cards[0]);
+            this.setState({dislikedItems: disliked});
         }
+
     }
 
     render() {
@@ -54,7 +58,7 @@ class TinderCards extends Component {
                                     </div>
                                 )}
                                 onAfterSwipe={this.remove}
-                                onSwipe={}
+                                onSwipe={this.swipeItem}
                             >
                                 <div className="FoodCard">
                                     <div className="FoodHeader">
