@@ -35,9 +35,12 @@ class App extends Component {
     render() {
         this.initialised=false;
         this.startwebsocket();
+        /*
         while(!this.initialised){
             //await sleep(500);
         }
+        */
+
 
 
         return (
