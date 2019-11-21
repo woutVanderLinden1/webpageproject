@@ -1,0 +1,21 @@
+------------- Preferences ----------------
+gluten-free
+vegetarian
+vegan
+ramadan (noemt Halal in lijst)
+dairy-free
+kosher
+low-carb
+low-protein
+low-cholesterol
+
+------------- Allergies ----------------
+shrimp
+shellfish
+mushrooms
+fish
+cherries
+avocado
+plums
+nut-free (ja indien aangeduid)
+gelatin

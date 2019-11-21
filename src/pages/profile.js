@@ -5,8 +5,8 @@ import Checkbox from "./checkBox";
 import Swal from 'sweetalert2';
 
 
-let namesPref = ["Vegetarian", "Gluten", "Vegan", "Kosher","Kip","Vis","Inspiratie op","meer dingen", "nog meer dingen"];
-let namesAllergies = ["Vegetarian", "Gluten", "Vegan", "Kosher","Kip","Vis","Inspiratie op","meer dingen", "nog meer dingen"];
+let namesPref = ["Vegetarian", "Gluten free", "Low Carb", "Vegan","Lactose Free","Low Cholesterol","Kosher","Halal", "Low Protein"];
+let namesAllergies = ["Shrimp", "Cherries", "Nuts", "Shellfish","Plums","Mushrooms","Fish","Avocado", "Gelatin"];
 let amountOfPref = namesPref.length;
 let amountOfAllergies = namesAllergies.length;
 class Profile extends React.Component {
