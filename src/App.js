@@ -10,7 +10,36 @@ import Profile from "./pages/profile";
 
 
 class App extends Component {
+
+    sendmessage(message){
+        this.socket.send(message);
+    }
+
+    startwebsocket(){
+        this.socket=new WebSocket("ws://localhost:9000");
+
+        let payload={
+            action: "initialise"
+        }
+        this.socket.onopen = () => {
+            this.socket.send(JSON.stringify(payload));
+            // do something after connection is opened
+        }
+        this.socket.onmessage = (message) => {
+            this.initialised=true;
+
+            // handle message from backend
+        }
+    }
+
     render() {
+        this.initialised=false;
+        this.startwebsocket();
+        while(!this.initialised){
+            //await sleep(500);
+        }
+
+
         return (
             <Router basename="/react-auth-ui/">
                 <div className="App">

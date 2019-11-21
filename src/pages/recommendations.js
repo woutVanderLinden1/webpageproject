@@ -2,6 +2,8 @@ import React from 'react';
 import './FoodPage.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
+import sendmessage from "App";
+import {websocket} from "App";
 
 class Recommendations extends React.Component {
     constructor() {
@@ -18,8 +20,11 @@ class Recommendations extends React.Component {
         this.setState({timesClicked: clicked})
     }
 
-    getRecommendations(){
-
+    getRecommendations(recommendation){
+        sendmessage(recommendation);
+        websocket.onmessage ((message) => {
+            //whatever you want to do with the message
+        });
     }
 
     //POPUP CODE
