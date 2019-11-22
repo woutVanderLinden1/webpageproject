@@ -18,15 +18,12 @@ class Recommendations extends React.Component {
         this.setState({timesClicked: clicked})
     }
 
-    getRecommendations(){
 
-    }
+
 
     //POPUP CODE
-    nutritionalPopup(name, food){
-       //TODO get nutritional info
+    nutritionalPopup(name){
         let nutritionIcons = [<button className="IconLayout NutritionIcon"></button> ];
-
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
         let nutritionalInfoHtml = []
@@ -43,6 +40,23 @@ class Recommendations extends React.Component {
 
                 </div>)
         }
+
+        let similarMeals = this.getExplanation(name);
+        let explanationHtml = []
+        explanationHtml.push(<div className="Recipe">
+                Similarities:
+            </div>
+        );
+        for (let i = 0; i < similarMeals.length; i++){
+
+            explanationHtml.push(
+                <div className = "Recipe">
+                    {name} is {similarMeals[i][1]}% similar to  {similarMeals[i][0]}
+                    <br/>
+
+                </div>)
+        }
+
         let html = [
             <Popup modal trigger={
                 <div>
@@ -54,12 +68,14 @@ class Recommendations extends React.Component {
                 <br/>
 
                 {nutritionalInfoHtml}
+                {explanationHtml}
 
             </Popup>]
 
         return html;
     }
-    recipePopup(name, food){
+
+    recipePopup(name){
         let recipeIcons = [<button className="IconLayout RecipeIcon"></button> ];
         //Recipe list
         let recept = this.getRecipe(name);
@@ -136,10 +152,41 @@ class Recommendations extends React.Component {
         return [428.5, 12.0, 112.0, 41.0, 19.0, 6.0, 27.0];
 
     }
+    getExplanation(gerecht){
+        //TODO implementeren
+        return [["Thai Rice", 83],["Spicy Chicken", 76],["Random meal",72]];
+    }
+    getImage(naam,id){
+
+        let parsedName = naam.split(" ");
+        let url = ["https://www.food.com/recipe/"];
+        for (let i = 0; i < parsedName.length; i++){
+            url.push(parsedName[i] + "-");
+        }
+        url.push("-" + id);
+        return url;
+
+    }
+    getImages(foods){
+        //TODO scrape this site
+        let images = []
+        for(let i = 0; i < foods.length; i++){
+            images.push(this.getImage(foods[i][0], foods[i][1]));
+        }
+        return images;
+    }
+    getAssets(foods){
+        //TODO get relevant assets
+        return [["Meat"], ["Meat", "Cheap"]];
+    }
+    getRecommendation(){
+        //TODO implement
+        return [['cream  of spinach soup',76808] , ['global gourmet  taco casserole', 59952]];
+    }
 
     //GENERATE MEAL
     generateMeal() {
-        let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
+      /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
         let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
         "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
         "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",
@@ -153,15 +200,18 @@ class Recommendations extends React.Component {
             ["Fish", "Oven"]
         ]
 
-
+*/
+        let foods = this.getRecommendation();
+        let images = this.getImages(foods);
+        let assets = this.getAssets(foods);
         let html = [];
 
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 0; i < foods.length; i++) {
 
 
             let badges = [];
-            assets[i-1].forEach(function (item, index) {
+            assets[i].forEach(function (item, index) {
                 let badgeName = "FoodBadge " + item;
                 console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
@@ -170,12 +220,12 @@ class Recommendations extends React.Component {
             let className = "FoodItem fadeInLeft" + i;
             html.push(<div>
                                                 <button className={className} onClick={this.increaseCounter}>
-                                                    <img className="FoodPhoto" align="left" src={images[i-1]} alt="Food"/>
-                                                    <b className="FoodTitle">{foods[i-1]}</b> <br/>
+                                                    <img className="FoodPhoto" align="left" src={images[i]} alt="Food"/>
+                                                    <b className="FoodTitle">{foods[i][0]}</b> <br/>
                                                     {badges}
 
-                                                    {this.recipePopup(foods[i-1], i-1)}
-                                                    {this.nutritionalPopup(foods[i-1], i-1)}
+                                                    {this.recipePopup(foods[i])}
+                                                    {this.nutritionalPopup(foods[i])}
                                                 </button>
                                                 </div>)
 
@@ -183,6 +233,8 @@ class Recommendations extends React.Component {
 
         return html
     }
+
+    //RENDER
     render() {
         return (
             <div className="App">
