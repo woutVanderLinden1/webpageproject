@@ -101,7 +101,7 @@ class Recommendations extends React.Component {
         payload.prolist = prolist;
         console.log(payload);
 
-       
+
         this.socket.send(JSON.stringify(payload));
     }
 
