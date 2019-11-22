@@ -74,7 +74,8 @@ class Profile extends React.Component {
                 </div>
                 <header className="App-header">
                     {this.getRender()}
-                    <Link to="/tinderCards"><button className="NextButton" onClick={this.success}><b>NEXT</b></button></Link>
+                    <Link to="/recommendations"><button className="NextButton" onClick={this.success}><b>NEXT</b></button></Link>
+
                 </header>
             </div>
 
