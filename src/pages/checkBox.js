@@ -25,13 +25,17 @@ class Checkbox extends React.Component {
     }
     render() {
         return (
-            <label>
+            <li>
                 <input type="checkbox"
                        checked={this.state.isChecked}
                        onChange={this.toggleChange}
+                       id={this.state.id}
                 />
+            <label for={this.state.id}>
                 {this.state.name}
             </label>
+            </li>
+
         );
     }
 }

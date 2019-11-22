@@ -18,12 +18,17 @@ class Recommendations extends React.Component {
         this.setState({timesClicked: clicked})
     }
 
-
-
+    getRecommendations(recommendation){
+        //sendmessage(recommendation);
+        //websocket.onmessage ((message) => {
+            //whatever you want to do with the message
+        //});
+    }
 
     //POPUP CODE
     nutritionalPopup(name){
         let nutritionIcons = [<button className="IconLayout NutritionIcon"></button> ];
+
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
         let nutritionalInfoHtml = []

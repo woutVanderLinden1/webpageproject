@@ -11,7 +11,7 @@ class Home extends React.Component {
 
                 </div>
                 <h1 className="fadeInLeft1">Welcome!</h1>
-                <p className="fadeInLeft2">Let's get you started.</p>
+                <p className="textLanding fadeInLeft2">Let's get you started.</p>
                 <Link to="/profile">
                     <button className="StartButton fadeInLeft3"><b>CONTINUE</b></button>
                 </Link>
