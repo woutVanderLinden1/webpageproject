@@ -16,6 +16,7 @@
 }
 
 .popupTextTitle{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
     padding-bottom: 15px;
     text-align: center;
 
@@ -23,13 +24,13 @@
 
 }
 .popupText {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 15px;
     text-align: left;
     padding-bottom: 5px;
-    font-size: 15px;
 }
 
 .IconLayout {
-    display: flex;
     background-size: 65% 65%;
     background-repeat: no-repeat;
     background-position: center;
@@ -38,7 +39,6 @@
     border-radius: 12px;
     width: 24px;
     height: 24px;
-    column-count: 2;
 
 }
 
@@ -59,12 +59,11 @@
     display: table-cell;
     padding: 16px;
     border: 5px solid black;
-
-
 }
+/*TODO grid ipv table*/
 
-/* Clear floats after the columns */
 .row:after {
+    border-radius: 8px;
     display: table;
     width : 100%;
     clear: both;
