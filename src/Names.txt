@@ -19,3 +19,15 @@ avocado
 plums
 nut-free (ja indien aangeduid)
 gelatin
+
+
+------------- Tags ----------------
+oven
+fish
+vegan
+vegetarian
+15-minutes-or-less
+meat
+dairy-free
+inexpensive
+dessert
