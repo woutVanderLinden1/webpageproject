@@ -1,5 +1,6 @@
 import React from 'react';
 import './FoodPage.css';
+import './Popup.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 
@@ -31,36 +32,53 @@ class Recommendations extends React.Component {
 
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
-        let nutritionalInfoHtml = []
-        nutritionalInfoHtml.push(<div className="Recipe">
-                Nutritional info:
-            </div>
-        );
+        let nutritionalInfoHtml = [];
+        let nutritionalInfoHtmlTemp = [];
+        let explanationHtmlTemp = [];
+        let similarMeals = this.getExplanation(name);
+
         for (let i = 0; i < nutritionalInfo.length; i++){
 
-            nutritionalInfoHtml.push(
-                <div className = "Recipe">
+            nutritionalInfoHtmlTemp.push(
+                <div className = "popupText">
                     {nutritionLabels[i]}: {nutritionalInfo[i]}
                     <br/>
 
-                </div>)
+                </div>);
         }
+        for (let i = 0; i < similarMeals.length; i++) {
 
-        let similarMeals = this.getExplanation(name);
-        let explanationHtml = []
-        explanationHtml.push(<div className="Recipe">
-                Similarities:
-            </div>
-        );
-        for (let i = 0; i < similarMeals.length; i++){
-
-            explanationHtml.push(
-                <div className = "Recipe">
-                    {name} is {similarMeals[i][1]}% similar to  {similarMeals[i][0]}
+            explanationHtmlTemp.push(
+                <div className="popupText">
+                    {name[0]} is {similarMeals[i][1]}% similar to {similarMeals[i][0]}
                     <br/>
 
-                </div>)
+                </div>);
         }
+
+        nutritionalInfoHtml.push(
+            <div className="row:after">
+                <div className="column">
+                    <div className="popupTextTitle">
+                        Nutritional info:
+                        <br/>
+                    </div>
+                    {nutritionalInfoHtmlTemp}
+
+                </div>
+                <div className="column">
+                    <div className="popupTextTitle">
+                        Similarities:
+                        <br/>
+                    </div>
+                    {explanationHtmlTemp}
+                </div>
+            </div>
+
+        );
+
+
+
 
         let html = [
             <Popup modal trigger={
@@ -69,70 +87,96 @@ class Recommendations extends React.Component {
                         {nutritionIcons}
                     </button>
                 </div>} position="right center">
-                <div className="RecipeTitle"><h2> Nutritional info for {name}</h2></div>
-                <br/>
+                <div className="popUp">
+                    <div className="popupHeader">Nutritional info for
+                        <br/>
+                        {name[0]}</div>
+                    <br/>
 
-                {nutritionalInfoHtml}
-                {explanationHtml}
+                    {nutritionalInfoHtml}
+                </div>
 
             </Popup>]
 
         return html;
     }
-
     recipePopup(name){
         let recipeIcons = [<button className="IconLayout RecipeIcon"></button> ];
         //Recipe list
         let recept = this.getRecipe(name);
-        let recipeHtml = []
-        recipeHtml.push(<div className="Recipe">
-                Steps:
-            </div>
-        );
+        let recipeHtmlTemp = []
+        let ingredients = this.getIngredients(name);
+        let popUpHtml = [];
+        let ingredientsHtmlTemp = [];
+
+
+
+
+        for (let i = 0; i < ingredients.length; i++){
+            ingredientsHtmlTemp.push(
+                <div className = "popupText">
+                    {ingredients[i]}
+                    <br/>
+
+                </div>)
+        }
         for (let i = 0; i < recept.length; i++){
 
-            recipeHtml.push(
-                <div className = "Recipe">
+            recipeHtmlTemp.push(
+                <div className = "popupText">
                     {i + 1}. {recept[i]}
                     <br/>
 
                 </div>)
         }
 
-        //Ingredients list
-        let ingredients = this.getIngredients(name);
-        let ingredientsHtml = []
-        ingredientsHtml.push(<div className="Recipe">
-                Ingredients:
-            </div>
-        );
-        for (let i = 0; i < ingredients.length; i++){
-            ingredientsHtml.push(
-                <div className = "Recipe">
-                    {ingredients[i]}
-                    <br/>
 
-                </div>)
-        }
+        popUpHtml.push(
+            <div className="row:after">
+                <div className="column">
+                    <div className="popupTextTitle">
+                        Ingredients:
+                        <br/>
+                    </div>
+                    {ingredientsHtmlTemp}
+
+                </div>
+                <div className="column">
+                    <div className="popupTextTitle">
+                        Steps:
+                        <br/>
+                    </div>
+                    {recipeHtmlTemp}
+                </div>
+            </div>
+
+        );
+
+
+
 
         let html = [
-            <Popup modal trigger={
+            <Popup  modal trigger={
                 <div>
                     <button>
                         {recipeIcons}
                     </button>
                 </div>} position="right center">
-                <div className="RecipeTitle"><h2>Recipe for {name}</h2></div>
-                <br/>
+                <div className="popUp">
+                    <div className="popupHeader">Recipe for
+                        <br/>
+                        {name[0]}</div>
+                    <br/>
 
-                {ingredientsHtml}
+                    {popUpHtml}
+                </div>
 
-                {recipeHtml}
             </Popup>]
 
         return html;
-
     }
+
+
 
     //GET DATA
     getIngredients(gerecht){
@@ -162,15 +206,15 @@ class Recommendations extends React.Component {
         return [["Thai Rice", 83],["Spicy Chicken", 76],["Random meal",72]];
     }
     getImage(naam,id){
-
+        return "./assets/dish.png";
+/*
         let parsedName = naam.split(" ");
         let url = ["https://www.food.com/recipe/"];
         for (let i = 0; i < parsedName.length; i++){
             url.push(parsedName[i] + "-");
         }
         url.push("-" + id);
-        return url;
-
+        */
     }
     getImages(foods){
         //TODO scrape this site
@@ -186,7 +230,7 @@ class Recommendations extends React.Component {
     }
     getRecommendation(){
         //TODO implement
-        return [['cream  of spinach soup',76808] , ['global gourmet  taco casserole', 59952]];
+        return [['Cream  of spinach soup',76808] , ['Global gourmet  taco casserole', 59952]];
     }
 
     //GENERATE MEAL

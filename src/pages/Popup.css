@@ -1,0 +1,74 @@
+.popUp{
+    border-radius: 8px;
+    background-color: darkgreen;
+    border: 15px solid darkgreen;
+
+
+}
+.popupHeader {
+    background-image: linear-gradient(darkgrey, darkgreen) ;
+    text-align: center;
+    font-family: "Verdana";
+    font-size: 30px;
+    float: snap;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.popupTextTitle{
+    padding-bottom: 15px;
+    text-align: center;
+
+    font-size: 20px;
+
+}
+.popupText {
+    text-align: left;
+    padding-bottom: 5px;
+    font-size: 15px;
+}
+
+.IconLayout {
+    display: flex;
+    background-size: 65% 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    width: 24px;
+    height: 24px;
+    column-count: 2;
+
+}
+
+.RecipeIcon{
+    background-image: url(../assets/recipes.png);
+    background-color: black;
+
+}
+.NutritionIcon {
+    background-image: url(../assets/info.png);
+    background-color: darkslategrey;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    width: 50%;
+    background-color: dimgrey;
+    display: table-cell;
+    padding: 16px;
+    border: 5px solid black;
+
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+    display: table;
+    width : 100%;
+    clear: both;
+    border: 15px solid green;
+    background-color: dimgrey;
+
+}
