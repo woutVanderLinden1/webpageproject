@@ -179,7 +179,8 @@ class Recommendations extends React.Component {
         let recipeIcons = [<button className="IconLayout RecipeIcon"></button> ];
         //Recipe list
         let recept = this.getRecipe(name);
-        let recipeHtmlTemp = []
+        let recipeHtmlTemp = [];
+
         let ingredients = this.getIngredients(name);
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
@@ -197,7 +198,7 @@ class Recommendations extends React.Component {
         }
         for (let i = 0; i < recept.length; i++){
 
-            recipeHtml.push(
+            popUpHtml.push(
                 <div className = "Recipe">
                     {i + 1}. {recept[i]}
                     <br/>
@@ -246,7 +247,7 @@ class Recommendations extends React.Component {
                     {popUpHtml}
                 </div>
 
-                {recipeHtml}
+                {popUpHtml}
             </Popup>]
 
         return html;
