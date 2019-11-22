@@ -2,17 +2,19 @@ import React from 'react';
 import './FoodPage.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
-//import sendmessage from "./src/App";
-//import {websocket} from "./src/App";
+import App from "../App";
 
 class Recommendations extends React.Component {
     constructor() {
         super();
         this.state = {
-            timesClicked: 0
+            timesClicked: 0,
+            foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"]
         };
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
+        this.getRecommendations    = this.getRecommendations.bind(this);
+
     }
 
     increaseCounter() {
@@ -21,10 +23,59 @@ class Recommendations extends React.Component {
     }
 
     getRecommendations(recommendation){
-        //sendmessage(recommendation);
-        //websocket.onmessage ((message) => {
-            //whatever you want to do with the message
-        //});
+        const likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        const dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        let payload = {
+            action: "Recommend",
+            account: {vegan: 1, easy: 1, preparation: 1},
+            amount: 10,
+            prolist: [{name:"hot tamale  burgers", rating:0.5}]
+        };
+        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "lactose-free","low-cholesterol","kosher","ramadan", "low-protein"];
+        const likes = JSON.parse(localStorage.getItem('boxes'));
+        let account = {};
+        // Creating account
+        for (let i = 0; i < names.length; i++) {
+            if (likes[i] === true) {
+                account[names[i]] = 1;
+            }
+        }
+        console.log(account);
+        payload.account = account;
+        console.log(payload);
+
+        // Creating prolist
+        let prolist = [];
+        for (let i = 0; i < likedItems.length; i++) {
+            let item = {};
+            item['name'] = likedItems[i];
+            item['rating'] = 1.0;
+            prolist.push(item)
+        }
+
+        for (let i = 0; i < dislikedItems.length; i++) {
+            let item = {};
+            item['name'] = dislikedItems[i];
+            item['rating'] = -1.0;
+            prolist.push(item)
+        }
+
+        console.log(prolist);
+        payload.account = account;
+        payload.prolist = prolist;
+        console.log(payload);
+
+        App.websocket.onmessage ((message) => {
+            this.setState({foods: message.recommendations});
+
+        });
+
+        App.sendmessage(recommendation);
+
+
+
+
+
     }
 
     //POPUP CODE
@@ -198,8 +249,9 @@ class Recommendations extends React.Component {
                         {this.generateMeal()}
                     </div>
                     Times clicked: {this.state.timesClicked}
-                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
 
+                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
+                    <button className="NextButton" onClick={this.getRecommendations}>Test</button>
                 </header>
             </div>
         );
