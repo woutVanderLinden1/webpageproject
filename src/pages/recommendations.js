@@ -2,7 +2,7 @@ import React from 'react';
 import './FoodPage.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
-//import sendmessage from "./src/App";
+import App from "../App";
 //import {websocket} from "./src/App";
 
 class Recommendations extends React.Component {
@@ -21,10 +21,11 @@ class Recommendations extends React.Component {
     }
 
     getRecommendations(recommendation){
-        //sendmessage(recommendation);
-        //websocket.onmessage ((message) => {
-            //whatever you want to do with the message
-        //});
+
+        App.websocket.onmessage ((message) => {
+            //whatever you want to do with the message response
+        });
+        App.sendmessage(recommendation);
     }
 
     //POPUP CODE
