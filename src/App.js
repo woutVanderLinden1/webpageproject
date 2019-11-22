@@ -95,6 +95,10 @@ class App extends Component {
             </Router>
         );
     }
+
+    static socketchange(f) {
+        this.socket.onopen=f;
+    }
 }
 
 export default App;

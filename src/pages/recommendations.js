@@ -11,9 +11,36 @@ class Recommendations extends React.Component {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"]
         };
+        alert(this.state.foods);
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
         this.getRecommendations    = this.getRecommendations.bind(this);
+        this.socket=new WebSocket("ws://localhost:9000");
+        let payload={
+            action: "initialise"
+        }
+        this.socket.onopen = () => {
+            this.socket.send(JSON.stringify(payload));
+            // do something after connection is opened
+        }
+        this.socket.onmessage=((message) => {
+
+            let translation=JSON.parse(message.data);
+            switch(translation.action){
+                case "Recommends":
+                    break;
+                case "Similar":
+                    break;
+                case "Recipe":
+                    break;
+                case "Nutrition":
+                    break;
+            }
+            alert("message got "+JSON.stringify(translation));
+            this.setState({foods: translation.recommends});
+            alert(this.state.foods);
+
+        });
 
     }
 
@@ -31,7 +58,7 @@ class Recommendations extends React.Component {
             amount: 10,
             prolist: [{name:"hot tamale  burgers", rating:0.5}]
         };
-        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "lactose-free","low-cholesterol","kosher","ramadan", "low-protein"];
+        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
         const likes = JSON.parse(localStorage.getItem('boxes'));
         let account = {};
         // Creating account
@@ -65,12 +92,9 @@ class Recommendations extends React.Component {
         payload.prolist = prolist;
         console.log(payload);
 
-        App.websocket.onmessage ((message) => {
-            this.setState({foods: message.recommendations});
 
-        });
 
-        App.sendmessage(recommendation);
+        this.socket.send(JSON.stringify(payload));
     }
 
     //POPUP CODE
@@ -190,7 +214,11 @@ class Recommendations extends React.Component {
 
     //GENERATE MEAL
     generateMeal() {
-        let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
+        if (this.state.foods === undefined) {
+            return;
+        }
+        let foods = this.state.foods;
+        console.log(foods);
         let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
         "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
         "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",

@@ -28,7 +28,7 @@ class TinderCards extends Component {
         }
         else localStorage.setItem("dislikedItems", JSON.stringify(dislikedItems));
         this.state = {
-            cards: ["Spicy Rice", "Ice Cream", "Chicken Tikka Masala"],
+            cards: ["little kick  jalapeno burgers", "hot tamale  burgers", "hot tamale  burgers"],
             likedItems: likedItems,
             dislikedItems: dislikedItems,
         };
