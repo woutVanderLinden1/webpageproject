@@ -71,11 +71,6 @@ class Recommendations extends React.Component {
         });
 
         App.sendmessage(recommendation);
-
-
-
-
-
     }
 
     //POPUP CODE

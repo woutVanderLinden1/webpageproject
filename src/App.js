@@ -25,9 +25,16 @@ class App extends Component {
                 action: "Recommend",
                 account: {vegan: 1, easy: 1, preparation: 1},
                 amount: 3,
-                prolist: [{name:"hot tamale  burgers", rating:0.5}]
+                prolist: [{name:"hot tamale  burgers", rating:0.5},{name:"hot tamale  burgers", rating:0.5}]
             }
         ;
+
+        //example output
+        let recipeoutput= {
+           // recommends1=[{name:"hot tamale  burgers"}];
+
+        }
+
         //get similar elements
         //recipe is the name ofe recipe to get similar to
         //prolist is the list of previously liked recipes each as a string of the name
