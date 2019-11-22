@@ -331,7 +331,11 @@ class Recommendations extends React.Component {
         ]
 
 */
-        let foods = this.getRecommendation();
+
+        if (this.state.foods === undefined) {
+            return
+        }
+        let foods = this.state.foods;
         let images = this.getImages(foods);
         let assets = this.getAssets(foods);
         let html = [];
@@ -341,7 +345,7 @@ class Recommendations extends React.Component {
 
 
             let badges = [];
-            assets[i].forEach(function (item, index) {
+            assets[1].forEach(function (item, index) {
                 let badgeName = "FoodBadge " + item;
                 console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
@@ -350,7 +354,7 @@ class Recommendations extends React.Component {
             let className = "FoodItem fadeInLeft" + i;
             html.push(<div>
                                                 <button className={className} onClick={this.increaseCounter}>
-                                                    <img className="FoodPhoto" align="left" src={images[i]} alt="Food"/>
+                                                    <img className="FoodPhoto" align="left" src={images[1]} alt="Food"/>
                                                     <b className="FoodTitle">{foods[i][0]}</b> <br/>
                                                     {badges}
 
