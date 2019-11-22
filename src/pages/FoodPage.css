@@ -1,9 +1,17 @@
+
 .FoodItem {
+    grid-template-areas:
+            'image image name name name '
+            'popup popup blank badge badge';
+
+    grid-gap: 50px;
+    padding: 10px;
+
     background-color: green;
     border: none;
     color: white;
     padding: 15px;
-    width: 400px;
+    width: 500px;
     margin: 10px;
     text-align: center;
     text-decoration: none;
@@ -29,7 +37,13 @@
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
+.BadgeBox{
+    grid-area: badge;
+    display: grid;
+}
 .FoodBadge {
+    grid-row: 2;
+
     background-size: 65% 65%;
     background-repeat: no-repeat;
     background-position: center;
@@ -73,6 +87,8 @@
 }
 
 .FoodPhoto {
+    grid-area: image;
+
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -87,6 +103,7 @@
 }
 
 .FoodTitle {
+    grid-area: name;
     font-family: "Verdana";
     font-size: 20px;
     float: left;

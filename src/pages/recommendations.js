@@ -101,14 +101,12 @@ class Recommendations extends React.Component {
         payload.prolist = prolist;
         console.log(payload);
 
-       
+
         this.socket.send(JSON.stringify(payload));
     }
 
     //POPUP CODE
     nutritionalPopup(name){
-        let nutritionIcons = [<button className="IconLayout NutritionIcon"></button> ];
-
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
         let nutritionalInfoHtml = [];
@@ -160,12 +158,7 @@ class Recommendations extends React.Component {
 
 
         let html = [
-            <Popup modal trigger={
-                <div>
-                    <button>
-                        {nutritionIcons}
-                    </button>
-                </div>} position="right center">
+            <Popup modal trigger={<button className="IconLayout NutritionIcon"></button>} position="right center">
                 <div className="popUp">
                     <div className="popupHeader">Nutritional info for
                         <br/>
@@ -180,11 +173,9 @@ class Recommendations extends React.Component {
         return html;
     }
     recipePopup(name){
-        let recipeIcons = [<button className="IconLayout RecipeIcon"></button> ];
         //Recipe list
         let recept = this.getRecipe(name);
         let recipeHtmlTemp = [];
-
         let ingredients = this.getIngredients(name);
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
@@ -202,8 +193,8 @@ class Recommendations extends React.Component {
         }
         for (let i = 0; i < recept.length; i++){
 
-            popUpHtml.push(
-                <div className = "Recipe">
+            recipeHtmlTemp.push(
+                <div className = "popupText">
                     {i + 1}. {recept[i]}
                     <br/>
 
@@ -236,12 +227,7 @@ class Recommendations extends React.Component {
 
 
         let html = [
-            <Popup  modal trigger={
-                <div>
-                    <button>
-                        {recipeIcons}
-                    </button>
-                </div>} position="right center">
+            <Popup  modal trigger={<button className="IconLayout RecipeIcon"></button>} position="right center" >
                 <div className="popUp">
                     <div className="popupHeader">Recipe for
                         <br/>
@@ -251,7 +237,6 @@ class Recommendations extends React.Component {
                     {popUpHtml}
                 </div>
 
-                {popUpHtml}
             </Popup>]
 
         return html;
