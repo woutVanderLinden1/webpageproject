@@ -12,15 +12,26 @@ const actionsStyles = {
 };
 
 class TinderCards extends Component {
-    state = {
-        cards: ["Spicy Rice", "Ice Cream", "Chicken Tikka Masala"],
-        likedItems: [],
-        dislikedItems: [],
-    };
+
 
     constructor(props) {
         super(props);
-        this.swipeItem = this.swipeItem.bind(this)
+        this.swipeItem = this.swipeItem.bind(this);
+        let likedItems = [];
+        let dislikedItems = [];
+        if(localStorage.getItem("likedItems") != null){
+            likedItems = JSON.parse(localStorage.getItem("likedItems"));
+        }
+        else localStorage.setItem("likedItems", JSON.stringify(likedItems));
+        if(localStorage.getItem("dislikedItems") != null){
+            dislikedItems = JSON.parse(localStorage.getItem("dislikedItems"));
+        }
+        else localStorage.setItem("dislikedItems", JSON.stringify(dislikedItems));
+        this.state = {
+            cards: ["Spicy Rice", "Ice Cream", "Chicken Tikka Masala"],
+            likedItems: likedItems,
+            dislikedItems: dislikedItems,
+        };
     }
 
     remove = () =>
@@ -30,18 +41,44 @@ class TinderCards extends Component {
 
 
     swipeItem(action) {
+        let thisCard = this.state.cards[0];
+
+
+        let liked = JSON.parse(localStorage.getItem("likedItems"));
+        let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
+
+
         if (action === 'left') {
-            let liked = this.state.likedItems;
-            liked.push(this.state.cards[0]);
-            this.setState({likedItems: liked});
+
+            let index = liked.indexOf(thisCard);
+            if(index >= 0){
+                liked.splice(index, 1);
+            }
+            if(!disliked.includes(thisCard)) {
+                disliked.push(thisCard);
+            }
+
+
         }
         else if (action === 'right') {
-            let disliked = this.state.dislikedItems;
-            disliked.push(this.state.cards[0]);
-            this.setState({dislikedItems: disliked});
+            let index = disliked.indexOf(thisCard);
+            if(index >= 0){
+                disliked.splice(index, 1);
+            }
+            if(!liked.includes(thisCard)){
+                liked.push(thisCard);
+
+            }
+
         }
+        this.state.likedItems = liked;
+        this.state.dislikedItems = disliked;
+        localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
+        localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
 
     }
+
+
 
     render() {
         const {cards} = this.state;
