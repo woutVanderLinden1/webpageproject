@@ -29,17 +29,25 @@ class Recommendations extends React.Component {
             let translation=JSON.parse(message.data);
             switch(translation.action){
                 case "Recommends":
+                    this.setState({tags: translation.tags});
+                    this.setState({foods: translation.recommends});
                     break;
                 case "Similar":
+                    this.setState({similar: translation.similar});
                     break;
                 case "Recipe":
+                    this.setState({recipe: translation.recipe});
                     break;
                 case "Nutrition":
+                    this.setState({nutrition: translation.nutrition});
                     break;
+                case "Ingredients":
+                    this.setState({ingredients: translation.ingredients});
+                    break
             }
-            alert("message got "+JSON.stringify(translation));
-            this.setState({foods: translation.recommends});
-            alert(this.state.foods);
+           // alert("message got "+JSON.stringify(translation));
+
+           // alert(this.state.foods);
 
         });
 
@@ -93,11 +101,7 @@ class Recommendations extends React.Component {
         payload.prolist = prolist;
         console.log(payload);
 
-        App.websocket.onmessage ((message) => {
-            this.setState({foods: message.recommendations});
-
-        });
-
+       
         this.socket.send(JSON.stringify(payload));
     }
 
