@@ -31,6 +31,7 @@ class Recommendations extends React.Component {
                 case "Recommends":
                     this.setState({tags: translation.tags});
                     this.setState({foods: translation.recommends});
+                    this.setState({images: translation.images})
                     break;
                 case "Similar":
                     this.setState({similar: translation.similar});
@@ -44,6 +45,7 @@ class Recommendations extends React.Component {
                 case "Ingredients":
                     this.setState({ingredients: translation.ingredients});
                     break
+
             }
            // alert("message got "+JSON.stringify(translation));
 
