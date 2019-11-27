@@ -12,21 +12,29 @@ class Recommendations extends React.Component {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"]
         };
-        alert(this.state.foods);
+        //alert(this.state.foods);
+        this.socket=this.initialiseSocket();
+        this.sendable=false;
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
         this.getRecommendations    = this.getRecommendations.bind(this);
-        this.socket=new WebSocket("ws://localhost:9000");
+        //this.s
+
+
+
+
         let payload={
             action: "initialise"
         }
         this.socket.onopen = () => {
             this.socket.send(JSON.stringify(payload));
+            this.sendable=true;
             // do something after connection is opened
         }
         this.socket.onmessage=((message) => {
 
             let translation=JSON.parse(message.data);
+            console.log(translation);
             switch(translation.action){
                 case "Recommends":
                     this.setState({tags: translation.tags});
@@ -47,7 +55,7 @@ class Recommendations extends React.Component {
                     break
 
             }
-           // alert("message got "+JSON.stringify(translation));
+           //alert("message got "+JSON.stringify(translation));
 
            // alert(this.state.foods);
 
@@ -55,9 +63,87 @@ class Recommendations extends React.Component {
 
     }
 
+    initialiseSocket() {
+        if(this.socket!=undefined){
+            return this.socket;
+        }
+        return new WebSocket("ws://localhost:9000");
+    }
+    initialiseSocket() {
+        if(this.socket!=undefined){
+            return this.socket;
+        }
+        return new WebSocket("ws://localhost:9000");
+    }
+
     increaseCounter() {
+
+        console.log("increased");
         let clicked = this.state.timesClicked + 1;
         this.setState({timesClicked: clicked})
+    }
+    getInfo(string) {
+        this.sendRecipe(string);
+        this.sendNuttritionSimilar(string);
+    }
+    sendRecipe(name) {
+        console.log("send recipe");
+        this.socket=this.initialiseSocket();
+        let payload = {
+            action: "Recipe",
+            recipe: name
+        };
+
+
+        let ingredipayload = {
+            action: "Ingredients",
+            name: name
+        };
+
+
+        //  this.socket.close();
+        if(this.sendable!=undefined&&this.sendable){
+            this.socket.send(JSON.stringify(payload));
+            this.socket.send(JSON.stringify(ingredipayload));
+        }
+
+    }
+
+
+    sendNuttritionSimilar(name) {
+        this.socket=this.initialiseSocket();
+        let payload = {
+            action: "Nutrition",
+            name: name
+        };
+        if(this.sendable!=undefined&&this.sendable) {
+            this.socket.send(JSON.stringify(payload));
+        }
+        let similarpayload={
+            action: "Similar",
+            recipe: name,
+            prolist:[]
+        }
+        const likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        const dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        let prolist = [];
+        for (let i = 0; i < likedItems.length; i++) {
+            let item = {};
+            item['name'] = likedItems[i];
+            item['rating'] = 1.0;
+            prolist.push(item)
+        }
+
+        for (let i = 0; i < dislikedItems.length; i++) {
+            let item = {};
+            item['name'] = dislikedItems[i];
+            item['rating'] = -1.0;
+            prolist.push(item)
+        }
+        similarpayload.prolist = prolist;
+        if(this.sendable!=undefined&&this.sendable) {
+            this.socket.send(JSON.stringify(similarpayload));
+        }
     }
 
     getRecommendations(recommendation){
@@ -97,43 +183,50 @@ class Recommendations extends React.Component {
             item['rating'] = -1.0;
             prolist.push(item)
         }
-
+        payload.prolist = prolist;
         console.log(prolist);
         payload.account = account;
-        payload.prolist = prolist;
+
         console.log(payload);
 
-
-        this.socket.send(JSON.stringify(payload));
+        if(this.sendable) {
+            this.socket.send(JSON.stringify(payload));
+        }
     }
 
     //POPUP CODE
     nutritionalPopup(name){
+
+
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
         let nutritionalInfoHtml = [];
         let nutritionalInfoHtmlTemp = [];
         let explanationHtmlTemp = [];
         let similarMeals = this.getExplanation(name);
+        if(nutritionalInfo!=undefined){
+            for (let i = 0; i < nutritionalInfo.length; i++){
 
-        for (let i = 0; i < nutritionalInfo.length; i++){
+                nutritionalInfoHtmlTemp.push(
+                    <div className = "popupText">
+                        {nutritionLabels[i]}: {nutritionalInfo[i]}
+                        <br/>
 
-            nutritionalInfoHtmlTemp.push(
-                <div className = "popupText">
-                    {nutritionLabels[i]}: {nutritionalInfo[i]}
-                    <br/>
-
-                </div>);
+                    </div>);
+            }
         }
-        for (let i = 0; i < similarMeals.length; i++) {
+        if(similarMeals!=undefined){
+            for (let i = 0; i < similarMeals.length; i++) {
 
-            explanationHtmlTemp.push(
-                <div className="popupText">
-                    {name[0]} is {similarMeals[i][1]}% similar to {similarMeals[i][0]}
-                    <br/>
+                explanationHtmlTemp.push(
+                    <div className="popupText">
+                        {name[0]} is {similarMeals[i]["name"]}% similar to {similarMeals[i]["matchfactor"]}
+                        <br/>
 
-                </div>);
+                    </div>);
+            }
         }
+
 
         nutritionalInfoHtml.push(
             <div className="row:after">
@@ -157,14 +250,16 @@ class Recommendations extends React.Component {
         );
 
 
-
+        // onClick={this.sendNuttritionSimilar(name)}
 
         let html = [
-            <Popup modal trigger={<button className="IconLayout NutritionIcon"></button>} position="right center">
+            <Popup modal trigger={<button className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
+
+            </button>} position="right center">
                 <div className="popUp">
                     <div className="popupHeader">Nutritional info for
                         <br/>
-                        {name[0]}</div>
+                        {name}</div>
                     <br/>
 
                     {nutritionalInfoHtml}
@@ -175,33 +270,40 @@ class Recommendations extends React.Component {
         return html;
     }
     recipePopup(name){
+
         //Recipe list
-        let recept = this.getRecipe(name);
+        let recept = this.getRecipe();
         let recipeHtmlTemp = [];
-        let ingredients = this.getIngredients(name);
+        let ingredients = this.getIngredients();
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
 
 
+        if(ingredients!=undefined){
+            for (let i = 0; i < ingredients.length; i++){
+                ingredientsHtmlTemp.push(
+                    <div className = "popupText">
+                        {ingredients[i]}
+                        <br/>
 
-
-        for (let i = 0; i < ingredients.length; i++){
-            ingredientsHtmlTemp.push(
-                <div className = "popupText">
-                    {ingredients[i]}
-                    <br/>
-
-                </div>)
+                    </div>)
+            }
         }
-        for (let i = 0; i < recept.length; i++){
+        if(recept!=undefined){
+            for (let i = 0; i < recept.length; i++){
 
-            recipeHtmlTemp.push(
-                <div className = "popupText">
-                    {i + 1}. {recept[i]}
-                    <br/>
+                recipeHtmlTemp.push(
+                    <div className = "popupText">
+                        {i + 1}. {recept[i]}
+                        <br/>
 
-                </div>)
+                    </div>)
+            }
         }
+
+
+
+
 
 
         popUpHtml.push(
@@ -228,18 +330,22 @@ class Recommendations extends React.Component {
 
 
 
-        let html = [
-            <Popup  modal trigger={<button className="IconLayout RecipeIcon"></button>} position="right center" >
+        let html = [];
+        //onClick={this.sendRecipe(name)}
+        html.push(
+            <Popup  modal trigger={<button className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
+
+            </button>} position="right center" >
                 <div className="popUp">
                     <div className="popupHeader">Recipe for
                         <br/>
-                        {name[0]}</div>
+                        {name}</div>
                     <br/>
 
                     {popUpHtml}
                 </div>
 
-            </Popup>]
+            </Popup>);
 
         return html;
     }
@@ -249,11 +355,11 @@ class Recommendations extends React.Component {
     //GET DATA
     getIngredients(gerecht){
         //TODO implementeren
-        return [['pineapple tidbits'],[ 'vegetable oil'],[ 'garlic cloves'],[ 'yellow onion'],[ 'celery'],[ 'rice'],[ 'salt'],[ 'ground cumin'],[ 'ground ginger'],[ 'turmeric'],[ 'cayenne pepper'],[ 'chicken broth'],[ 'raisins'],[ 'frozen peas'],[ 'green onion']];
-     }
+        return this.state.ingredients;
+    }
     getRecipe(gerecht){
         //TODO implementeren
-        return [['drain pineapple' ],[ 'reserve juice'],[ 'heat oil in large skillet'],[ 'saute garlic '],[' onion '],[' and celery until onion is soft'],[ 'stir in rice' ],[ 'reserved juice' ],[ 'seasonings '],[ 'chicken broth and raisins'],[ 'bring to a boil'],[ 'cover '],[ 'simmer 20 minutes until rice is tender'],[ 'stir in peas '],[' green onion and pineapple'] ];
+        return this.state.recipe;
 
     }
     getNutritionInfo(gerecht){
@@ -266,12 +372,13 @@ class Recommendations extends React.Component {
         // Protein in %
         // Saturated Fat in %
         // Total Carbohydrate in %
-        return [428.5, 12.0, 112.0, 41.0, 19.0, 6.0, 27.0];
+        return this.state.nutrition
+        //return [428.5, 12.0, 112.0, 41.0, 19.0, 6.0, 27.0];
 
     }
     getExplanation(gerecht){
         //TODO implementeren
-        return [["Thai Rice", 83],["Spicy Chicken", 76],["Random meal",72]];
+        return this.state.similar;
     }
     getImage(naam,id){
         return "./assets/dish.png";
@@ -286,11 +393,11 @@ class Recommendations extends React.Component {
     }
     getImages(foods){
         //TODO scrape this site
-        let images = []
-        for(let i = 0; i < foods.length; i++){
-            images.push(this.getImage(foods[i][0], foods[i][1]));
-        }
-        return images;
+        //let images = []
+       // for(let i = 0; i < foods.length; i++){
+       //     images.push(this.getImage(foods[i][0], foods[i][1]));
+       // }
+        return this.state.images;
     }
     getAssets(foods){
         //TODO get relevant assets
@@ -334,15 +441,17 @@ class Recommendations extends React.Component {
             let badges = [];
             assets[1].forEach(function (item, index) {
                 let badgeName = "FoodBadge " + item;
-                console.log(badgeName);
+                //console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
 
             });
             let className = "FoodItem fadeInLeft" + i;
+            // <button className={className} onClick={this.increaseCounter}
             html.push(<div>
-                                                <button className={className} onClick={this.increaseCounter}>
-                                                    <img className="FoodPhoto" align="left" src={images[1]} alt="Food"/>
-                                                    <b className="FoodTitle">{foods[i][0]}</b> <br/>
+                                                    <button className={className} onClick={() => this.getInfo(foods[i])}  >
+
+                                                    <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
+                                                    <b className="FoodTitle">{foods[i]}</b> <br/>
                                                     {badges}
 
                                                     {this.recipePopup(foods[i])}
@@ -353,6 +462,15 @@ class Recommendations extends React.Component {
         }
 
         return html
+    }
+
+
+
+    getimage(i) {
+        if(this.state.images!=undefined){
+            return this.state.images[i];
+        }
+        return "";
     }
 
     //RENDER
@@ -373,6 +491,7 @@ class Recommendations extends React.Component {
             </div>
         );
     }
+
 
 }
 
