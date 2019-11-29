@@ -17,6 +17,7 @@ const actionsStyles = {
 class Recommendations extends React.Component {
     constructor() {
         super();
+
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -29,8 +30,9 @@ class Recommendations extends React.Component {
             view: 0
 
         };
-        //alert(this.state.foods);
+       // alert(this.state.foods);
         this.socket=this.initialiseSocket();
+       // alert(this.socket);
         this.sendable=false;
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
@@ -41,6 +43,7 @@ class Recommendations extends React.Component {
             action: "initialise"
         };
         this.socket.onopen = () => {
+
             this.socket.send(JSON.stringify(payload));
             this.sendable=true;
             // do something after connection is opened
@@ -78,7 +81,7 @@ class Recommendations extends React.Component {
     }
 
     initialiseSocket() {
-        if(this.socket!==undefined){
+        if(this.socket!=undefined){
             return this.socket;
         }
         return new WebSocket("ws://localhost:9000");
@@ -160,7 +163,7 @@ class Recommendations extends React.Component {
         let payload = {
             action: "Recommend",
             account: {vegan: 1, easy: 1, preparation: 1},
-            amount: 2,
+            amount: 7,
             prolist: [{name:"hot tamale  burgers", rating:0.5}]
         };
         const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
@@ -246,7 +249,7 @@ class Recommendations extends React.Component {
                     {nutritionalInfoHtmlTemp}
 
                 </div>
-                <div className="column">
+                <div className="column2">
                     <div className="popupTextTitle">
                         Similarities:
                         <br/>
@@ -274,7 +277,7 @@ class Recommendations extends React.Component {
 
         return html;
     }
-    recipePopup(name){
+    recipePopup(name,number){
 
         //Recipe list
         let recept = this.getRecipe();
@@ -298,7 +301,7 @@ class Recommendations extends React.Component {
             for (let i = 0; i < recept.length; i++){
 
                 recipeHtmlTemp.push(
-                    <div className = "popupText">
+                    <div className = "popupRecipeText">
                         {i + 1}. {recept[i]}
                         <br/>
 
@@ -310,23 +313,30 @@ class Recommendations extends React.Component {
 
 
 
-
+        //, width: "30%" vs 70%
+        //add an extra element to the column that includes the image
         popUpHtml.push(
             <div className="row:after">
                 <div className="column">
-                    <div className="popupTextTitle">
-                        Ingredients:
+                    <div className="row">
+                        <div className="popupTextTitle">
+                            Ingredients:
                         <br/>
+                        </div>
+                        {ingredientsHtmlTemp}
                     </div>
-                    {ingredientsHtmlTemp}
-
+                    <div className="row2">
+                        <img className="FoodPhotoLarge" align="left" src={this.getimage(number)} alt="Food"/>
+                    </div>
                 </div>
-                <div className="column">
-                    <div className="popupTextTitle">
-                        Steps:
-                        <br/>
+                <div className="column2">
+                    <div className="reciperow">
+                        <div className="popupTextTitleRecipe">
+                            Steps:
+                            <br/>
+                        </div>
+                        {recipeHtmlTemp}
                     </div>
-                    {recipeHtmlTemp}
                 </div>
             </div>
 
@@ -558,7 +568,7 @@ class Recommendations extends React.Component {
                             <b className="FoodTitle">{foods[i]}</b> <br/>
                             {badges}
 
-                            {this.recipePopup(foods[i])}
+                            {this.recipePopup(foods[i],i)}
                             {this.nutritionalPopup(foods[i])}
                             </button>
                         </div>)
