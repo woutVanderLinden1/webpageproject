@@ -508,9 +508,8 @@ class Recommendations extends React.Component {
                                         <div className="FoodHeader">
                                             <b>{this.state.foods[0]}</b>
                                         </div>
-                                        <p>
-                                            Recipe goes here.
-                                        </p>
+                                        <img className="FoodPhotoLarge2" align="left" src={this.getimage(0)} alt="Food"/>
+
                                     </div>
                                 </Swipeable>
                             </div>

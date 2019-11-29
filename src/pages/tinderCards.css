@@ -12,7 +12,21 @@
 .FoodCard:hover {
     background-color: #f9f9f9;
 }
+.FoodPhotoLarge2{
+    grid-area: image;
 
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    width: 400px;
+    height:400px;
+    margin-right: 20px;
+    object-fit: cover;
+}
 .FoodHeader {
     width: 400px;
     height: 50px;
