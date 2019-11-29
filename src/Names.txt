@@ -20,7 +20,6 @@ plums
 nut-free (ja indien aangeduid)
 gelatin
 
-
 ------------- Tags ----------------
 oven
 fish
@@ -30,4 +29,4 @@ vegetarian
 meat
 dairy-free
 inexpensive
-dessert
+desserts

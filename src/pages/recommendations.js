@@ -10,7 +10,14 @@ class Recommendations extends React.Component {
         super();
         this.state = {
             timesClicked: 0,
-            foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"]
+            foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
+            tags: [],
+            images: [],
+            recipe: [],
+            nutrition: [],
+            ingredients: [],
+            similar: []
+
         };
         alert(this.state.foods);
         this.increaseCounter = this.increaseCounter.bind(this);
@@ -27,11 +34,12 @@ class Recommendations extends React.Component {
         this.socket.onmessage=((message) => {
 
             let translation=JSON.parse(message.data);
+            console.log(translation);
             switch(translation.action){
                 case "Recommends":
                     this.setState({tags: translation.tags});
                     this.setState({foods: translation.recommends});
-                    this.setState({images: translation.images})
+                    this.setState({images: translation.images});
                     break;
                 case "Similar":
                     this.setState({similar: translation.similar});
@@ -66,7 +74,7 @@ class Recommendations extends React.Component {
         let payload = {
             action: "Recommend",
             account: {vegan: 1, easy: 1, preparation: 1},
-            amount: 10,
+            amount: 2,
             prolist: [{name:"hot tamale  burgers", rating:0.5}]
         };
         const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
@@ -342,7 +350,7 @@ class Recommendations extends React.Component {
             html.push(<div>
                                                 <button className={className} onClick={this.increaseCounter}>
                                                     <img className="FoodPhoto" align="left" src={images[1]} alt="Food"/>
-                                                    <b className="FoodTitle">{foods[i][0]}</b> <br/>
+                                                    <b className="FoodTitle">{foods[i]}</b> <br/>
                                                     {badges}
 
                                                     {this.recipePopup(foods[i])}
