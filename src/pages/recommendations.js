@@ -51,8 +51,15 @@ class Recommendations extends React.Component {
             console.log(translation);
             switch(translation.action){
                 case "Recommends":
+                    const initialfoods = translation.recommends;
+                    let filteredFoods  =[];
+                    for (let i = 0; i< initialfoods.length; i++) {
+                        if (initialfoods[i] !=="") {
+                            filteredFoods.push(initialfoods[i])
+                        }
+                    }
                     this.setState({tags: translation.tags});
-                    this.setState({foods: translation.recommends});
+                    this.setState({foods: filteredFoods});
                     this.setState({images: translation.images});
                     break;
                 case "Similar":
@@ -258,7 +265,7 @@ class Recommendations extends React.Component {
         );
 
 
-        // onClick={this.sendNuttritionSimilar(name)}
+        // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
             <Popup modal trigger={<button className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
@@ -306,11 +313,6 @@ class Recommendations extends React.Component {
             }
         }
 
-
-
-
-
-
         popUpHtml.push(
             <div className="row:after">
                 <div className="column">
@@ -331,8 +333,6 @@ class Recommendations extends React.Component {
             </div>
 
         );
-
-
 
 
         let html = [];

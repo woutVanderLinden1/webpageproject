@@ -102,6 +102,9 @@ p {
   }
 }
 
+.fadeInRight0 {
+  animation: hideComp 0ms, fadeInRight 1000ms 0ms;
+}
 
 .fadeInRight1 {
   animation: hideComp 100ms, fadeInRight 1000ms 100ms;
@@ -121,6 +124,10 @@ p {
 
 .fadeInRight5 {
   animation: hideComp 500ms, fadeInRight 1000ms 500ms;
+}
+
+.fadeInLeft0 {
+  animation: hideComp 0ms, fadeInLeft 1000ms 0ms;
 }
 
 .fadeInLeft1 {
