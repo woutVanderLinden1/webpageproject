@@ -17,7 +17,6 @@ const actionsStyles = {
 class Recommendations extends React.Component {
     constructor() {
         super();
-
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -30,9 +29,8 @@ class Recommendations extends React.Component {
             view: 0
 
         };
-       // alert(this.state.foods);
+        //alert(this.state.foods);
         this.socket=this.initialiseSocket();
-       // alert(this.socket);
         this.sendable=false;
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
@@ -43,7 +41,6 @@ class Recommendations extends React.Component {
             action: "initialise"
         };
         this.socket.onopen = () => {
-
             this.socket.send(JSON.stringify(payload));
             this.sendable=true;
             // do something after connection is opened
@@ -54,8 +51,15 @@ class Recommendations extends React.Component {
             console.log(translation);
             switch(translation.action){
                 case "Recommends":
+                    const initialfoods = translation.recommends;
+                    let filteredFoods  =[];
+                    for (let i = 0; i< initialfoods.length; i++) {
+                        if (initialfoods[i] !=="") {
+                            filteredFoods.push(initialfoods[i])
+                        }
+                    }
                     this.setState({tags: translation.tags});
-                    this.setState({foods: translation.recommends});
+                    this.setState({foods: filteredFoods});
                     this.setState({images: translation.images});
                     break;
                 case "Similar":
@@ -261,7 +265,7 @@ class Recommendations extends React.Component {
         );
 
 
-        // onClick={this.sendNuttritionSimilar(name)}
+        // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
             <Popup modal trigger={<button className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
@@ -341,8 +345,6 @@ class Recommendations extends React.Component {
             </div>
 
         );
-
-
 
 
         let html = [];
