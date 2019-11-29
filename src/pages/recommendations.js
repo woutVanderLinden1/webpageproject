@@ -3,7 +3,16 @@ import './FoodPage.css';
 import './Popup.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
-import App from "../App";
+import Swipeable from "react-swipy";
+import './tinderCards.css';
+
+
+const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
+const actionsStyles = {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: 12,
+};
 
 class Recommendations extends React.Component {
     constructor() {
@@ -16,7 +25,8 @@ class Recommendations extends React.Component {
             recipe: [],
             nutrition: [],
             ingredients: [],
-            similar: []
+            similar: [],
+            view: 0
 
         };
         //alert(this.state.foods);
@@ -25,10 +35,7 @@ class Recommendations extends React.Component {
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
         this.getRecommendations    = this.getRecommendations.bind(this);
-        //this.s
-
-
-
+        this.switchViews = this.switchViews.bind(this);
 
         let payload={
             action: "initialise"
@@ -406,6 +413,104 @@ class Recommendations extends React.Component {
         return [['Cream  of spinach soup',76808] , ['Global gourmet  taco casserole', 59952]];
     }
 
+    remove = () =>
+        this.setState(({cards}) => ({
+            cards: cards.slice(1, cards.length),
+        }));
+
+
+    swipeItem(action) {
+        let thisCard = this.state.cards[0];
+
+
+        let liked = JSON.parse(localStorage.getItem("likedItems"));
+        let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
+
+
+        if (action === 'left') {
+
+            let index = liked.indexOf(thisCard);
+            if(index >= 0){
+                liked.splice(index, 1);
+            }
+            if(!disliked.includes(thisCard)) {
+                disliked.push(thisCard);
+            }
+
+
+        }
+        else if (action === 'right') {
+            let index = disliked.indexOf(thisCard);
+            if(index >= 0){
+                disliked.splice(index, 1);
+            }
+            if(!liked.includes(thisCard)){
+                liked.push(thisCard);
+
+            }
+
+        }
+        this.state.likedItems = liked;
+        this.state.dislikedItems = disliked;
+        localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
+        localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
+
+    }
+
+    switchViews() {
+        const value = (this.state.view + 1) % 2;
+        this.setState({view: value})
+    }
+
+
+
+    generateView() {
+        if (this.state.view === 0) {
+            return (
+                <div>
+                    <div>
+                        {this.generateMeal()}
+                    </div>
+                    Times clicked: {this.state.timesClicked}
+
+                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
+                    <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                </div>)
+        }
+        else {
+            return (
+                    <div style={wrapperStyles}>
+                        {this.state.foods.length > 0 ? (
+                            <div style={wrapperStyles}>
+                                <Swipeable
+                                    buttons={({left, right}) => (
+                                        <div style={actionsStyles}>
+                                            <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
+                                            <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                        </div>
+                                    )}
+                                    onAfterSwipe={this.remove}
+                                    onSwipe={this.swipeItem}
+                                >
+                                    <div className="FoodCard">
+                                        <div className="FoodHeader">
+                                            <b>{this.state.foods[0]}</b>
+                                        </div>
+                                        <p>
+                                            Recipe goes here.
+                                        </p>
+                                    </div>
+                                </Swipeable>
+                            </div>
+                        ) : (
+                            <div className="FoodItem" zIndex={-2}>No more cards</div>
+                        )}
+                    </div>
+
+            )
+        }
+    }
+
     //GENERATE MEAL
     generateMeal() {
       /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
@@ -466,7 +571,7 @@ class Recommendations extends React.Component {
 
 
     getimage(i) {
-        if(this.state.images!=undefined){
+        if(this.state.images!==undefined){
             return this.state.images[i];
         }
         return "";
@@ -478,14 +583,14 @@ class Recommendations extends React.Component {
             <div className="App">
                 <header className="App-header">
                     <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
+                        <div className="sliderBox" >
+                            <label className="switch">
+                                <input type="checkbox"></input>
+                                <span className="slider round" onClick={this.switchViews}></span>
+                            </label>
+                        </div>
                     </div>
-                    <div>
-                        {this.generateMeal()}
-                    </div>
-                    Times clicked: {this.state.timesClicked}
-
-                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
-                    <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                        {this.generateView()}
                 </header>
             </div>
         );
