@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import Swipeable from "react-swipy";
 import './tinderCards.css';
+import Swal from "sweetalert2";
 
 
 const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
@@ -13,6 +14,32 @@ const actionsStyles = {
     justifyContent: "space-between",
     marginTop: 12,
 };
+function shuffle(array,array2,array3) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+        temporaryValue = array2[currentIndex];
+        array2[currentIndex] = array2[randomIndex];
+        array2[randomIndex] = temporaryValue;
+        temporaryValue = array3[currentIndex];
+        array3[currentIndex] = array3[randomIndex];
+        array3[randomIndex] = temporaryValue;
+    }
+    let answer=[];
+    answer.push(array,array2,array3);
+
+    return answer;
+}
 
 class Recommendations extends React.Component {
     constructor() {
@@ -30,19 +57,26 @@ class Recommendations extends React.Component {
 
         };
         //alert(this.state.foods);
+
         this.socket=this.initialiseSocket();
         this.sendable=false;
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
         this.getRecommendations    = this.getRecommendations.bind(this);
         this.switchViews = this.switchViews.bind(this);
+        this.generateView=this.generateView.bind(this);
+
 
         let payload={
             action: "initialise"
         };
         this.socket.onopen = () => {
             this.socket.send(JSON.stringify(payload));
-            this.sendable=true;
+            if (!this.sendable){
+                this.sendable=true;
+                this.getRecommendations();
+            }
+
             // do something after connection is opened
         };
         this.socket.onmessage=((message) => {
@@ -51,16 +85,19 @@ class Recommendations extends React.Component {
             console.log(translation);
             switch(translation.action){
                 case "Recommends":
-                    const initialfoods = translation.recommends;
-                    let filteredFoods  =[];
-                    for (let i = 0; i< initialfoods.length; i++) {
-                        if (initialfoods[i] !=="") {
-                            filteredFoods.push(initialfoods[i])
-                        }
-                    }
-                    this.setState({tags: translation.tags});
-                    this.setState({foods: filteredFoods});
-                    this.setState({images: translation.images});
+
+                    let initialfoods = translation.recommends;
+                    let initialtags = translation.tags;
+                    let initialimages = translation.images;
+                    //initialfoods.randomise
+                    let shuffled=this.filterfoods(initialfoods,initialtags,initialimages);
+                    let filteredfoods=shuffled[0];
+                    let filteredTags=shuffled[1];
+                    let filteredImages=shuffled[2];
+
+                    this.setState({tags: filteredTags});
+                    this.setState({foods: filteredfoods});
+                    this.setState({images: filteredImages});
                     break;
                 case "Similar":
                     this.setState({similar: translation.similar});
@@ -81,7 +118,46 @@ class Recommendations extends React.Component {
            // alert(this.state.foods);
 
         });
+        if(this.state.swipednumber==undefined){
+            this.state.swipednumber=0;
 
+        }
+
+    }
+    filterfoods(initialfoods,initialtags,initialimages){
+        let shuffled=shuffle(initialfoods,initialtags,initialimages);
+        let newinitialfoods=shuffled[0];
+        let newinitialtags=shuffled[1];
+        let newinitialimages=shuffled[2];
+
+        //initialfoods shuffle
+        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        if(likedItems==null){
+            likedItems=[];
+        }
+        let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        if(dislikedItems==null){
+            dislikedItems=[];
+        }
+        let filteredFoods  =[];
+        let filteredtags  =[];
+        let filteredimages  =[];
+        let p=0;
+        for (let i = 0; i<newinitialfoods.length ; i++) {
+
+            if (newinitialfoods[i] !=="" && !likedItems.includes(newinitialfoods[i]) && !dislikedItems.includes(newinitialfoods[i])) {
+                p++;
+                filteredFoods.push(newinitialfoods[i]);
+                filteredtags.push(newinitialtags[i]);
+                filteredimages.push((newinitialimages[i]));
+                //alert(initialfoods[i]);
+            }
+
+        }
+        let answer=[]
+        answer.push(filteredFoods,filteredtags,filteredimages);
+
+        return answer;
     }
 
     initialiseSocket() {
@@ -139,8 +215,14 @@ class Recommendations extends React.Component {
             recipe: name,
             prolist:[]
         };
-        const likedItems = JSON.parse(localStorage.getItem('likedItems'));
-        const dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        if(likedItems==null){
+            likedItems=[];
+        }
+       let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        if(dislikedItems==null){
+            dislikedItems=[];
+        }
         let prolist = [];
         for (let i = 0; i < likedItems.length; i++) {
             let item = {};
@@ -162,16 +244,36 @@ class Recommendations extends React.Component {
     }
 
     getRecommendations(recommendation){
-        const likedItems = JSON.parse(localStorage.getItem('likedItems'));
-        const dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+
+        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        if(likedItems==null){
+            likedItems=[];
+        }
+        let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+        if(dislikedItems==null){
+            dislikedItems=[];
+        }
         let payload = {
             action: "Recommend",
             account: {vegan: 1, easy: 1, preparation: 1},
             amount: 7,
             prolist: [{name:"hot tamale  burgers", rating:0.5}]
         };
+        let amount=7;
+
+        if(likedItems!=null && likedItems!==undefined){
+
+            amount+=likedItems.length;
+        }
+        if(dislikedItems!=null &&dislikedItems!==undefined){
+
+            amount+=dislikedItems.length;
+        }
+
+        payload.amount=amount;
         const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
         const likes = JSON.parse(localStorage.getItem('boxes'));
+
         let account = {};
         // Creating account
         for (let i = 0; i < names.length; i++) {
@@ -185,6 +287,7 @@ class Recommendations extends React.Component {
 
         // Creating prolist
         let prolist = [];
+
         for (let i = 0; i < likedItems.length; i++) {
             let item = {};
             item['name'] = likedItems[i];
@@ -198,6 +301,7 @@ class Recommendations extends React.Component {
             item['rating'] = -1.0;
             prolist.push(item)
         }
+
         payload.prolist = prolist;
         console.log(prolist);
         payload.account = account;
@@ -207,6 +311,15 @@ class Recommendations extends React.Component {
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
         }
+        /*
+        Swal.fire({
+            title: 'Results',
+            text: "Waiting for results",
+            icon: 'load',
+
+        });
+
+         */
     }
 
     //POPUP CODE
@@ -234,7 +347,8 @@ class Recommendations extends React.Component {
             for (let i = 0; i < similarMeals.length; i++) {
 
                 explanationHtmlTemp.push(
-                    <div className="popupText">
+                    <div className="popupText2">
+                        <img className="FoodPhotoLarge3" align="left" src={similarMeals[i]["image"]} alt="Food"/>
                         {name[0]} is {similarMeals[i]["name"]}% similar to {similarMeals[i]["matchfactor"]}
                         <br/>
 
@@ -253,8 +367,8 @@ class Recommendations extends React.Component {
                     {nutritionalInfoHtmlTemp}
 
                 </div>
-                <div className="column2">
-                    <div className="popupTextTitle">
+                <div className="column">
+                    <div className="popupTextTitle2">
                         Similarities:
                         <br/>
                     </div>
@@ -425,15 +539,21 @@ class Recommendations extends React.Component {
         return [['Cream  of spinach soup',76808] , ['Global gourmet  taco casserole', 59952]];
     }
 
-    remove = () =>
-        this.setState(({cards}) => ({
-            cards: cards.slice(1, cards.length),
-        }));
+    remove = () => {
+        //this.state.swipednumber++;
+        //this.setState(({cards}) => ({
+        //    cards: cards.slice(1, cards.length),
+        //}))
+    };
 
 
-    swipeItem(action) {
-        let thisCard = this.state.cards[0];
+    swipeItem(action,food) {
 
+        let thisCard = food;
+       // alert("swipednumber " +this.state.swipednumber);
+        let k=this.state.swipednumber++;
+
+       // alert("swipednumber " +this.state.swipednumber);
 
         let liked = JSON.parse(localStorage.getItem("likedItems"));
         let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
@@ -464,12 +584,15 @@ class Recommendations extends React.Component {
         }
         this.state.likedItems = liked;
         this.state.dislikedItems = disliked;
+        this.setState({likedItems: liked, dislikedItems: disliked});
         localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
         localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
 
+        //this.generateView();
     }
 
     switchViews() {
+        this.state.swipednumber=0;
         const value = (this.state.view + 1) % 2;
         this.setState({view: value})
     }
@@ -480,16 +603,19 @@ class Recommendations extends React.Component {
         if (this.state.view === 0) {
             return (
                 <div>
+
                     <div>
                         {this.generateMeal()}
                     </div>
                     Times clicked: {this.state.timesClicked}
-
-                    <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
-                    <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                    <div className="buttons">
+                        <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
+                        <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                    </div>
                 </div>)
         }
         else {
+
             return (
                     <div style={wrapperStyles}>
                         {this.state.foods.length > 0 ? (
@@ -502,13 +628,15 @@ class Recommendations extends React.Component {
                                         </div>
                                     )}
                                     onAfterSwipe={this.remove}
-                                    onSwipe={this.swipeItem}
+                                    onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber])}
                                 >
                                     <div className="FoodCard">
                                         <div className="FoodHeader">
-                                            <b>{this.state.foods[0]}</b>
+                                            <b>{this.getname(this.state.swipednumber)}</b>
                                         </div>
-                                        <img className="FoodPhotoLarge2" align="left" src={this.getimage(0)} alt="Food"/>
+                                        <img className="FoodPhotoTinder" align="left" src={this.getimage(this.state.swipednumber)} alt="Food"/>
+
+
 
                                     </div>
                                 </Swipeable>
@@ -579,7 +707,12 @@ class Recommendations extends React.Component {
         return html
     }
 
-
+    getname(i){
+        if(this.state.foods!==undefined) {
+            return this.state.foods[i];
+        }
+        return "";
+    }
 
     getimage(i) {
         if(this.state.images!==undefined){

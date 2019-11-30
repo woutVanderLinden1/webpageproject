@@ -55,10 +55,11 @@ p {
 }
 
 .NextButton {
+
   position: relative;
   background-color: transparent;
   border: 5px solid green;
-  top: 50px;
+  top: 30px;
   color: green;
   text-align: center;
   border-radius: 100px;

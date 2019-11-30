@@ -16,10 +16,20 @@
 }
 
 .popupTextTitle{
+
     font-family: "Lucida Calligraphy",  Helvetica, sans-serif;
     padding-bottom: 12px;
     text-align: center;
     border-bottom: 3px solid white;
+    font-size: 24px;
+
+}
+.popupTextTitle2{
+    font-family: "Lucida Calligraphy",  Helvetica, sans-serif;
+    padding-bottom: 12px;
+    text-align: center;
+
+
     font-size: 24px;
 
 }
@@ -38,6 +48,16 @@
     font-size: 15px;
     text-align: left;
     padding-bottom: 5px;
+    padding-left:28px;
+
+}
+.popupText2 {
+    padding-top: 12px;
+    font-family: "Lucida Calligraphy", Helvetica, sans-serif;
+    font-size: 15px;
+    text-align: left;
+    padding-bottom: 5px;
+
 
 }
 .popupRecipeText {
@@ -76,7 +96,7 @@
 /* Create three equal columns that floats next to each other */
 .column {
      width: 40%;
-
+    margin:12px;
      display: table-cell;
 
     padding: 0px;
@@ -86,10 +106,11 @@
     width: 60%;
     background-color: whitesmoke;
     display: table-cell;
+    margin:12px;
     padding-top: 0px;
     padding-left: 40px;
     padding-right: 40px;
-    border: 5px solid black;
+    border: 2px solid black;
 }
 .reciperow{
     padding-top: 15px;
@@ -97,18 +118,18 @@
     background-color: whitesmoke;
 
 }
-.row {
+.row{
     height: 40%;
     background-color: dimgrey;
-    border: 5px solid black;
-    padding: 16px;
-
+    border: 1px solid white;
+    padding: 10px;
+    margin-right: 10px;
 }
 .row2 {
     height: 60%;
 
-
-    padding: 16px;
+    padding-top: 10px;
+    padding-right: 10px;
 
 
 }
@@ -123,14 +144,15 @@
     outline: none;
     border-radius: 10px;
     width: 100%;
-    height: 100%;
-    margin-right: 20px;
+    height: 110%;
+    margin-right: 0px;
     object-fit: cover;
 
 }
 /*TODO grid ipv table*/
 
 .row:after {
+    padding: 16px;
     border-radius: 8px;
     display: table;
     width : 100%;

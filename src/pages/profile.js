@@ -41,7 +41,7 @@ class Profile extends React.Component {
         });
         let returnVal = [];
         let returnList = [];
-        returnVal.push(<h3> Preferences </h3>);
+        returnVal.push(<div className="newclass"> <h3> Preferences </h3></div>);
         for (let i = 0; i < amountOfPref; i++) {
             returnList.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
         }

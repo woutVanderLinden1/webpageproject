@@ -70,7 +70,9 @@
     background-image: url(../assets/veggie.png);
     background-color: darkgreen;
 }
-
+.buttons{
+    padding: 16px;
+}
 .Oven {
     background-image: url(../assets/oven.png);
     background-color: orange;
