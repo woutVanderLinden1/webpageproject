@@ -4,7 +4,7 @@
     border: 15px solid darkgreen;
     overflow:hidden;
     overflow-y: scroll;
-    
+
     height: 700px;
 
 
@@ -32,7 +32,7 @@
 }
 .popupTextTitle2{
     font-family: "Lucida Calligraphy",  Helvetica, sans-serif;
-    padding-bottom: 12px;
+    padding-bottom: 42px;
     text-align: center;
 
 
@@ -58,11 +58,12 @@
 
 }
 .popupText2 {
-    padding-top: 12px;
+
     font-family: "Lucida Calligraphy", Helvetica, sans-serif;
     font-size: 15px;
     text-align: left;
-    padding-bottom: 5px;
+   margin-top:-30px;
+
 
 
 }
@@ -75,8 +76,14 @@
     padding-bottom: 12px;
     border-bottom: 3px dotted black;
 }
+.container2 {
+    position: relative;
+    text-align: center;
+    color: white;
 
+    margin-left: 10px;
 
+}
 .IconLayout {
     background-size: 65% 65%;
     background-repeat: no-repeat;
@@ -104,7 +111,7 @@
 
 
      width: 40%;
-    margin:12px;
+    margin:5px;
      display: table-cell;
 
     padding: 0px;
@@ -113,7 +120,7 @@
 .Nutritioncolumn {
     border-radius: 20px;
     border: 3px solid white;
-    background: darkseagreen;
+    background: #5fa371;
     width: 40%;
     margin:12px;
     display: table-cell;
@@ -121,11 +128,13 @@
     padding: 0px;
 
 }
+
 .column2 {
     width: 60%;
     background-color: whitesmoke;
     display: table-cell;
     margin:12px;
+    margin-right:20px;
     padding-top: 0px;
     padding-left: 40px;
     padding-right: 40px;
@@ -153,6 +162,43 @@
 
 
 }
+.OnTopButton {
+    position:relative;
+
+
+    color: white;
+    top: 0%;
+    left: 0%;
+    transform: translate(-270%, -140%);
+
+    font-weight: bold;
+
+    text-align: center;
+    border-radius: 100px;
+    transition-duration: 0.4s;
+    width: 50px;
+    height: 25px;
+    font-size: 14px;
+    font-family: Avenir, sans-serif;
+}
+
+.FoodPhotoLarge3{
+    grid-area: image;
+
+
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    width: 330px;
+    height: 170px;
+    margin-right: 0px;
+    object-fit: cover;
+
+}
 .FoodPhotoLarge{
     grid-area: image;
 
@@ -172,7 +218,7 @@
 /*TODO grid ipv table*/
 
 .row:after {
-    padding: 16px;
+    padding: 0px;
     border-radius: 8px;
     display: table;
     width : 100%;

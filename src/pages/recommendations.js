@@ -14,6 +14,19 @@ const actionsStyles = {
     justifyContent: "space-between",
     marginTop: 12,
 };
+function perc2color(perc) {
+    var r, g, b = 0;
+    if(perc < 50) {
+        r = 255;
+        g = Math.round(5.1 * perc);
+    }
+    else {
+        g = 255;
+        r = Math.round(510 - 5.10 * perc);
+    }
+    var h = r * 0x10000 + g * 0x100 + b * 0x1;
+    return '#' + ('000000' + h.toString(16)).slice(-6);
+}
 function shuffle(array,array2,array3) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -101,6 +114,7 @@ class Recommendations extends React.Component {
                     break;
                 case "Similar":
                     this.setState({similar: translation.similar});
+
                     break;
                 case "Recipe":
                     this.setState({recipe: translation.recipe});
@@ -332,6 +346,7 @@ class Recommendations extends React.Component {
         let nutritionalInfoHtmlTemp = [];
         let explanationHtmlTemp = [];
         let similarMeals = this.getExplanation(name);
+
         if(nutritionalInfo!==undefined){
             for (let i = 0; i < nutritionalInfo.length; i++){
 
@@ -344,12 +359,18 @@ class Recommendations extends React.Component {
             }
         }
         if(similarMeals!==undefined){
+
             for (let i = 0; i < similarMeals.length; i++) {
+                let number=Math.floor(similarMeals[i]["matchfactor"]*100);
+                let color=perc2color(number);
 
                 explanationHtmlTemp.push(
                     <div className="popupText2">
-                        <img className="FoodPhotoLarge3" align="left" src={similarMeals[i]["image"]} alt="Food"/>
-                        {name[0]} is {similarMeals[i]["name"]}% similar to {similarMeals[i]["matchfactor"]}
+                        <div className="container2">
+                            <img className="FoodPhotoLarge3" align="left" src={similarMeals[i]["image"]} alt="Food"/>
+                            <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
+                        </div>
+
                         <br/>
 
                     </div>);
@@ -369,7 +390,7 @@ class Recommendations extends React.Component {
                 </div>
                 <div className="column">
                     <div className="popupTextTitle2">
-                        Similarities:
+                        Because you liked:
                         <br/>
                     </div>
                     {explanationHtmlTemp}
@@ -508,7 +529,7 @@ class Recommendations extends React.Component {
 
     }
     getExplanation(gerecht){
-        //TODO implementeren
+
         return this.state.similar;
     }
     getImage(naam,id){
@@ -547,7 +568,7 @@ class Recommendations extends React.Component {
     };
 
 
-    swipeItem(action,food) {
+    swipeItem(food,action) {
 
         let thisCard = food;
        // alert("swipednumber " +this.state.swipednumber);
@@ -555,10 +576,22 @@ class Recommendations extends React.Component {
 
        // alert("swipednumber " +this.state.swipednumber);
 
+       // alert(food);
         let liked = JSON.parse(localStorage.getItem("likedItems"));
         let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
-
-
+        if(liked==null){
+            liked=[];
+        }
+        if(disliked==null){
+            disliked=[];
+        }
+        if (action === 'left') {
+            liked.push(food);
+        }
+        else{
+            disliked.push(food);
+        }
+        /*
         if (action === 'left') {
 
             let index = liked.indexOf(thisCard);
@@ -582,6 +615,8 @@ class Recommendations extends React.Component {
             }
 
         }
+
+         */
         this.state.likedItems = liked;
         this.state.dislikedItems = disliked;
         this.setState({likedItems: liked, dislikedItems: disliked});
@@ -618,26 +653,29 @@ class Recommendations extends React.Component {
             if (this.state.swipednumber < 6) {
                 return (
                     <div style={wrapperStyles}>
+
                         {this.state.foods.length > 0 ? (
                             <div style={wrapperStyles}>
-                                <Swipeable
 
-                                    onAfterSwipe={this.remove}
-                                    onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber])}
-                                >
-                                    <div className="FoodCard">
-                                        <div className="FoodHeader">
-                                            <b>{this.getname(this.state.swipednumber)}</b>
-                                        </div>
-                                        <img className="FoodPhotoTinder" align="left"
-                                             src={this.getimage(this.state.swipednumber)} alt="Food"/>
-                                        buttons={({left, right}) => (
+                                <Swipeable
+                                    buttons={({left, right}) => (
                                         <div style={actionsStyles}>
                                             <button className="tinderButton dislike" onClick={left}><b>Reject</b>
                                             </button>
                                             <button className="tinderButton like" onClick={right}><b>Accept</b></button>
                                         </div>
                                     )}
+                                    onAfterSwipe={this.remove}
+                                    onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber],"left")}
+                               >
+
+                                    <div className="FoodCard">
+                                        <div className="FoodHeader">
+                                            <b>{this.getname(this.state.swipednumber)}</b>
+                                        </div>
+                                        <img className="FoodPhotoTinder" align="left"
+                                             src={this.getimage(this.state.swipednumber)} alt="Food"/>
+
 
                                     </div>
                                 </Swipeable>
