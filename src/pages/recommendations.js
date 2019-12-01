@@ -73,11 +73,15 @@ class Recommendations extends React.Component {
 
         this.socket=this.initialiseSocket();
         this.sendable=false;
+
         this.increaseCounter = this.increaseCounter.bind(this);
         this.generateMeal    = this.generateMeal.bind(this);
         this.getRecommendations    = this.getRecommendations.bind(this);
         this.switchViews = this.switchViews.bind(this);
         this.generateView=this.generateView.bind(this);
+        this.resetSwipes=this.resetSwipes.bind(this);
+        this.generateFavorites=this.generateFavorites.bind(this);
+        this.goToFavorites=this.goToFavorites.bind(this);
 
 
         let payload={
@@ -111,6 +115,10 @@ class Recommendations extends React.Component {
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
+                    break;
+                case "favorites":
+                    this.setState({favorites: translation.favorites});
+                    alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
                     this.setState({similar: translation.similar});
@@ -175,9 +183,12 @@ class Recommendations extends React.Component {
     }
 
     initialiseSocket() {
+
         if(this.socket!=undefined){
+
             return this.socket;
         }
+        this.state.favorite=false;
         return new WebSocket("ws://localhost:9000");
     }
 
@@ -255,6 +266,58 @@ class Recommendations extends React.Component {
         if(this.sendable!==undefined&&this.sendable) {
             this.socket.send(JSON.stringify(similarpayload));
         }
+    }
+
+    getFavorites(){
+
+        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        if(likedItems==null){
+            likedItems=[];
+        }
+
+        let payload = {
+            action: "Favorites",
+
+
+            prolist: [{name:"hot tamale  burgers", rating:0.5}]
+        };
+
+
+
+        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
+        const likes = JSON.parse(localStorage.getItem('boxes'));
+
+
+        // Creating prolist
+        let prolist = [];
+
+        for (let i = 0; i < likedItems.length; i++) {
+            let item = {};
+            item['name'] = likedItems[i];
+            item['rating'] = 1.0;
+            prolist.push(item)
+        }
+
+
+
+        payload.prolist = prolist;
+        console.log(prolist);
+
+
+        console.log(payload);
+
+        if(this.sendable) {
+            this.socket.send(JSON.stringify(payload));
+        }
+        /*
+        Swal.fire({
+            title: 'Results',
+            text: "Waiting for results",
+            icon: 'load',
+
+        });
+
+         */
     }
 
     getRecommendations(recommendation){
@@ -367,7 +430,7 @@ class Recommendations extends React.Component {
                 explanationHtmlTemp.push(
                     <div className="popupText2">
                         <div className="container2">
-                            <img className="FoodPhotoLarge3" title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
+                            <img className="FoodPhotoLarge3" onClick={this.goToFavorites} title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
                             <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
                         </div>
 
@@ -416,7 +479,7 @@ class Recommendations extends React.Component {
 
         return html;
     }
-    recipePopup(name,number){
+    recipePopup(name,image){
 
         //Recipe list
         let recept = this.getRecipe();
@@ -465,7 +528,7 @@ class Recommendations extends React.Component {
                         {ingredientsHtmlTemp}
                     </div>
                     <div className="row2">
-                        <img className="FoodPhotoLarge" align="left" src={this.getimage(number)} alt="Food"/>
+                        <img className="FoodPhotoLarge" align="left" src={image} alt="Food"/>
                     </div>
                 </div>
                 <div className="column2">
@@ -626,77 +689,173 @@ class Recommendations extends React.Component {
         //this.generateView();
     }
 
+    resetSwipes(){
+        this.state.swipednumber=0;
+        this.getRecommendations();
+        this.setState({view: 1})
+        this.setState({favorite: false});
+    }
+
     switchViews() {
         this.state.swipednumber=0;
         const value = (this.state.view + 1) % 2;
-        this.setState({view: value})
+        this.setState({view: value});
+        this.setState({favorite: false});
     }
 
 
+    goToFavorites(){
+        this.getFavorites();
+        this.setState({favorite: true});
+    }
 
     generateView() {
-        if (this.state.view === 0) {
-            return (
+        if(this.state.favorite){
+            return(
                 <div>
 
                     <div>
-                        {this.generateMeal()}
+                        favoritestate
+                        {this.generateFavorites()}
                     </div>
                     Times clicked: {this.state.timesClicked}
                     <div className="buttons">
                         <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
-                        <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                        <button className="NextButton" onClick={()=> alert('hi')}>Recommendations</button>
                     </div>
-                </div>)
+                </div>
+            )
         }
-        else {
-            if (this.state.swipednumber < 6) {
+        else{
+            if (this.state.view === 0) {
                 return (
-                    <div style={wrapperStyles}>
+                    <div>
 
-                        {this.state.foods.length > 0 ? (
-                            <div style={wrapperStyles}>
-
-                                <Swipeable
-                                    buttons={({left, right}) => (
-                                        <div style={actionsStyles}>
-                                            <button className="tinderButton dislike" onClick={left}><b>Reject</b>
-                                            </button>
-                                            <button className="tinderButton like" onClick={right}><b>Accept</b></button>
-                                        </div>
-                                    )}
-                                    onAfterSwipe={this.remove}
-                                    onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber],"left")}
-                               >
-
-                                    <div className="FoodCard">
-                                        <div className="FoodHeader">
-                                            <b>{this.getname(this.state.swipednumber)}</b>
-                                        </div>
-                                        <img className="FoodPhotoTinder" align="left"
-                                             src={this.getimage(this.state.swipednumber)} alt="Food"/>
-
-
-                                    </div>
-                                </Swipeable>
-                            </div>
-                        ) : (
-                            <div className="FoodItem" zIndex={-2}>No more cards</div>
-                        )}
-                    </div>
-
-                )
+                        <div>
+                            {this.generateMeal()}
+                        </div>
+                        Times clicked: {this.state.timesClicked}
+                        <div className="buttons">
+                            <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
+                            <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                        </div>
+                    </div>)
             }
-            else{
-                return(
-                    <div className="FoodItem" zIndex={-2}>No more cards</div>
+            else {
+                if (this.state.swipednumber < 6) {
+                    return (
+                        <div style={wrapperStyles}>
 
+                            {this.state.foods.length > 0 ? (
+                                <div style={wrapperStyles}>
+
+                                    <Swipeable
+                                        buttons={({left, right}) => (
+                                            <div style={actionsStyles}>
+                                                <button className="tinderButton dislike" onClick={left}><b>Reject</b>
+                                                </button>
+                                                <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                            </div>
+                                        )}
+                                        onAfterSwipe={this.remove}
+                                        onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber],"left")}
+                                    >
+
+                                        <div className="FoodCard">
+                                            <div className="FoodHeader">
+                                                <b>{this.getname(this.state.swipednumber)}</b>
+                                            </div>
+                                            <img className="FoodPhotoTinder" align="left"
+                                                 src={this.getimage(this.state.swipednumber)} alt="Food"/>
+
+
+                                        </div>
+                                    </Swipeable>
+                                </div>
+                            ) : (
+                                <div >
+                                    <div className="FoodItem" zIndex={-2}>No more cards</div>
+                                    <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                                    <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
+                                </div>
+                            )}
+                        </div>
+
+                    )
+                }
+                else{
+                    return(
+                        <div >
+                            <div className="FoodItem" zIndex={-2}>No more cards</div>
+                            <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                            <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
+                        </div>
 
                     )
 
 
+                }
             }
+
         }
+
+    }
+    generateFavorites() {
+        /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
+          let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
+          "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
+          "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",
+          "https://assets.epicurious.com/photos/57978b27c9298e54495917d5/master/pass/black-bean-and-vegetable-burritos.jpg",
+          "https://www.soscuisine.com/media/images/recettes/very_large/36.jpg?lang=en"];
+          let assets = [
+              ["Meat"],
+              ["Meat", "Cheap"],
+              ["Veggie", "DairyFree"],
+              ["Veggie", "Cheap"],
+              ["Fish", "Oven"]
+          ]
+
+  */
+
+
+
+        let favorites = this.state.favorites;
+        alert(favorites);
+        if(favorites==null||favorites==undefined){
+
+            return;
+        }
+        let html = [];
+
+
+        for (let i = 0; i < favorites.length; i++) {
+            let currentfavorite=favorites[i];
+
+            let badges = [];
+            currentfavorite["tags"].forEach(function (item, index) {
+                let badgeName = "FoodBadge " + item;
+                //console.log(badgeName);
+                badges.push(<button className={badgeName}> </button>);
+
+            });
+            let className = "FoodItem fadeInLeft" + i;
+            // <button className={className} onClick={this.increaseCounter}
+            html.push(<div>
+                <button className={className} onClick={() => this.getInfo(currentfavorite["name"])}  >
+
+                    <img className="FoodPhoto" align="left" src={currentfavorite["image"]} alt="Food"/>
+
+                    <b className="FoodTitle">{currentfavorite["name"]}</b> <br/>
+                    {badges}
+
+                    {this.recipePopup(currentfavorite["name"],currentfavorite["image"])}
+                    {this.nutritionalPopup(currentfavorite["name"])}
+                </button>
+            </div>)
+
+        }
+
+        return html
     }
 
     //GENERATE MEAL
@@ -716,6 +875,8 @@ class Recommendations extends React.Component {
         ]
 
 */
+
+
 
         if (this.state.foods === undefined) {
             return
@@ -746,7 +907,7 @@ class Recommendations extends React.Component {
                             <b className="FoodTitle">{foods[i]}</b> <br/>
                             {badges}
 
-                            {this.recipePopup(foods[i],i)}
+                            {this.recipePopup(foods[i],this.getimage(i))}
                             {this.nutritionalPopup(foods[i])}
                             </button>
                         </div>)
