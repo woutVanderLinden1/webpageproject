@@ -359,7 +359,7 @@ class Recommendations extends React.Component {
 
         nutritionalInfoHtml.push(
             <div className="row:after">
-                <div className="column">
+                <div className="Nutritioncolumn">
                     <div className="popupTextTitle">
                         Nutritional info:
                         <br/>
@@ -615,18 +615,13 @@ class Recommendations extends React.Component {
                 </div>)
         }
         else {
-
-            return (
+            if (this.state.swipednumber < 6) {
+                return (
                     <div style={wrapperStyles}>
                         {this.state.foods.length > 0 ? (
                             <div style={wrapperStyles}>
                                 <Swipeable
-                                    buttons={({left, right}) => (
-                                        <div style={actionsStyles}>
-                                            <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
-                                            <button className="tinderButton like" onClick={right}><b>Accept</b></button>
-                                        </div>
-                                    )}
+
                                     onAfterSwipe={this.remove}
                                     onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber])}
                                 >
@@ -634,9 +629,15 @@ class Recommendations extends React.Component {
                                         <div className="FoodHeader">
                                             <b>{this.getname(this.state.swipednumber)}</b>
                                         </div>
-                                        <img className="FoodPhotoTinder" align="left" src={this.getimage(this.state.swipednumber)} alt="Food"/>
-
-
+                                        <img className="FoodPhotoTinder" align="left"
+                                             src={this.getimage(this.state.swipednumber)} alt="Food"/>
+                                        buttons={({left, right}) => (
+                                        <div style={actionsStyles}>
+                                            <button className="tinderButton dislike" onClick={left}><b>Reject</b>
+                                            </button>
+                                            <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                        </div>
+                                    )}
 
                                     </div>
                                 </Swipeable>
@@ -646,7 +647,17 @@ class Recommendations extends React.Component {
                         )}
                     </div>
 
-            )
+                )
+            }
+            else{
+                return(
+                    <div className="FoodItem" zIndex={-2}>No more cards</div>
+
+
+                    )
+
+
+            }
         }
     }
 

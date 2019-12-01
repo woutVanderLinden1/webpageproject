@@ -2,6 +2,12 @@
     border-radius: 8px;
     background-color: darkgreen;
     border: 15px solid darkgreen;
+    overflow:hidden;
+    overflow-y: scroll;
+    
+    height: 700px;
+
+
 
 
 }
@@ -95,6 +101,8 @@
 
 /* Create three equal columns that floats next to each other */
 .column {
+
+
      width: 40%;
     margin:12px;
      display: table-cell;
@@ -102,6 +110,17 @@
     padding: 0px;
 
  }
+.Nutritioncolumn {
+    border-radius: 20px;
+    border: 3px solid white;
+    background: darkseagreen;
+    width: 40%;
+    margin:12px;
+    display: table-cell;
+
+    padding: 0px;
+
+}
 .column2 {
     width: 60%;
     background-color: whitesmoke;
@@ -119,6 +138,7 @@
 
 }
 .row{
+    border-radius: 20px;
     height: 40%;
     background-color: dimgrey;
     border: 1px solid white;
