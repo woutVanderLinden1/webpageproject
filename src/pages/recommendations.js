@@ -367,7 +367,7 @@ class Recommendations extends React.Component {
                 explanationHtmlTemp.push(
                     <div className="popupText2">
                         <div className="container2">
-                            <img className="FoodPhotoLarge3" align="left" src={similarMeals[i]["image"]} alt="Food"/>
+                            <img className="FoodPhotoLarge3" title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
                             <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
                         </div>
 
