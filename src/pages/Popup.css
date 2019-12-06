@@ -1,9 +1,26 @@
 .popUp{
+   
+     border-radius: 8px;
+     background-color: darkgreen;
+     border: 15px solid darkgreen;
+     overflow:hidden;
+     overflow-y: scroll;
+
+
+     height: 700px;
+
+
+
+
+ }
+.popUp2{
+    position: fixed;
     border-radius: 8px;
     background-color: darkgreen;
     border: 15px solid darkgreen;
     overflow:hidden;
     overflow-y: scroll;
+    transform: translate(-2.5%, -50%);
 
     height: 700px;
 
