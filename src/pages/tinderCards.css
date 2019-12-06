@@ -12,6 +12,7 @@
 .FoodCard:hover {
     background-color: #f9f9f9;
 }
+
 .FoodPhotoTinder{
     grid-area: image;
     width: 400px;

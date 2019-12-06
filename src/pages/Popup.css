@@ -121,9 +121,11 @@
     border-radius: 20px;
     border: 3px solid white;
     background: #5fa371;
-    width: 40%;
+    width: 80%;
+    height: 312px;
+
     margin:12px;
-    display: table-cell;
+
 
     padding: 0px;
 
@@ -146,11 +148,21 @@
     background-color: whitesmoke;
 
 }
+.rowingredi{
+    border-radius: 20px;
+    height: 40%;
+    border: 1px solid white;
+    background-color: darkseagreen;
+
+    padding: 10px;
+    margin-right: 10px;
+}
 .row{
     border-radius: 20px;
     height: 40%;
-    background-color: dimgrey;
-    border: 1px solid white;
+
+    display: table;
+
     padding: 10px;
     margin-right: 10px;
 }
@@ -218,13 +230,33 @@
 /*TODO grid ipv table*/
 
 .row:after {
+    position: absolute;
     padding: 0px;
     border-radius: 8px;
-    display: table;
+
     width : 100%;
     clear: both;
     border: 15px solid green;
 
     background-color: dimgrey;
 
+}
+
+
+.textcolumn1 {
+    float: left;
+    width: 70%;
+}
+.textcolumn2 {
+    float: left;
+    border-left: solid white 2px;
+    width: 20%;
+    height: 100%;
+}
+
+/* Clear floats after the columns */
+.textrow:after {
+
+    display: table-cell;
+    clear: both;
 }

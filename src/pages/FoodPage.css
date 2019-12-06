@@ -66,7 +66,11 @@
     background-color: darkred;
 }
 
-.Veggie {
+.vegan {
+     background-image: url(../assets/veggie.png);
+     background-color: darkgreen;
+ }
+.vegetarian {
     background-image: url(../assets/veggie.png);
     background-color: darkgreen;
 }
