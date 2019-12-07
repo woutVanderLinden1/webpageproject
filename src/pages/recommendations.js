@@ -111,6 +111,7 @@ class Recommendations extends React.Component {
 
             let translation=JSON.parse(message.data);
             console.log(translation);
+           
             switch(translation.action){
                 case "Recommends":
                     if(this.loading){
@@ -131,9 +132,7 @@ class Recommendations extends React.Component {
                     let filteredfoods=shuffled[0];
                     let filteredTags=shuffled[1];
                     let filteredImages=shuffled[2];
-                    for(var i=0;i<filteredfoods.length;i++){
-                        filteredfoods[i]=capitalizeFLetter(filteredfoods[i]);
-                    }
+
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
@@ -459,6 +458,7 @@ class Recommendations extends React.Component {
         let nutritionalInfoHtmlTemp2 = [];
         let explanationHtmlTemp = [];
         let similarMeals = this.getExplanation(name);
+        let title=capitalizeFLetter(name);
 
         if(nutritionalInfo!==undefined){
             for (let i = 0; i < nutritionalInfo.length; i++){
@@ -528,12 +528,12 @@ class Recommendations extends React.Component {
         // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
-            <Popup modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
+            <Popup modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
             </button>} position="right center">
                 <div className="popUp">
                     <div className="popupHeader">Nutritional info for
                         <br/>
-                        {name}</div>
+                        {title}</div>
                     <br/>
                     {nutritionalInfoHtml}
                 </div>
@@ -549,6 +549,7 @@ class Recommendations extends React.Component {
         let ingredients = this.getIngredients();
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
+        let title=capitalizeFLetter(name);
 
 
         if(ingredients!==undefined){
@@ -617,7 +618,7 @@ class Recommendations extends React.Component {
                 <div className="popUp">
                     <div className="popupHeader">Recipe for
                         <br/>
-                        {name}</div>
+                        {title}</div>
                     <br/>
 
                     {popUpHtml}
@@ -636,6 +637,7 @@ class Recommendations extends React.Component {
         let ingredients = this.getIngredients();
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
+        let title=capitalizeFLetter(name);
 
 
         if(ingredients!==undefined){
@@ -711,7 +713,7 @@ class Recommendations extends React.Component {
 
                     <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
                         <br/>
-                        {name}</div>
+                        {title}</div>
                     <br/>
 
                     {popUpHtml}
@@ -1045,12 +1047,14 @@ class Recommendations extends React.Component {
             return
         }
         let foods = this.state.foods;
+
         let images = this.getImages(foods);
         let assets = this.getAssets(foods);
         let html = [];
 
 
         for (let i = 0; i < foods.length; i++) {
+            let name=capitalizeFLetter(foods[i]);
 
 
             let badges = [];
@@ -1073,7 +1077,7 @@ class Recommendations extends React.Component {
                                         <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
                                     </div>
                                     <div className="columtitle">
-                                        <div className="foodtitle2"> <b className="FoodTitle">{foods[i]}</b> <br/> </div>
+                                        <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
                                         <div className="foodtags2">
                                             <div className="badgesContainer">
                                                 {badges}
