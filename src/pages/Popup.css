@@ -1,5 +1,5 @@
 .popUp{
-   
+
      border-radius: 8px;
      background-color: darkgreen;
      border: 15px solid darkgreen;
@@ -20,9 +20,10 @@
     border: 15px solid darkgreen;
     overflow:hidden;
     overflow-y: scroll;
-    transform: translate(-2.5%, -50%);
+    transform: translate(-35%, -25%);
 
     height: 700px;
+    width: 800px;
 
 
 

@@ -90,31 +90,33 @@ class Recommendations extends React.Component {
         this.socket.onopen = () => {
             this.socket.send(JSON.stringify(payload));
             if (!this.sendable){
+                //alert("do this");
+                this.loading=false;
                 this.sendable=true;
                 this.getRecommendations();
             }
 
             // do something after connection is opened
         };
-        if(this.loading=undefined){
-            this.loading=false;
-        }
+
 
         this.socket.onmessage=((message) => {
-            if(this.loading){
-                this.loading=false;
-                Swal.fire({
-                    title: "Finished!",
-                    showConfirmButton: false,
-                    timer: 1000
-                });
-            }
+
 
 
             let translation=JSON.parse(message.data);
             console.log(translation);
             switch(translation.action){
                 case "Recommends":
+                    if(this.loading){
+                        this.loading=false;
+                       // alert("this");
+                        Swal.fire({
+                            title: "Finished!",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
 
                     let initialfoods = translation.recommends;
                     let initialtags = translation.tags;
@@ -130,14 +132,25 @@ class Recommendations extends React.Component {
                     this.setState({images: filteredImages});
                     break;
                 case "favorites":
+                    if(this.loading){
+                       // alert("this favorites");
+                        this.loading=false;
+                        Swal.fire({
+                            title: "Finished!",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
                     this.setState({favorites: translation.favorites});
-                    alert('favorites set '+ translation.favorites);
+                  //  alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
+
                     this.setState({similar: translation.similar});
 
                     break;
                 case "Recipe":
+
                     this.setState({recipe: translation.recipe});
                     break;
                 case "Nutrition":
@@ -234,15 +247,7 @@ class Recommendations extends React.Component {
         if(this.sendable!==undefined&&this.sendable){
             this.socket.send(JSON.stringify(payload));
             this.socket.send(JSON.stringify(ingredipayload));
-            Swal.fire({
-                title: "Loading...",
-                text: "Please wait",
 
-                showConfirmButton: false,
-                allowOutsideClick: false,
-
-            });
-            this.loading=true;
         }
 
 
@@ -289,15 +294,7 @@ class Recommendations extends React.Component {
         similarpayload.prolist = prolist;
         if(this.sendable!==undefined&&this.sendable) {
             this.socket.send(JSON.stringify(similarpayload));
-            Swal.fire({
-                title: "Loading...",
-                text: "Please wait",
 
-                showConfirmButton: false,
-                allowOutsideClick: false,
-
-            });
-            this.loading=true;
         }
     }
 
@@ -341,15 +338,7 @@ class Recommendations extends React.Component {
 
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
-            Swal.fire({
-                title: "Loading...",
-                text: "Please wait",
 
-                showConfirmButton: false,
-                allowOutsideClick: false,
-
-            });
-            this.loading=true;
         }
         /*
         Swal.fire({
@@ -429,16 +418,18 @@ class Recommendations extends React.Component {
 
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
+            Swal.fire({
+                title: "Loading...",
+                text: "Please wait",
+
+                showConfirmButton: false,
+                allowOutsideClick: false,
+
+            });
+            this.loading=true;
         }
-        Swal.fire({
-            title: "Loading...",
-            text: "Please wait",
 
-            showConfirmButton: false,
-            allowOutsideClick: false,
 
-        });
-        this.loading=true;
         /*
         Swal.fire({
             title: 'Results',
@@ -699,11 +690,14 @@ class Recommendations extends React.Component {
 
         let html = [];
         //onClick={this.sendRecipe(name)}
+
         html.push(
-            <Popup  modal trigger={<img className="FoodPhotoTinder" align="left" src={image}onClick={() => this.sendRecipe(name)}>
+            <Popup  onClick={() => this.sendRecipe(name)}  closeOnDocumentClick
+                    onClose={this.closeModal}  modal trigger={<img className="FoodPhotoTinder" align="left" src={image} onClick={() => this.sendRecipe(name)}>
 
             </img>} position="right center" >
-                <div className="popUp">
+
+                <div className="popUp2" >
                     <div className="popupHeader">Recipe for
                         <br/>
                         {name}</div>
@@ -711,6 +705,8 @@ class Recommendations extends React.Component {
 
                     {popUpHtml}
                 </div>
+
+
 
             </Popup>);
 
@@ -974,7 +970,7 @@ class Recommendations extends React.Component {
 
 
         let favorites = this.state.favorites;
-        alert(favorites);
+       // alert(favorites);
         if(favorites==null||favorites==undefined){
 
             return;
@@ -1045,8 +1041,8 @@ class Recommendations extends React.Component {
 
 
             let badges = [];
-            if(assets!=undefined>0){
-                assets[i].forEach(function (item, index) {
+            if(assets!=undefined && assets.length>0){
+                assets[i].forEach(function (item, i) {
                     let badgeName = "FoodBadge " + item;
                  //   alert("badgename"+badgeName);
                     //console.log(badgeName);
