@@ -14,6 +14,11 @@ const actionsStyles = {
     justifyContent: "space-between",
     marginTop: 12,
 };
+
+function capitalizeFLetter(string) {
+
+    return string[0].toUpperCase() + string.slice(1);
+}
 function perc2color(perc) {
     var r, g, b = 0;
     if(perc < 50) {
@@ -126,7 +131,9 @@ class Recommendations extends React.Component {
                     let filteredfoods=shuffled[0];
                     let filteredTags=shuffled[1];
                     let filteredImages=shuffled[2];
-
+                    for(var i=0;i<filteredfoods.length;i++){
+                        filteredfoods[i]=capitalizeFLetter(filteredfoods[i]);
+                    }
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
@@ -521,7 +528,7 @@ class Recommendations extends React.Component {
         // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
-            <Popup modal trigger={<button className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
+            <Popup modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" onClick={() => this.sendNuttritionSimilar(name)}>
             </button>} position="right center">
                 <div className="popUp">
                     <div className="popupHeader">Nutritional info for
@@ -604,7 +611,7 @@ class Recommendations extends React.Component {
         let html = [];
         //onClick={this.sendRecipe(name)}
         html.push(
-            <Popup  modal trigger={<button className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
+            <Popup  modal trigger={<button  title= "recipe" className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
 
             </button>} position="right center" >
                 <div className="popUp">
@@ -671,7 +678,7 @@ class Recommendations extends React.Component {
                     </div>
                     <div className="row2">
 
-                        <img className="FoodPhotoLarge3" align="left" src={image} alt="Food"/>
+                        <img className="FoodPhotoLarge3" onClick={() => this.setState({open: false})} align="left" src={image} alt="Food"/>
                     </div>
                 </div>
                 <div className="column2">
@@ -691,14 +698,18 @@ class Recommendations extends React.Component {
         let html = [];
         //onClick={this.sendRecipe(name)}
 
+
         html.push(
-            <Popup  onClick={() => this.sendRecipe(name)}  closeOnDocumentClick
-                    onClose={this.closeModal}  modal trigger={<img className="FoodPhotoTinder" align="left" src={image} onClick={() => this.sendRecipe(name)}>
+            <div>
+            <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
 
-            </img>} position="right center" >
+            </img>
+            <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                      position="right center" >
 
-                <div className="popUp2" >
-                    <div className="popupHeader">Recipe for
+                <div className="popUp2" onClick={() => this.setState({open: false})}>
+
+                    <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
                         <br/>
                         {name}</div>
                     <br/>
@@ -708,7 +719,9 @@ class Recommendations extends React.Component {
 
 
 
-            </Popup>);
+            </Popup>
+            </div>
+        );
 
         return html;
     }
@@ -1055,14 +1068,38 @@ class Recommendations extends React.Component {
             // <button className={className} onClick={this.increaseCounter}
             html.push(<div>
                             <button className={className} onClick={() => this.getInfo(foods[i])}  >
+                                <div className="rowbutton">
+                                    <div className="columbuttonimage">
+                                        <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
+                                    </div>
+                                    <div className="columtitle">
+                                        <div className="foodtitle2"> <b className="FoodTitle">{foods[i]}</b> <br/> </div>
+                                        <div className="foodtags2">
+                                            <div className="badgesContainer">
+                                                {badges}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="informationbuttonscolum">
+                                        <div className="informationbutton1">
+                                            {this.recipePopup(foods[i],this.getimage(i))}
+                                        </div>
+                                        <div className="informationbutton2">
+                                            {this.nutritionalPopup(foods[i])}
+                                        </div>
 
-                            <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
 
-                            <b className="FoodTitle">{foods[i]}</b> <br/>
-                            {badges}
+                                    </div>
 
-                            {this.recipePopup(foods[i],this.getimage(i))}
-                            {this.nutritionalPopup(foods[i])}
+
+
+
+
+
+
+
+                                </div>
+
                             </button>
                         </div>)
 

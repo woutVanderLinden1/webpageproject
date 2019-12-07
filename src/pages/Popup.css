@@ -106,17 +106,20 @@
     background-size: 65% 65%;
     background-repeat: no-repeat;
     background-position: center;
-    border: none;
+    border: 1px solid white;
     outline: none;
     border-radius: 12px;
-    width: 24px;
-    height: 24px;
+    width: 50px;
+    height: 50px;
+    margin:5px;
 
 }
 
 .RecipeIcon{
     background-image: url(../assets/recipes.png);
     background-color: black;
+
+
 
 }
 .NutritionIcon {
