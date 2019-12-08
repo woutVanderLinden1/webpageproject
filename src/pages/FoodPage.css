@@ -1,4 +1,91 @@
+.likedimagewithshadow{
+    background-image: url(../assets/dislike.png);
 
+    filter: drop-shadow(0rem 0rem 2rem  green);
+    transform: rotate(180deg) translate(0%, -80px);
+
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: transparent;
+    color: transparent;
+    border:3px solid black;
+    outline: none;
+
+    left:65%;
+    width: 125px;
+    height:125px;
+    margin-right: 20px;
+    object-fit: cover;
+    border-radius: 80px;
+    background-color: lightgreen;
+
+
+}
+.dislikedimagewithshadow{
+
+    background-color: maroon;
+    filter: drop-shadow(0rem 0rem 2rem  maroon);
+    background-image: url(../assets/dislike.png);
+    transform: translate(0%, 75px);
+    position:absolute;
+    left:25%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    color: white;
+    border:3px solid black;
+    outline: none;
+    border-radius: 80px;
+    width: 125px;
+    height:125px;
+    margin-right: 200px;
+    object-fit: cover;
+
+}
+.likedimage{
+    background-image: url(../assets/dislike.png);
+    transform: rotate(180deg) translate(0%, -80px);
+
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: transparent;
+    color: transparent;
+    border:3px solid black;
+    outline: none;
+
+    left:65%;
+    width: 125px;
+    height:125px;
+    margin-right: 20px;
+    object-fit: cover;
+    border-radius: 80px;
+    background-color: lightgreen;
+
+}
+.dislikedimage{
+
+    background-color: maroon;
+    background-image: url(../assets/dislike.png);
+    transform: translate(0%, 75px);
+    position:absolute;
+    left:25%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    color: white;
+    border:3px solid black;
+    outline: none;
+    border-radius: 80px;
+    width: 125px;
+    height:125px;
+    margin-right: 200px;
+    object-fit: cover;
+
+}
 .FoodItem {
     grid-template-areas:
             'image image name name name '
@@ -6,8 +93,11 @@
 
     grid-gap: 0px;
     padding: 10px;
+    background-image: linear-gradient(135deg,lightgreen 0%, green 30%, darkgreen 100%);
 
-    background-color: green;
+    transition: transform 1s ease;
+
+
     border: none;
     color: white;
 
@@ -22,6 +112,7 @@
     top:60px;
     position: relative;
 }
+
 
 .FoodItem:hover {
     background-color: darkgreen;

@@ -4,8 +4,23 @@ import './Popup.css';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import Swipeable from "react-swipy";
+import {Swipeable as Swiping} from "react-swipeable";
 import './tinderCards.css';
 import Swal from "sweetalert2";
+import styled from "styled-components";
+
+
+export const icanswipe = styled.div`
+  display: flex;
+  transition: ${props => (props.sliding ? "none" : "transform 1s ease")};
+  transform: ${props => {
+    if (!props.sliding) return "translateX(calc(-80% - 20px))";
+    if (props.dir === "PREV") return "translateX(calc(2 * (-80% - 20px)))";
+    return "translateX(0%)";
+}};
+`;
+
+
 
 
 const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
@@ -19,6 +34,7 @@ function capitalizeFLetter(string) {
 
     return string[0].toUpperCase() + string.slice(1);
 }
+
 function perc2color(perc) {
     var r, g, b = 0;
     if(perc < 50) {
@@ -111,7 +127,7 @@ class Recommendations extends React.Component {
 
             let translation=JSON.parse(message.data);
             console.log(translation);
-           
+
             switch(translation.action){
                 case "Recommends":
                     if(this.loading){
@@ -1068,10 +1084,72 @@ class Recommendations extends React.Component {
                 });
             }
 
+            const config = {
+                onSwiped: ()=>this.endSwipe(),
+                onSwipedRight:()=>this.like(name),
+                onSwipedLeft:()=>this.dislike(name),
+                display:"flex",
+                preventDefaultTouchmoveEvent: true,
+                trackMouse: true,
+                transition: "transform 1s ease",
+                delta:10
+
+
+
+
+            };
+            //this.setState({translation: "translate(500%,10%)"});
+
+
             let className = "FoodItem fadeInLeft" + i;
+            let tryouy=1;
+            let swipingspecials=[];
+            if(this.state.translation!=undefined){
+
+                if(this.state.translation[name]!=undefined) {
+
+                    if(Math.abs(this.state.shadownr)>10){
+
+                        if (this.state.shadownr>0){
+                            swipingspecials.push(
+                                <div>
+                                    <img className="likedimage" />
+                                    <img className="dislikedimagewithshadow" />
+
+                                </div>
+                            );
+                        }
+                        else{
+                            swipingspecials.push(
+                                <div>
+                                    <img className="likedimagewithshadow" />
+                                    <img className="dislikedimage" />
+
+                                </div>
+                            );
+                        }
+                    }
+                    else{
+                        swipingspecials.push(
+                            <div>
+                                <img className="likedimage" />
+                                <img className="dislikedimage" />
+
+                            </div>
+                        );
+                    }
+
+                }
+            }
+
+
             // <button className={className} onClick={this.increaseCounter}
-            html.push(<div>
-                            <button className={className} onClick={() => this.getInfo(foods[i])}  >
+            html.push(<div className="icanswipe"  >
+                {swipingspecials}
+                <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
+
+                            <button className={className} style={{transform: this.transformfunc(name)
+                               , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
                                 <div className="rowbutton">
                                     <div className="columbuttonimage">
                                         <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
@@ -1105,12 +1183,109 @@ class Recommendations extends React.Component {
                                 </div>
 
                             </button>
+                </Swiping>
                         </div>)
 
         }
 
         return html
     }
+    transformfunc(name) {
+        if(this.state.translation!=undefined){
+
+            return this.state.translation[name];
+        }
+        return "translate(0%,0%)";
+
+    }
+    transparfunc(name){
+        if(this.state.transparency!=undefined){
+
+            return this.state.transparency[name];
+        }
+        return 1;
+
+    }
+    like(name){
+        alert('liked');
+        let liked = JSON.parse(localStorage.getItem("likedItems"));
+
+        if(liked==null){
+            liked=[];
+        }
+
+        liked.push(name);
+
+
+        this.state.likedItems = liked;
+
+        this.setState({likedItems: liked});
+        localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
+
+    }
+    dislike(name){
+        alert('disliked');
+        let foods=this.state.foods;
+        let tags=this.state.tags;
+        let images=this.state.images;
+        let t=0;
+        for(let i=0;i<foods.size;i++){
+            if(foods[i]==name){
+                t=i;
+            }
+        }
+        foods.splice(t);
+        this.state.foods=foods;
+        tags.splice(t);
+        this.state.tags=tags;
+        images.splice(t);
+        this.state.images=images;
+
+        let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
+
+        if(disliked==null){
+            disliked=[];
+        }
+
+        disliked.push(name);
+
+
+        this.state.dislikedItems = disliked;
+        this.setState({ dislikedItems: disliked});
+
+        localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
+
+    }
+
+    endSwipe(){
+        this.state.swiping=false;
+        this.state.shadownr=0;
+        let item = {};
+        this.setState({translation: item, transparency: item});
+
+    }
+    swiped(eventData,name) {
+        this.state.swiping=true;
+        this.state.shadownr=eventData.deltaX;
+
+        //show smiles
+        let number=-1*eventData.deltaX;
+        let transit=this.state.transparency;
+        let item = {};
+        item[name] = "translate("+number+"px,0%)";
+        //alert(item[name]);
+        let item2 = {};
+        item2[name] = 10/Math.abs(eventData.deltaX);
+
+
+
+
+
+
+        this.setState({translation: item, transparency: item2});
+
+    }
+
 
     getname(i){
         if(this.state.foods!==undefined) {
