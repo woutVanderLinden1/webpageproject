@@ -1,5 +1,5 @@
 .popUp{
-
+    position: sticky;
      border-radius: 8px;
      background-color: darkgreen;
      border: 15px solid darkgreen;
@@ -14,14 +14,40 @@
 
  }
 .popUp2{
-    position: fixed;
+
+    position: sticky;
     border-radius: 8px;
     background-color: darkgreen;
     border: 15px solid darkgreen;
     overflow:hidden;
     overflow-y: scroll;
-    transform: translate(-35%, -25%);
+    clear:both;
+    top:10%;
+    left:25%;
+    height: 700px;
+    width: 800px;
 
+
+    display:inline-block;
+
+
+}
+.poptry{
+    position: absolute;
+    color: transparent;
+    background-color: transparent;
+}
+.popUp3{
+
+    position: sticky;
+    border-radius: 8px;
+    background-color: darkgreen;
+    border: 15px solid darkgreen;
+    overflow:hidden;
+    overflow-y: scroll;
+    clear:both;
+    top:50%;
+    left:40%;
     height: 700px;
     width: 800px;
 

@@ -105,6 +105,7 @@ class Recommendations extends React.Component {
         this.goToFavorites=this.goToFavorites.bind(this);
 
 
+
         let payload={
             action: "initialise"
         };
@@ -544,9 +545,9 @@ class Recommendations extends React.Component {
         // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
-            <Popup modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
-            </button>} position="right center">
-                <div className="popUp">
+            <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
+            </button>} >
+                <div className="popUp2">
                     <div className="popupHeader">Nutritional info for
                         <br/>
                         {title}</div>
@@ -628,10 +629,10 @@ class Recommendations extends React.Component {
         let html = [];
         //onClick={this.sendRecipe(name)}
         html.push(
-            <Popup  modal trigger={<button  title= "recipe" className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
+            <Popup className="poptry" modal trigger={<button  title= "recipe" className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
 
             </button>} position="right center" >
-                <div className="popUp">
+                <div className="popUp2">
                     <div className="popupHeader">Recipe for
                         <br/>
                         {title}</div>
@@ -725,7 +726,7 @@ class Recommendations extends React.Component {
             <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
                       position="right center" >
 
-                <div className="popUp2" onClick={() => this.setState({open: false})}>
+                <div className="popUp3" onClick={() => this.setState({open: false})}>
 
                     <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
                         <br/>
@@ -1104,9 +1105,9 @@ class Recommendations extends React.Component {
             let className = "FoodItem fadeInLeft" + i;
             let tryouy=1;
             let swipingspecials=[];
-            if(this.state.translation!=undefined){
+            if(this.state.showThumbs==name||this.state.translation!=undefined){
 
-                if(this.state.translation[name]!=undefined) {
+                if(this.state.showThumbs==name||this.state.translation[name]!=undefined) {
 
                     if(Math.abs(this.state.shadownr)>10){
 
@@ -1148,7 +1149,8 @@ class Recommendations extends React.Component {
                 {swipingspecials}
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
 
-                            <button className={className} style={{transform: this.transformfunc(name)
+                            <button   onMouseEnter={()=>this.setState({showThumbs:name})}
+                                      onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
                                , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
                                 <div className="rowbutton">
                                     <div className="columbuttonimage">
@@ -1190,12 +1192,13 @@ class Recommendations extends React.Component {
 
         return html
     }
+
     transformfunc(name) {
         if(this.state.translation!=undefined){
 
             return this.state.translation[name];
         }
-        return "translate(0%,0%)";
+        return "";
 
     }
     transparfunc(name){
@@ -1206,13 +1209,31 @@ class Recommendations extends React.Component {
         return 1;
 
     }
+
     like(name){
-        alert('liked');
+
         let liked = JSON.parse(localStorage.getItem("likedItems"));
 
+        let foods=this.state.foods;
+        let tags=this.state.tags;
+        let images=this.state.images;
+
+        let t=0;
+        for(let i=0;i<foods.size;i++){
+            if(foods[i]==name){
+                t=i;
+            }
+        }
         if(liked==null){
             liked=[];
         }
+        foods.splice(t,1);
+        this.state.foods=foods;
+        tags.splice(t,1);
+        this.state.tags=tags;
+        images.splice(t,1);
+        this.state.images=images;
+
 
         liked.push(name);
 
@@ -1224,7 +1245,7 @@ class Recommendations extends React.Component {
 
     }
     dislike(name){
-        alert('disliked');
+
         let foods=this.state.foods;
         let tags=this.state.tags;
         let images=this.state.images;
@@ -1234,11 +1255,11 @@ class Recommendations extends React.Component {
                 t=i;
             }
         }
-        foods.splice(t);
+        foods.splice(t,1);
         this.state.foods=foods;
-        tags.splice(t);
+        tags.splice(t,1);
         this.state.tags=tags;
-        images.splice(t);
+        images.splice(t,1);
         this.state.images=images;
 
         let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
