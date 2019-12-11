@@ -10,6 +10,14 @@ p {
   text-align: center;
 }
 
+.DarkBackground {
+  background-color: darkgreen;
+  width:100vw;
+  height: 100vh;
+  margin: auto;
+  padding: 300px 0;
+}
+
 .App-logo {
   height: 40vmin;
 }
@@ -55,7 +63,6 @@ p {
 }
 
 .NextButton {
-
   position: relative;
   background-color: transparent;
   border: 5px solid green;
@@ -68,6 +75,33 @@ p {
   height: 55px;
   font-size: 22px;
   font-family: Avenir, sans-serif;
+}
+
+.NextButton:hover {
+  background-color: white;
+  color: darkgreen;
+}
+
+.textBox {
+  width: 50vh;
+  height: 70px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 2px solid darkgreen;
+  font-size: 22px;
+  font-family: Avenir, sans-serif;
+  transition-duration: 0.4s;
+}
+
+.textBox:focus {
+  border: 2px solid white;
+}
+
+.White {
+  border: 5px solid white;
+  color: white;
 }
 
 /* Animations */
