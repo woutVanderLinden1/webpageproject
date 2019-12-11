@@ -900,8 +900,8 @@ class Recommendations extends React.Component {
                     </div>
                     Times clicked: {this.state.timesClicked}
                     <div className="buttons">
-                        <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
-                        <button className="NextButton" onClick={()=> alert('hi')}>Recommendations</button>
+                        <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
+                        <button className="NextButton Green" onClick={()=> alert('hi')}>Recommendations</button>
                     </div>
                 </div>
             )
@@ -916,8 +916,8 @@ class Recommendations extends React.Component {
                         </div>
                         Times clicked: {this.state.timesClicked}
                         <div className="buttons">
-                            <Link to="/"><button className="NextButton"><b>SAVE</b></button></Link>
-                            <button className="NextButton" onClick={this.getRecommendations}>Test</button>
+                            <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
+                            <button className="NextButton Green" onClick={this.getRecommendations}>Test</button>
                         </div>
                     </div>)
             }
@@ -955,8 +955,8 @@ class Recommendations extends React.Component {
                             ) : (
                                 <div >
                                     <div className="FoodItem" zIndex={-2}>No more cards</div>
-                                    <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
-                                    <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
+                                    <button className="NextButton Green"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                                    <button className="NextButton Green"  onClick={this.resetSwipes}>New Cards</button>
                                 </div>
                             )}
                         </div>
