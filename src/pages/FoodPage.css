@@ -208,6 +208,21 @@
     background-color: yellowgreen;
 }
 
+.fifteen-minutes-or-less {
+    background-image: url(../assets/stopwatch.png);
+    background-color: lightskyblue;
+}
+
+.desserts {
+    background-image: url(../assets/desserts.png);
+    background-color: deeppink;
+}
+
+.inexpensive {
+    background-image: url(../assets/inexpensive.png);
+    background-color: orange;
+}
+
 .FoodPhoto {
     grid-area: image;
 
