@@ -830,6 +830,7 @@ class Recommendations extends React.Component {
             if(!disliked.includes(thisCard)) {
                 disliked.push(thisCard);
             }
+            this.logAction('dislike', thisCard);
 
 
         }
@@ -842,6 +843,7 @@ class Recommendations extends React.Component {
                 liked.push(thisCard);
 
             }
+            this.logAction('like', thisCard);
 
         }
         this.state.likedItems = liked;
@@ -851,6 +853,7 @@ class Recommendations extends React.Component {
         let newNumber = this.state.swipednumber + 1;
         this.state.swipednumber = newNumber
         this.setState({swipedNumber: newNumber});
+
 
 
     }
@@ -1273,21 +1276,27 @@ class Recommendations extends React.Component {
     }
 
     logAction(thisAction, thisItem){
-        lastItem = thisItem;
-        lastAction = thisAction;
-        let currentTs = JSON.parse(localStorage.getItem("listOfTimeStamps"));
-        let item = [];
-        item.push(Date.now());
-        item.push(thisAction);
-        let v = 0;
-        if(JSON.parse(localStorage.getItem("view")) === 1){
-            v = "list mode";
+        let users = JSON.parse(localStorage.getItem('users'));
+        for (let i = users.length-1; i>=0; i--){
+            if(users[i].Name === localStorage.getItem('currentUser')){
+                lastItem = thisItem;
+                lastAction = thisAction;
+                let item = [];
+                item.push(Date.now());
+                item.push(thisAction);
+                let v = 0;
+                if(JSON.parse(localStorage.getItem("view")) === 1){
+                    v = "list mode";
+                }
+                else v = "swipe mode";
+                item.push(v);
+                item.push(thisItem);
+                users[i].Log.push(item);
+                localStorage.setItem("users", JSON.stringify(users));
+                break;
+            }
         }
-        else v = "swipe mode";
-        item.push(v);
-        item.push(thisItem);
-        currentTs.push(JSON.stringify(item));
-        localStorage.setItem("listOfTimeStamps", JSON.stringify(currentTs));
+
     }
 
     endSwipe(){

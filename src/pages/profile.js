@@ -12,7 +12,23 @@ let amountOfAllergies = namesAllergies.length;
 class Profile extends React.Component {
     constructor() {
         super();
-        if(localStorage.getItem("boxes") === null || JSON.parse(localStorage.getItem("boxes")).length != amountOfAllergies+amountOfPref){
+        let alreadySet = false;
+        if(localStorage.getItem('users') != null){
+            let users = JSON.parse(localStorage.getItem('users'));
+            for(let i = 0; i<users.length; i++){
+                let a = localStorage.getItem('currentUser');
+                if(users[i].Name === localStorage.getItem('currentUser')){
+
+                    if(users[i].Preferences && users[i].Preferences.length && users[i].Allergies&& users[i].Preferences){
+                        localStorage.setItem("boxes", JSON.stringify(users[i].Preferences.concat(users[i].Allergies)));
+                        alreadySet = true;
+                        break;
+                    }
+
+                }
+            }
+        }
+        if(!alreadySet){
             let list = [];
             for (let i = 0; i<amountOfAllergies+amountOfPref;i++){
                 list[i] = false;
@@ -24,6 +40,7 @@ class Profile extends React.Component {
             boxes: this.getItemLocal("boxes"),
         };
         this.success = this.success.bind(this);
+        this.updateAccount = this.updateAccount.bind(this);
 
     }
 
@@ -65,6 +82,24 @@ class Profile extends React.Component {
             confirmButtonText: 'Okay!'
         });
     }
+    updateAccount(){
+        let users = JSON.parse(localStorage.getItem('users'));
+        let a = users[0];
+        localStorage.setItem('k', toString(a));
+        for(let i = 0; i<users.length; i++){
+
+
+            if(users[i].Name === localStorage.getItem('currentUser')){
+                let prefAndAllergies = JSON.parse(localStorage.getItem('boxes'));
+                users[i].Preferences = prefAndAllergies.slice(0, amountOfPref);
+                users[i].Allergies = prefAndAllergies.slice(9, amountOfAllergies+amountOfPref)
+                break;
+
+            }
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+        this.success();
+    }
 
     render() {
         return (
@@ -74,7 +109,7 @@ class Profile extends React.Component {
                 </div>
                 <header className="App-header">
                     {this.getRender()}
-                    <Link to="/recommendations"><button className="NextButton Green" onClick={this.success}><b>NEXT</b></button></Link>
+                    <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
 
                 </header>
             </div>
