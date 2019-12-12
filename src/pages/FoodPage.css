@@ -172,12 +172,12 @@
     margin: 2px;
 }
 
-.Fish {
+.fish {
     background-image: url(../assets/fish.png);
     background-color: dodgerblue;
 }
 
-.Meat {
+.meat {
     background-image: url(../assets/meat.png);
     background-color: darkred;
 }
@@ -193,17 +193,17 @@
 .buttons{
     padding: 16px;
 }
-.Oven {
+.oven {
     background-image: url(../assets/oven.png);
     background-color: orange;
 }
 
-.DairyFree {
+.dairy-free {
     background-image: url(../assets/dairyfree.png);
     background-color: lightblue;
 }
 
-.Cheap {
+.inexpensive {
     background-image: url(../assets/cheap.png);
     background-color: yellowgreen;
 }

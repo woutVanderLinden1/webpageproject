@@ -941,13 +941,13 @@ class Recommendations extends React.Component {
                                                 <b>{this.getname(this.state.swipednumber)}</b>
                                             </div>
                                             {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
+
                                             {this.generateBadges(this.state.swipednumber)}
-                                            <div className="informationbutton1">
+                                            <div>
                                                 {this.recipePopup(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
-                                            </div>
-                                            <div className="informationbutton2">
                                                 {this.nutritionalPopup(this.state.foods[this.state.swipednumber])}
                                             </div>
+
                                         </div>
                                     </Swipeable>
 
@@ -1013,7 +1013,11 @@ class Recommendations extends React.Component {
 
             let badges = [];
             currentfavorite["tags"].forEach(function (item, index) {
+
                 let badgeName = "FoodBadge " + item;
+                if (item === "15-minutes-or-less") {
+                    badgeName = "FoodBadge fifteen-minutes-or-less";
+                }
                 //console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
 
@@ -1046,12 +1050,16 @@ class Recommendations extends React.Component {
         if(assets!=undefined && assets.length>0){
             assets[food].forEach(function (item, i) {
                 let badgeName = "FoodBadge " + item;
+                if (item === "15-minutes-or-less") {
+                    badgeName = "FoodBadge fifteen-minutes-or-less";
+                }
                 //   alert("badgename"+badgeName);
                 //console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
 
             });
         }
+        return badges;
     }
 
     //GENERATE MEAL
@@ -1092,6 +1100,9 @@ class Recommendations extends React.Component {
             if(assets!=undefined && assets.length>0){
                 assets[i].forEach(function (item, i) {
                     let badgeName = "FoodBadge " + item;
+                    if (item === "15-minutes-or-less") {
+                        badgeName = "FoodBadge fifteen-minutes-or-less";
+                    }
                  //   alert("badgename"+badgeName);
                     //console.log(badgeName);
                     badges.push(<button className={badgeName}> </button>);
