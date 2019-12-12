@@ -84,8 +84,6 @@ class Profile extends React.Component {
     }
     updateAccount(){
         let users = JSON.parse(localStorage.getItem('users'));
-        let a = users[0];
-        localStorage.setItem('k', toString(a));
         for(let i = 0; i<users.length; i++){
 
 

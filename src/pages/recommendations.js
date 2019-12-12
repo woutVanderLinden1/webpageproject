@@ -32,7 +32,13 @@ const actionsStyles = {
 };
 
 function capitalizeFLetter(string) {
-    return string[0].toUpperCase() + string.slice(1);
+    let returnVal = string;
+    try {
+        returnVal = string[0].toUpperCase() + string.slice(1);
+    } catch (e) {
+
+    }
+    return returnVal;
 }
 
 function perc2color(perc) {
@@ -830,7 +836,8 @@ class Recommendations extends React.Component {
             if(!disliked.includes(thisCard)) {
                 disliked.push(thisCard);
             }
-            this.logAction('dislike', thisCard);
+            this.dislike(thisCard);
+           // this.logAction('dislike', thisCard);
 
 
         }
@@ -843,7 +850,8 @@ class Recommendations extends React.Component {
                 liked.push(thisCard);
 
             }
-            this.logAction('like', thisCard);
+            this.like(thisCard);
+           // this.logAction('like', thisCard);
 
         }
         this.state.likedItems = liked;
@@ -1044,6 +1052,7 @@ class Recommendations extends React.Component {
         let assets = this.getAssets(foods);
 
         if(assets!=undefined && assets.length>0){
+            if(assets[food]!=undefined){
             assets[food].forEach(function (item, i) {
                 let badgeName = "FoodBadge " + item;
                 if (item === "15-minutes-or-less") {
@@ -1054,7 +1063,7 @@ class Recommendations extends React.Component {
                 badges.push(<button className={badgeName}> </button>);
 
             });
-        }
+        }}
         return badges;
     }
 
@@ -1207,71 +1216,87 @@ class Recommendations extends React.Component {
     }
 
     like(name){
+        let users = JSON.parse(localStorage.getItem('users'));
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                let liked = users[i].Liked;
+                let foods=this.state.foods;
+                let tags=this.state.tags;
+                let images=this.state.images;
 
-        let liked = JSON.parse(localStorage.getItem("likedItems"));
+                let t=0;
+                for(let i=0;i<foods.size;i++){
+                    if(foods[i]==name){
+                        t=i;
+                    }
+                }
+                if(liked==null){
+                    liked=[];
+                }
+                foods.splice(t,1);
+                this.state.foods=foods;
+                tags.splice(t,1);
+                this.state.tags=tags;
+                images.splice(t,1);
+                this.state.images=images;
 
-        let foods=this.state.foods;
-        let tags=this.state.tags;
-        let images=this.state.images;
 
-        let t=0;
-        for(let i=0;i<foods.size;i++){
-            if(foods[i]==name){
-                t=i;
+                liked.push(name);
+
+
+                this.state.likedItems = liked;
+
+                this.setState({likedItems: liked});
+                users[i].Liked = liked;
+                localStorage.setItem("users", JSON.stringify(users));
+                this.logAction("like", name);
+                break;
             }
+
         }
-        if(liked==null){
-            liked=[];
-        }
-        foods.splice(t,1);
-        this.state.foods=foods;
-        tags.splice(t,1);
-        this.state.tags=tags;
-        images.splice(t,1);
-        this.state.images=images;
 
 
-        liked.push(name);
 
 
-        this.state.likedItems = liked;
-
-        this.setState({likedItems: liked});
-        localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
-        this.logAction("like", name);
     }
     dislike(name){
+        let users = JSON.parse(localStorage.getItem('users'));
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                let disliked = users[i].Disliked;
+                let foods = this.state.foods;
+                let tags = this.state.tags;
+                let images = this.state.images;
+                let t = 0;
+                for (let i = 0; i < foods.size; i++) {
+                    if (foods[i] == name) {
+                        t = i;
+                    }
+                }
+                foods.splice(t, 1);
+                this.state.foods = foods;
+                tags.splice(t, 1);
+                this.state.tags = tags;
+                images.splice(t, 1);
+                this.state.images = images;
 
-        let foods=this.state.foods;
-        let tags=this.state.tags;
-        let images=this.state.images;
-        let t=0;
-        for(let i=0;i<foods.size;i++){
-            if(foods[i]==name){
-                t=i;
+
+
+                if (disliked == null) {
+                    disliked = [];
+                }
+
+                disliked.push(name);
+
+
+                this.state.dislikedItems = disliked;
+                this.setState({dislikedItems: disliked});
+                users[i].Disliked = disliked;
+                localStorage.setItem("users", JSON.stringify(users));
+                this.logAction("dislike", name);
+                break;
             }
         }
-        foods.splice(t,1);
-        this.state.foods=foods;
-        tags.splice(t,1);
-        this.state.tags=tags;
-        images.splice(t,1);
-        this.state.images=images;
-
-        let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
-
-        if(disliked==null){
-            disliked=[];
-        }
-
-        disliked.push(name);
-
-
-        this.state.dislikedItems = disliked;
-        this.setState({ dislikedItems: disliked});
-
-        localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
-        this.logAction("dislike", name);
 
     }
 
