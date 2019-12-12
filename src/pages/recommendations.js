@@ -8,8 +8,9 @@ import {Swipeable as Swiping} from "react-swipeable";
 import './tinderCards.css';
 import Swal from "sweetalert2";
 import styled from "styled-components";
-
-
+let listOfTimeStamps = [];
+let lastItem = null;
+let lastAction  = null;
 export const icanswipe = styled.div`
   display: flex;
   transition: ${props => (props.sliding ? "none" : "transform 1s ease")};
@@ -77,6 +78,10 @@ function shuffle(array,array2,array3) {
 class Recommendations extends React.Component {
     constructor() {
         super();
+        if(localStorage.getItem("listOfTimeStamps") === null){
+            let newList = [["time stamp", "action", "view", "recipe"]];
+            localStorage.setItem("listOfTimeStamps", JSON.stringify(newList));
+        }
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -241,8 +246,10 @@ class Recommendations extends React.Component {
     getInfo(string) {
         this.sendRecipe(string);
         this.sendNuttritionSimilar(string);
+
     }
     sendRecipe(name) {
+
         console.log("send recipe");
         this.socket=this.initialiseSocket();
         let payload = {
@@ -362,7 +369,6 @@ class Recommendations extends React.Component {
     }
 
     getRecommendations(recommendation){
-
         let likedItems = JSON.parse(localStorage.getItem('likedItems'));
         if(likedItems==null){
             likedItems=[];
@@ -452,7 +458,6 @@ class Recommendations extends React.Component {
     //POPUP CODE
     nutritionalPopup(name){
 
-
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
         let nutritionalInfo = this.getNutritionInfo(name);
         let nutritionalInfoHtml = [];
@@ -463,6 +468,7 @@ class Recommendations extends React.Component {
         let title=capitalizeFLetter(name);
 
         if(nutritionalInfo!==undefined){
+
             for (let i = 0; i < nutritionalInfo.length; i++){
 
                 nutritionalInfoHtmlTemp.push(
@@ -500,6 +506,7 @@ class Recommendations extends React.Component {
                     </div>);
             }
         }
+
 
 
         nutritionalInfoHtml.push(
@@ -670,6 +677,7 @@ class Recommendations extends React.Component {
 
         //, width: "30%" vs 70%
         //add an extra element to the column that includes the image
+
         popUpHtml.push(
             <div className="row:after">
                 <div className="column">
@@ -866,6 +874,8 @@ class Recommendations extends React.Component {
         const value = (this.state.view + 1) % 2;
         this.setState({view: value});
         this.setState({favorite: false});
+        //TODO: kan de view niet direct opvragen van de state, dus gebeurt hier
+        localStorage.setItem("view", value.toString());
     }
 
 
@@ -940,6 +950,7 @@ class Recommendations extends React.Component {
                                             </div>
                                         </div>
                                     </Swipeable>
+
                                 </div>
                             ) : (
                                 <div >
@@ -1155,10 +1166,10 @@ class Recommendations extends React.Component {
                                         </div>
                                     </div>
                                     <div className="informationbuttonscolum">
-                                        <div className="informationbutton1">
+                                        <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
                                             {this.recipePopup(foods[i],this.getimage(i))}
                                         </div>
-                                        <div className="informationbutton2">
+                                        <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
                                             {this.nutritionalPopup(foods[i])}
                                         </div>
                                     </div>
@@ -1220,7 +1231,7 @@ class Recommendations extends React.Component {
 
         this.setState({likedItems: liked});
         localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
-
+        this.logAction("like", name);
     }
     dislike(name){
 
@@ -1253,7 +1264,26 @@ class Recommendations extends React.Component {
         this.setState({ dislikedItems: disliked});
 
         localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
+        this.logAction("dislike", name);
 
+    }
+
+    logAction(thisAction, thisItem){
+        lastItem = thisItem;
+        lastAction = thisAction;
+        let currentTs = JSON.parse(localStorage.getItem("listOfTimeStamps"));
+        let item = [];
+        item.push(Date.now());
+        item.push(thisAction);
+        let v = 0;
+        if(JSON.parse(localStorage.getItem("view")) === 1){
+            v = "list mode";
+        }
+        else v = "swipe mode";
+        item.push(v);
+        item.push(thisItem);
+        currentTs.push(JSON.stringify(item));
+        localStorage.setItem("listOfTimeStamps", JSON.stringify(currentTs));
     }
 
     endSwipe(){
