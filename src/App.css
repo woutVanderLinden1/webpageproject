@@ -18,6 +18,13 @@ p {
   padding: 300px 0;
 }
 
+.Span {
+  width:100vw;
+  height: 100vh;
+  margin: auto;
+  padding: 40vh 43vw;
+}
+
 .App-logo {
   height: 40vmin;
 }

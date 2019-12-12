@@ -23,7 +23,7 @@ export const icanswipe = styled.div`
 
 
 
-const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
+const wrapperStyles = {position: "relative", width: "250px", height: "300px"};
 const actionsStyles = {
     display: "flex",
     justifyContent: "space-between",
@@ -31,7 +31,6 @@ const actionsStyles = {
 };
 
 function capitalizeFLetter(string) {
-
     return string[0].toUpperCase() + string.slice(1);
 }
 
@@ -88,23 +87,21 @@ class Recommendations extends React.Component {
             ingredients: [],
             similar: [],
             view: 0
-
         };
         //alert(this.state.foods);
 
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
-        this.increaseCounter = this.increaseCounter.bind(this);
-        this.generateMeal    = this.generateMeal.bind(this);
-        this.getRecommendations    = this.getRecommendations.bind(this);
-        this.switchViews = this.switchViews.bind(this);
+        this.increaseCounter=this.increaseCounter.bind(this);
+        this.generateMeal=this.generateMeal.bind(this);
+        this.getRecommendations=this.getRecommendations.bind(this);
+        this.switchViews=this.switchViews.bind(this);
         this.generateView=this.generateView.bind(this);
         this.resetSwipes=this.resetSwipes.bind(this);
         this.generateFavorites=this.generateFavorites.bind(this);
         this.goToFavorites=this.goToFavorites.bind(this);
-
-
+        this.generateBadges=this.generateBadges.bind(this);
 
         let payload={
             action: "initialise"
@@ -121,11 +118,7 @@ class Recommendations extends React.Component {
             // do something after connection is opened
         };
 
-
         this.socket.onmessage=((message) => {
-
-
-
             let translation=JSON.parse(message.data);
             console.log(translation);
 
@@ -191,10 +184,9 @@ class Recommendations extends React.Component {
         });
         if(this.state.swipednumber==undefined){
             this.state.swipednumber=0;
-
         }
-
     }
+
     filterfoods(initialfoods,initialtags,initialimages){
         let shuffled=shuffle(initialfoods,initialtags,initialimages);
         let newinitialfoods=shuffled[0];
@@ -215,7 +207,6 @@ class Recommendations extends React.Component {
         let filteredimages  =[];
         let p=0;
         for (let i = 0; p<7 ; i++) {
-
             if (newinitialfoods[i] !=="" && !likedItems.includes(newinitialfoods[i]) && !dislikedItems.includes(newinitialfoods[i])) {
                 p++;
                 filteredFoods.push(newinitialfoods[i]);
@@ -265,15 +256,11 @@ class Recommendations extends React.Component {
             name: name
         };
 
-
         //  this.socket.close();
         if(this.sendable!==undefined&&this.sendable){
             this.socket.send(JSON.stringify(payload));
             this.socket.send(JSON.stringify(ingredipayload));
-
         }
-
-
     }
 
 
@@ -393,11 +380,9 @@ class Recommendations extends React.Component {
         let amount=7;
 
         if(likedItems!=null && likedItems!==undefined){
-
             amount+=likedItems.length;
         }
         if(dislikedItems!=null &&dislikedItems!==undefined){
-
             amount+=dislikedItems.length;
         }
 
@@ -872,7 +857,7 @@ class Recommendations extends React.Component {
     resetSwipes(){
         this.state.swipednumber=0;
         this.getRecommendations();
-        this.setState({view: 1})
+        this.setState({view: 1});
         this.setState({favorite: false});
     }
 
@@ -924,6 +909,7 @@ class Recommendations extends React.Component {
             else {
                 if (this.state.swipednumber < 6) {
                     return (
+                        <div className="Span">
                         <div style={wrapperStyles}>
 
                             {this.state.foods.length > 0 ? (
@@ -932,8 +918,7 @@ class Recommendations extends React.Component {
                                     <Swipeable
                                         buttons={({left, right}) => (
                                             <div style={actionsStyles}>
-                                                <button className="tinderButton dislike" onClick={left}><b>Reject</b>
-                                                </button>
+                                                <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
                                                 <button className="tinderButton like" onClick={right}><b>Accept</b></button>
                                             </div>
                                         )}
@@ -946,9 +931,13 @@ class Recommendations extends React.Component {
                                                 <b>{this.getname(this.state.swipednumber)}</b>
                                             </div>
                                             {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
-
-
-
+                                            {this.generateBadges(this.state.swipednumber)}
+                                            <div className="informationbutton1">
+                                                {this.recipePopup(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
+                                            </div>
+                                            <div className="informationbutton2">
+                                                {this.nutritionalPopup(this.state.foods[this.state.swipednumber])}
+                                            </div>
                                         </div>
                                     </Swipeable>
                                 </div>
@@ -960,6 +949,7 @@ class Recommendations extends React.Component {
                                 </div>
                             )}
                         </div>
+                        </div>
 
                     )
                 }
@@ -970,10 +960,7 @@ class Recommendations extends React.Component {
                             <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
                             <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
                         </div>
-
                     )
-
-
                 }
             }
 
@@ -1040,6 +1027,22 @@ class Recommendations extends React.Component {
         return html
     }
 
+    generateBadges(food) {
+        let badges = [];
+        let foods = this.state.foods;
+        let assets = this.getAssets(foods);
+
+        if(assets!=undefined && assets.length>0){
+            assets[food].forEach(function (item, i) {
+                let badgeName = "FoodBadge " + item;
+                //   alert("badgename"+badgeName);
+                //console.log(badgeName);
+                badges.push(<button className={badgeName}> </button>);
+
+            });
+        }
+    }
+
     //GENERATE MEAL
     generateMeal() {
       /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
@@ -1094,29 +1097,20 @@ class Recommendations extends React.Component {
                 trackMouse: true,
                 transition: "transform 1s ease",
                 delta:10
-
-
-
-
             };
             //this.setState({translation: "translate(500%,10%)"});
-
 
             let className = "FoodItem fadeInLeft" + i;
             let tryouy=1;
             let swipingspecials=[];
             if(this.state.showThumbs==name||this.state.translation!=undefined){
-
                 if(this.state.showThumbs==name||this.state.translation[name]!=undefined) {
-
                     if(Math.abs(this.state.shadownr)>10){
-
                         if (this.state.shadownr>0){
                             swipingspecials.push(
                                 <div>
                                     <img className="likedimage" />
                                     <img className="dislikedimagewithshadow" />
-
                                 </div>
                             );
                         }
@@ -1125,7 +1119,6 @@ class Recommendations extends React.Component {
                                 <div>
                                     <img className="likedimagewithshadow" />
                                     <img className="dislikedimage" />
-
                                 </div>
                             );
                         }
@@ -1135,11 +1128,9 @@ class Recommendations extends React.Component {
                             <div>
                                 <img className="likedimage" />
                                 <img className="dislikedimage" />
-
                             </div>
                         );
                     }
-
                 }
             }
 
@@ -1148,7 +1139,6 @@ class Recommendations extends React.Component {
             html.push(<div className="icanswipe"  >
                 {swipingspecials}
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
-
                             <button   onMouseEnter={()=>this.setState({showThumbs:name})}
                                       onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
                                , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
@@ -1171,23 +1161,11 @@ class Recommendations extends React.Component {
                                         <div className="informationbutton2">
                                             {this.nutritionalPopup(foods[i])}
                                         </div>
-
-
                                     </div>
-
-
-
-
-
-
-
-
                                 </div>
-
                             </button>
                 </Swiping>
                         </div>)
-
         }
 
         return html
@@ -1340,8 +1318,6 @@ class Recommendations extends React.Component {
             </div>
         );
     }
-
-
 }
 
 export default Recommendations;

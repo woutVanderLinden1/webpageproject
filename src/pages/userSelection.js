@@ -15,13 +15,9 @@ class UserProfile extends React.Component {
                         <div>
                             <input type="text" className="textBox" id="fname" name="firstname" placeholder="Your name"></input>
                         </div>
-
-
                         <Link to="/home"><button className="NextButton White"><b>NEXT</b></button></Link>
                     </div>
                 </header>
-
-
             </div>
 
         );
