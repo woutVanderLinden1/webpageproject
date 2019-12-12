@@ -82,6 +82,14 @@ class Recommendations extends React.Component {
             let newList = [["time stamp", "action", "view", "recipe"]];
             localStorage.setItem("listOfTimeStamps", JSON.stringify(newList));
         }
+        if(localStorage.getItem("likedItems") === null){
+            let newList = [];
+            localStorage.setItem("likedItems", JSON.stringify(newList));
+        }
+        if(localStorage.getItem("dislikedItems") === null){
+            let newList = [];
+            localStorage.setItem("dislikedItems", JSON.stringify(newList));
+        }
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -91,7 +99,8 @@ class Recommendations extends React.Component {
             nutrition: [],
             ingredients: [],
             similar: [],
-            view: 0
+            view: 0,
+
         };
         //alert(this.state.foods);
 
@@ -107,6 +116,7 @@ class Recommendations extends React.Component {
         this.generateFavorites=this.generateFavorites.bind(this);
         this.goToFavorites=this.goToFavorites.bind(this);
         this.generateBadges=this.generateBadges.bind(this);
+        this.swipeItem = this.swipeItem.bind(this);
 
         let payload={
             action: "initialise"
@@ -804,30 +814,13 @@ class Recommendations extends React.Component {
     };
 
 
-    swipeItem(food,action) {
+    swipeItem(action) {
+        let thisCard = this.state.foods[this.state.swipednumber]
 
-        let thisCard = food;
-       // alert("swipednumber " +this.state.swipednumber);
-        let k=this.state.swipednumber++;
 
-       // alert("swipednumber " +this.state.swipednumber);
-
-       // alert(food);
         let liked = JSON.parse(localStorage.getItem("likedItems"));
         let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
-        if(liked==null){
-            liked=[];
-        }
-        if(disliked==null){
-            disliked=[];
-        }
-        if (action === 'left') {
-            liked.push(food);
-        }
-        else{
-            disliked.push(food);
-        }
-        /*
+
         if (action === 'left') {
 
             let index = liked.indexOf(thisCard);
@@ -851,15 +844,15 @@ class Recommendations extends React.Component {
             }
 
         }
-
-         */
         this.state.likedItems = liked;
         this.state.dislikedItems = disliked;
-        this.setState({likedItems: liked, dislikedItems: disliked});
         localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
         localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
+        let newNumber = this.state.swipednumber + 1;
+        this.state.swipednumber = newNumber
+        this.setState({swipedNumber: newNumber});
 
-        //this.generateView();
+
     }
 
     resetSwipes(){
@@ -933,7 +926,7 @@ class Recommendations extends React.Component {
                                             </div>
                                         )}
                                         onAfterSwipe={this.remove}
-                                        onSwipe={() => this.swipeItem(this.state.foods[this.state.swipednumber],"left")}
+                                        onSwipe={this.swipeItem}
                                     >
 
                                         <div className="FoodCard">
