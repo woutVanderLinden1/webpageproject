@@ -88,14 +88,7 @@ class Recommendations extends React.Component {
             let newList = [["time stamp", "action", "view", "recipe"]];
             localStorage.setItem("listOfTimeStamps", JSON.stringify(newList));
         }
-        if(localStorage.getItem("likedItems") === null){
-            let newList = [];
-            localStorage.setItem("likedItems", JSON.stringify(newList));
-        }
-        if(localStorage.getItem("dislikedItems") === null){
-            let newList = [];
-            localStorage.setItem("dislikedItems", JSON.stringify(newList));
-        }
+
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -108,7 +101,6 @@ class Recommendations extends React.Component {
             view: 0,
 
         };
-        //alert(this.state.foods);
 
         this.socket=this.initialiseSocket();
         this.sendable=false;
@@ -130,7 +122,6 @@ class Recommendations extends React.Component {
         this.socket.onopen = () => {
             this.socket.send(JSON.stringify(payload));
             if (!this.sendable){
-                //alert("do this");
                 this.loading=false;
                 this.sendable=true;
                 this.getRecommendations();
@@ -158,12 +149,10 @@ class Recommendations extends React.Component {
                     let initialfoods = translation.recommends;
                     let initialtags = translation.tags;
                     let initialimages = translation.images;
-                    //initialfoods.randomise
                     let shuffled=this.filterfoods(initialfoods,initialtags,initialimages);
                     let filteredfoods=shuffled[0];
                     let filteredTags=shuffled[1];
                     let filteredImages=shuffled[2];
-
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
@@ -182,12 +171,10 @@ class Recommendations extends React.Component {
                   //  alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
-
+                    localStorage.setItem("kkk", JSON.stringify(translation))
                     this.setState({similar: translation.similar});
-
                     break;
                 case "Recipe":
-
                     this.setState({recipe: translation.recipe});
                     break;
                 case "Nutrition":
@@ -196,12 +183,7 @@ class Recommendations extends React.Component {
                 case "Ingredients":
                     this.setState({ingredients: translation.ingredients});
                     break
-
             }
-           //alert("message got "+JSON.stringify(translation));
-
-           // alert(this.state.foods);
-
         });
         if(this.state.swipednumber==undefined){
             this.state.swipednumber=0;
@@ -215,11 +197,20 @@ class Recommendations extends React.Component {
         let newinitialimages=shuffled[2];
 
         //initialfoods shuffle
-        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        let users = JSON.parse(localStorage.getItem('users'));
+        let likedItems = null;
+        let dislikedItems = null;
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                likedItems = users[i].Liked;
+                dislikedItems = users[i].Disliked;
+            }
+        }
+
         if(likedItems==null){
             likedItems=[];
         }
-        let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+
         if(dislikedItems==null){
             dislikedItems=[];
         }
@@ -302,11 +293,20 @@ class Recommendations extends React.Component {
             recipe: name,
             prolist:[]
         };
-        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        let users = JSON.parse(localStorage.getItem('users'));
+        let likedItems = null;
+        let dislikedItems = null;
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                likedItems = users[i].Liked;
+                dislikedItems = users[i].Disliked;
+            }
+        }
+
         if(likedItems==null){
             likedItems=[];
         }
-       let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
+
         if(dislikedItems==null){
             dislikedItems=[];
         }
@@ -333,7 +333,13 @@ class Recommendations extends React.Component {
 
     getFavorites(){
 
-        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        let users = JSON.parse(localStorage.getItem('users'));
+        let likedItems = null;
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                likedItems = users[i].Liked;
+            }
+        }
         if(likedItems==null){
             likedItems=[];
         }
@@ -385,11 +391,18 @@ class Recommendations extends React.Component {
     }
 
     getRecommendations(recommendation){
-        let likedItems = JSON.parse(localStorage.getItem('likedItems'));
+        let users = JSON.parse(localStorage.getItem('users'));
+        let likedItems = null;
+        let dislikedItems = null;
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                likedItems = users[i].Liked;
+                dislikedItems = users[i].Disliked;
+            }
+        }
         if(likedItems==null){
             likedItems=[];
         }
-        let  dislikedItems = JSON.parse(localStorage.getItem('dislikedItems'));
         if(dislikedItems==null){
             dislikedItems=[];
         }
@@ -443,32 +456,20 @@ class Recommendations extends React.Component {
         payload.prolist = prolist;
         console.log(prolist);
         payload.account = account;
-
         console.log(payload);
-
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
             Swal.fire({
                 title: "Loading...",
                 text: "Please wait",
-
                 showConfirmButton: false,
                 allowOutsideClick: false,
-
             });
             this.loading=true;
         }
 
 
-        /*
-        Swal.fire({
-            title: 'Results',
-            text: "Waiting for results",
-            icon: 'load',
 
-        });
-
-         */
     }
 
     //POPUP CODE
@@ -480,7 +481,7 @@ class Recommendations extends React.Component {
         let nutritionalInfoHtmlTemp = [];
         let nutritionalInfoHtmlTemp2 = [];
         let explanationHtmlTemp = [];
-        let similarMeals = this.getExplanation(name);
+        let similarMeals = this.getExplanation();
         let title=capitalizeFLetter(name);
 
         if(nutritionalInfo!==undefined){
@@ -505,21 +506,21 @@ class Recommendations extends React.Component {
             }
         }
         if(similarMeals!==undefined){
-
             for (let i = 0; i < similarMeals.length; i++) {
                 let number=Math.floor(similarMeals[i]["matchfactor"]*100);
                 let color=perc2color(number);
+                if (number >= 60){
+                    explanationHtmlTemp.push(
+                        <div className="popupText2">
+                            <div className="container2">
+                                <img className="FoodPhotoLarge3" onClick={this.goToFavorites} title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
+                                <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
+                            </div>
 
-                explanationHtmlTemp.push(
-                    <div className="popupText2">
-                        <div className="container2">
-                            <img className="FoodPhotoLarge3" onClick={this.goToFavorites} title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
-                            <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
-                        </div>
+                            <br/>
 
-                        <br/>
-
-                    </div>);
+                        </div>);
+                    }
             }
         }
 
@@ -550,7 +551,6 @@ class Recommendations extends React.Component {
         );
 
 
-        // onClick={this.sendNutritionSimilar(name)}
 
         let html = [
             <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
@@ -632,10 +632,7 @@ class Recommendations extends React.Component {
 
         );
 
-
-
         let html = [];
-        //onClick={this.sendRecipe(name)}
         html.push(
             <Popup className="poptry" modal trigger={<button  title= "recipe" className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
 
@@ -724,7 +721,6 @@ class Recommendations extends React.Component {
 
 
         let html = [];
-        //onClick={this.sendRecipe(name)}
 
 
         html.push(
@@ -777,94 +773,28 @@ class Recommendations extends React.Component {
         // Saturated Fat in %
         // Total Carbohydrate in %
         return this.state.nutrition
-        //return [428.5, 12.0, 112.0, 41.0, 19.0, 6.0, 27.0];
+
 
     }
-    getExplanation(gerecht){
-
+    getExplanation(){
         return this.state.similar;
     }
-    getImage(naam,id){
-        return "./assets/dish.png";
-/*
-        let parsedName = naam.split(" ");
-        let url = ["https://www.food.com/recipe/"];
-        for (let i = 0; i < parsedName.length; i++){
-            url.push(parsedName[i] + "-");
-        }
-        url.push("-" + id);
-        */
-    }
-    getImages(foods){
-        //TODO scrape this site
-        //let images = []
-       // for(let i = 0; i < foods.length; i++){
-       //     images.push(this.getImage(foods[i][0], foods[i][1]));
-       // }
-        return this.state.images;
-    }
-    getAssets(foods){
-        //TODO get relevant assets
+
+
+    getAssets(){
         return this.state.tags;
     }
-    getRecommendation(){
-        //TODO implement
-        return [['Cream  of spinach soup',76808] , ['Global gourmet  taco casserole', 59952]];
-    }
 
-    remove = () => {
-        //this.state.swipednumber++;
-        //this.setState(({cards}) => ({
-        //    cards: cards.slice(1, cards.length),
-        //}))
-    };
 
 
     swipeItem(action) {
-        let thisCard = this.state.foods[this.state.swipednumber]
-
-
-        let liked = JSON.parse(localStorage.getItem("likedItems"));
-        let disliked = JSON.parse(localStorage.getItem("dislikedItems"));
-
+        let thisCard = this.state.foods[this.state.swipednumber];
         if (action === 'left') {
-
-            let index = liked.indexOf(thisCard);
-            if(index >= 0){
-                liked.splice(index, 1);
-            }
-            if(!disliked.includes(thisCard)) {
-                disliked.push(thisCard);
-            }
             this.dislike(thisCard);
-           // this.logAction('dislike', thisCard);
-
-
         }
         else if (action === 'right') {
-            let index = disliked.indexOf(thisCard);
-            if(index >= 0){
-                disliked.splice(index, 1);
-            }
-            if(!liked.includes(thisCard)){
-                liked.push(thisCard);
-
-            }
             this.like(thisCard);
-           // this.logAction('like', thisCard);
-
         }
-        this.state.likedItems = liked;
-        this.state.dislikedItems = disliked;
-        localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
-        localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
-        // is now done at like and dislike
-       // let newNumber = this.state.swipednumber + 1;
-        //this.state.swipednumber = newNumber
-        //this.setState({swipedNumber: newNumber});
-
-
-
     }
 
     resetSwipes(){
@@ -879,7 +809,6 @@ class Recommendations extends React.Component {
         const value = (this.state.view + 1) % 2;
         this.setState({view: value});
         this.setState({favorite: false});
-        //TODO: kan de view niet direct opvragen van de state, dus gebeurt hier
         localStorage.setItem("view", value.toString());
     }
 
@@ -981,33 +910,11 @@ class Recommendations extends React.Component {
             }
 
         }
-
     }
-    //<img className="FoodPhotoTinder" align="left"
-    //                                                  src={this.getimage(this.state.swipednumber)} alt="Food"/>
+
     generateFavorites() {
-        /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
-          let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
-          "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
-          "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",
-          "https://assets.epicurious.com/photos/57978b27c9298e54495917d5/master/pass/black-bean-and-vegetable-burritos.jpg",
-          "https://www.soscuisine.com/media/images/recettes/very_large/36.jpg?lang=en"];
-          let assets = [
-              ["Meat"],
-              ["Meat", "Cheap"],
-              ["Veggie", "DairyFree"],
-              ["Veggie", "Cheap"],
-              ["Fish", "Oven"]
-          ]
-
-  */
-
-
-
         let favorites = this.state.favorites;
-       // alert(favorites);
         if(favorites==null||favorites==undefined){
-
             return;
         }
         let html = [];
@@ -1023,12 +930,10 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                //console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
 
             });
             let className = "FoodItem fadeInLeft" + i;
-            // <button className={className} onClick={this.increaseCounter}
             html.push(<div>
                 <button className={className} onClick={() => this.getInfo(currentfavorite["name"])}  >
 
@@ -1049,8 +954,7 @@ class Recommendations extends React.Component {
 
     generateBadges(food) {
         let badges = [];
-        let foods = this.state.foods;
-        let assets = this.getAssets(foods);
+        let assets = this.getAssets();
 
         if(assets!=undefined && assets.length>0){
             if(assets[food]!=undefined){
@@ -1059,8 +963,6 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                //   alert("badgename"+badgeName);
-                //console.log(badgeName);
                 badges.push(<button className={badgeName}> </button>);
 
             });
@@ -1070,31 +972,13 @@ class Recommendations extends React.Component {
 
     //GENERATE MEAL
     generateMeal() {
-      /*  let foods = ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"];
-        let images = ["https://www.dinneratthezoo.com/wp-content/uploads/2017/10/firecracker-chicken-1.jpg",
-        "https://www.chelseasmessyapron.com/wp-content/uploads/2015/08/Coconut-Chicken-Curry-2.jpg",
-        "https://minimalistbaker.com/wp-content/uploads/2019/01/Easy-Vegan-Pad-Thai-SQUARE.jpg",
-        "https://assets.epicurious.com/photos/57978b27c9298e54495917d5/master/pass/black-bean-and-vegetable-burritos.jpg",
-        "https://www.soscuisine.com/media/images/recettes/very_large/36.jpg?lang=en"];
-        let assets = [
-            ["Meat"],
-            ["Meat", "Cheap"],
-            ["Veggie", "DairyFree"],
-            ["Veggie", "Cheap"],
-            ["Fish", "Oven"]
-        ]
-
-*/
-
-
 
         if (this.state.foods === undefined) {
             return
         }
         let foods = this.state.foods;
 
-        let images = this.getImages(foods);
-        let assets = this.getAssets(foods);
+        let assets = this.getAssets();
         let html = [];
 
 
@@ -1109,10 +993,7 @@ class Recommendations extends React.Component {
                     if (item === "15-minutes-or-less") {
                         badgeName = "FoodBadge fifteen-minutes-or-less";
                     }
-                 //   alert("badgename"+badgeName);
-                    //console.log(badgeName);
                     badges.push(<button className={badgeName}> </button>);
-
                 });
             }
 
