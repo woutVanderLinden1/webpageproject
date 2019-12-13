@@ -858,9 +858,10 @@ class Recommendations extends React.Component {
         this.state.dislikedItems = disliked;
         localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
         localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
-        let newNumber = this.state.swipednumber + 1;
-        this.state.swipednumber = newNumber
-        this.setState({swipedNumber: newNumber});
+        // is now done at like and dislike
+       // let newNumber = this.state.swipednumber + 1;
+        //this.state.swipednumber = newNumber
+        //this.setState({swipedNumber: newNumber});
 
 
 
@@ -1216,18 +1217,22 @@ class Recommendations extends React.Component {
     }
 
     like(name){
+        let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 let liked = users[i].Liked;
-                let foods=this.state.foods;
-                let tags=this.state.tags;
-                let images=this.state.images;
+                let foods = this.state.foods;
+                let tags = this.state.tags;
+                let images = this.state.images;
 
                 let t=0;
-                for(let i=0;i<foods.size;i++){
-                    if(foods[i]==name){
-                        t=i;
+
+                for(let j=0;j<foods.length;j++){
+                    let f1 = foods[j].toLowerCase();
+
+                    if(f1===f2){
+                        t=j;
                     }
                 }
                 if(liked==null){
@@ -1260,17 +1265,19 @@ class Recommendations extends React.Component {
 
     }
     dislike(name){
+        let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
-        for (let i = users.length-1; i>=0; i--) {
+        for (let i = users.length -1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 let disliked = users[i].Disliked;
                 let foods = this.state.foods;
                 let tags = this.state.tags;
                 let images = this.state.images;
                 let t = 0;
-                for (let i = 0; i < foods.size; i++) {
-                    if (foods[i] == name) {
-                        t = i;
+                for (let j = 0; j < foods.length; j++) {
+                    let f1 = foods[j].toLowerCase();
+                    if (f1 === f2) {
+                        t = j;
                     }
                 }
                 foods.splice(t, 1);
