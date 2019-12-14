@@ -155,15 +155,12 @@
 
 /* Create three equal columns that floats next to each other */
 .column {
-
-
      width: 40%;
     margin:5px;
      display: table-cell;
-
     padding: 0px;
-
  }
+
 .Nutritioncolumn {
     border-radius: 20px;
     border: 3px solid white;
@@ -288,7 +285,6 @@
     background-color: dimgrey;
 
 }
-
 
 .textcolumn1 {
     float: left;

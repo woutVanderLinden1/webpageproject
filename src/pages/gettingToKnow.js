@@ -8,7 +8,6 @@ import {Swipeable as Swiping} from "react-swipeable";
 import './tinderCards.css';
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import {  Popup as InfoPopup } from "semantic-ui-react";
 let listOfTimeStamps = [];
 let lastItem = null;
 let lastAction  = null;
@@ -82,7 +81,7 @@ function shuffle(array,array2,array3) {
     return answer;
 }
 
-class Recommendations extends React.Component {
+class GettingToKnow extends React.Component {
     constructor() {
         super();
         if(localStorage.getItem("listOfTimeStamps") === null){
@@ -139,7 +138,7 @@ class Recommendations extends React.Component {
                 case "Recommends":
                     if(this.loading){
                         this.loading=false;
-                       // alert("this");
+                        // alert("this");
                         Swal.fire({
                             title: "Finished!",
                             showConfirmButton: false,
@@ -160,7 +159,7 @@ class Recommendations extends React.Component {
                     break;
                 case "favorites":
                     if(this.loading){
-                       // alert("this favorites");
+                        // alert("this favorites");
                         this.loading=false;
                         Swal.fire({
                             title: "Finished!",
@@ -169,7 +168,7 @@ class Recommendations extends React.Component {
                         });
                     }
                     this.setState({favorites: translation.favorites});
-                  //  alert('favorites set '+ translation.favorites);
+                    //  alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
                     localStorage.setItem("kkk", JSON.stringify(translation))
@@ -380,10 +379,18 @@ class Recommendations extends React.Component {
             this.socket.send(JSON.stringify(payload));
 
         }
+        /*
+        Swal.fire({
+            title: 'Results',
+            text: "Waiting for results",
+            icon: 'load',
 
+        });
+
+         */
     }
 
-    getRecommendations(){
+    getRecommendations(recommendation){
         let users = JSON.parse(localStorage.getItem('users'));
         let likedItems = null;
         let dislikedItems = null;
@@ -513,7 +520,7 @@ class Recommendations extends React.Component {
                             <br/>
 
                         </div>);
-                    }
+                }
             }
         }
 
@@ -604,7 +611,7 @@ class Recommendations extends React.Component {
                     <div className="rowingredi">
                         <div className="popupTextTitle">
                             Ingredients:
-                        <br/>
+                            <br/>
                         </div>
                         {ingredientsHtmlTemp}
                     </div>
@@ -718,25 +725,25 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-            <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
 
-            </img>
-            <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
-                      position="right center" >
+                </img>
+                <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                        position="right center" >
 
-                <div className="popUp3" onClick={() => this.setState({open: false})}>
+                    <div className="popUp3" onClick={() => this.setState({open: false})}>
 
-                    <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                        <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                            <br/>
+                            {title}</div>
                         <br/>
-                        {title}</div>
-                    <br/>
 
-                    {popUpHtml}
-                </div>
+                        {popUpHtml}
+                    </div>
 
 
 
-            </Popup>
+                </Popup>
             </div>
         );
 
@@ -838,8 +845,7 @@ class Recommendations extends React.Component {
                         </div>
                         Times clicked: {this.state.timesClicked}
                         <div className="buttons">
-                            <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
-                            <button className="NextButton Green" onClick={this.getRecommendations}>Test</button>
+                            <Link to="/"><button className="NextButton Green"><b>Recommend</b></button></Link>
                         </div>
                     </div>)
             }
@@ -847,46 +853,46 @@ class Recommendations extends React.Component {
                 if (this.state.swipednumber < 6) {
                     return (
                         <div className="Span">
-                        <div style={wrapperStyles}>
+                            <div style={wrapperStyles}>
 
-                            {this.state.foods.length > 0 ? (
-                                <div style={wrapperStyles}>
+                                {this.state.foods.length > 0 ? (
+                                    <div style={wrapperStyles}>
 
-                                    <Swipeable
-                                        buttons={({left, right}) => (
-                                            <div style={actionsStyles}>
-                                                <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
-                                                <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                        <Swipeable
+                                            buttons={({left, right}) => (
+                                                <div style={actionsStyles}>
+                                                    <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
+                                                    <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                                </div>
+                                            )}
+                                            onAfterSwipe={this.remove}
+                                            onSwipe={this.swipeItem}
+                                        >
+
+                                            <div className="FoodCard">
+                                                <div className="FoodHeader">
+                                                    <b>{this.getname(this.state.swipednumber)}</b>
+                                                </div>
+                                                {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
+
+                                                {this.generateBadges(this.state.swipednumber)}
+                                                <div>
+                                                    {this.recipePopup(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
+                                                    {this.nutritionalPopup(this.state.foods[this.state.swipednumber])}
+                                                </div>
+
                                             </div>
-                                        )}
-                                        onAfterSwipe={this.remove}
-                                        onSwipe={this.swipeItem}
-                                    >
+                                        </Swipeable>
 
-                                        <div className="FoodCard">
-                                            <div className="FoodHeader">
-                                                <b>{this.getname(this.state.swipednumber)}</b>
-                                            </div>
-                                            {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
-
-                                            {this.generateBadges(this.state.swipednumber)}
-                                            <div>
-                                                {this.recipePopup(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
-                                                {this.nutritionalPopup(this.state.foods[this.state.swipednumber])}
-                                            </div>
-
-                                        </div>
-                                    </Swipeable>
-
-                                </div>
-                            ) : (
-                                <div >
-                                    <div className="FoodItem" zIndex={-2}>No more cards</div>
-                                    <button className="NextButton Green"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
-                                    <button className="NextButton Green"  onClick={this.resetSwipes}>New Cards</button>
-                                </div>
-                            )}
-                        </div>
+                                    </div>
+                                ) : (
+                                    <div >
+                                        <div className="FoodItem" zIndex={-2}>No more cards</div>
+                                        <button className="NextButton Green"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                                        <button className="NextButton Green"  onClick={this.resetSwipes}>New Cards</button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                     )
@@ -923,7 +929,7 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
+                badges.push(<button className={badgeName}> </button>);
 
             });
             let className = "FoodItem fadeInLeft" + i;
@@ -951,15 +957,15 @@ class Recommendations extends React.Component {
 
         if(assets!=undefined && assets.length>0){
             if(assets[food]!=undefined){
-            assets[food].forEach(function (item, i) {
-                let badgeName = "FoodBadge " + item;
-                if (item === "15-minutes-or-less") {
-                    badgeName = "FoodBadge fifteen-minutes-or-less";
-                }
-                badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
+                assets[food].forEach(function (item, i) {
+                    let badgeName = "FoodBadge " + item;
+                    if (item === "15-minutes-or-less") {
+                        badgeName = "FoodBadge fifteen-minutes-or-less";
+                    }
+                    badges.push(<button className={badgeName}> </button>);
 
-            });
-        }}
+                });
+            }}
         return badges;
     }
 
@@ -986,7 +992,7 @@ class Recommendations extends React.Component {
                     if (item === "15-minutes-or-less") {
                         badgeName = "FoodBadge fifteen-minutes-or-less";
                     }
-                    badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
+                    badges.push(<button className={badgeName}> </button>);
                 });
             }
 
@@ -1041,33 +1047,33 @@ class Recommendations extends React.Component {
             html.push(<div className="icanswipe"  >
                 {swipingspecials}
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
-                            <button   onMouseEnter={()=>this.setState({showThumbs:name})}
-                                      onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
-                               , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
-                                <div className="rowbutton">
-                                    <div className="columbuttonimage">
-                                        <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
-                                    </div>
-                                    <div className="columtitle">
-                                        <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
-                                        <div className="foodtags2">
-                                            <div className="badgesContainer">
-                                                {badges}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="informationbuttonscolum">
-                                        <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
-                                            {this.recipePopup(foods[i],this.getimage(i))}
-                                        </div>
-                                        <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
-                                            {this.nutritionalPopup(foods[i])}
-                                        </div>
+                    <button   onMouseEnter={()=>this.setState({showThumbs:name})}
+                              onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
+                        , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
+                        <div className="rowbutton">
+                            <div className="columbuttonimage">
+                                <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
+                            </div>
+                            <div className="columtitle">
+                                <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
+                                <div className="foodtags2">
+                                    <div className="badgesContainer">
+                                        {badges}
                                     </div>
                                 </div>
-                            </button>
+                            </div>
+                            <div className="informationbuttonscolum">
+                                <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
+                                    {this.recipePopup(foods[i],this.getimage(i))}
+                                </div>
+                                <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
+                                    {this.nutritionalPopup(foods[i])}
+                                </div>
+                            </div>
+                        </div>
+                    </button>
                 </Swiping>
-                        </div>)
+            </div>)
         }
 
         return html
@@ -1119,9 +1125,7 @@ class Recommendations extends React.Component {
                 images.splice(t,1);
                 this.state.images=images;
 
-
                 liked.push(name);
-
 
                 this.state.likedItems = liked;
 
@@ -1224,12 +1228,6 @@ class Recommendations extends React.Component {
         //alert(item[name]);
         let item2 = {};
         item2[name] = 10/Math.abs(eventData.deltaX);
-
-
-
-
-
-
         this.setState({translation: item, transparency: item2});
 
     }
@@ -1254,7 +1252,7 @@ class Recommendations extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
+                    <div className="PageHeader"> <b className="PageTitle">Let's get to know you!</b>
                         <div className="sliderBox" >
                             <label className="switch">
                                 <input type="checkbox"></input>
@@ -1262,11 +1260,11 @@ class Recommendations extends React.Component {
                             </label>
                         </div>
                     </div>
-                        {this.generateView()}
+                    {this.generateView()}
                 </header>
             </div>
         );
     }
 }
 
-export default Recommendations;
+export default GettingToKnow;

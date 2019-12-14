@@ -75,7 +75,6 @@ class TinderCards extends Component {
         this.state.dislikedItems = disliked;
         localStorage.setItem("likedItems", JSON.stringify(this.state.likedItems));
         localStorage.setItem("dislikedItems", JSON.stringify(this.state.dislikedItems));
-
     }
 
 
@@ -117,7 +116,6 @@ class TinderCards extends Component {
                     </div>
                 </header>
             </div>
-
         );
     }
 }
