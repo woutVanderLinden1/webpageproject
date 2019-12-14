@@ -8,6 +8,7 @@ import {Swipeable as Swiping} from "react-swipeable";
 import './tinderCards.css';
 import Swal from "sweetalert2";
 import styled from "styled-components";
+import {  Popup as InfoPopup } from "semantic-ui-react";
 let listOfTimeStamps = [];
 let lastItem = null;
 let lastAction  = null;
@@ -930,7 +931,7 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                badges.push(<button className={badgeName}> </button>);
+                badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
 
             });
             let className = "FoodItem fadeInLeft" + i;
@@ -963,7 +964,7 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                badges.push(<button className={badgeName}> </button>);
+                badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
 
             });
         }}
@@ -993,7 +994,7 @@ class Recommendations extends React.Component {
                     if (item === "15-minutes-or-less") {
                         badgeName = "FoodBadge fifteen-minutes-or-less";
                     }
-                    badges.push(<button className={badgeName}> </button>);
+                    badges.push(<Popup content={item} trigger={<button className={badgeName}> </button>} />);
                 });
             }
 
