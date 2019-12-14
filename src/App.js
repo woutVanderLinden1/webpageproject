@@ -5,6 +5,7 @@ import Home from './pages/home';
 import Recommendations from './pages/recommendations';
 import TinderCards from './pages/tinderCards';
 import UserSelection from './pages/userSelection';
+import GettingToKnow from './pages/gettingToKnow';
 
 import './App.css';
 import Profile from "./pages/profile";
@@ -91,6 +92,7 @@ class App extends Component {
                         <Route exact path="/profile" component={Profile}></Route>
                         <Route exact path="/tinderCards" component={TinderCards}></Route>
                         <Route exact path="/home" component={Home}></Route>
+                        <Route exact path="/gettingToKnow" component={GettingToKnow}></Route>
 
                     </Switch>
                 </div>

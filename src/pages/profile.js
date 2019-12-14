@@ -99,6 +99,13 @@ class Profile extends React.Component {
         this.success();
     }
 
+    renderButton() {
+        if (localStorage.getItem("likedItems") === null)
+            return <Link to="/gettingToKnow"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+        else
+            return <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+    }
+
     render() {
         return (
 
@@ -107,7 +114,8 @@ class Profile extends React.Component {
                 </div>
                 <header className="App-header">
                     {this.getRender()}
-                    <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+                    {this.renderButton()}
+
 
                 </header>
             </div>
