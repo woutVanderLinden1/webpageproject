@@ -379,18 +379,10 @@ class Recommendations extends React.Component {
             this.socket.send(JSON.stringify(payload));
 
         }
-        /*
-        Swal.fire({
-            title: 'Results',
-            text: "Waiting for results",
-            icon: 'load',
 
-        });
-
-         */
     }
 
-    getRecommendations(recommendation){
+    getRecommendations(){
         let users = JSON.parse(localStorage.getItem('users'));
         let likedItems = null;
         let dislikedItems = null;
