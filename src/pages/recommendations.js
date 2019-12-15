@@ -9,7 +9,6 @@ import './tinderCards.css';
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import {  Popup as InfoPopup } from "semantic-ui-react";
-let listOfTimeStamps = [];
 let lastItem = null;
 let lastAction  = null;
 export const icanswipe = styled.div`
@@ -85,11 +84,6 @@ function shuffle(array,array2,array3) {
 class Recommendations extends React.Component {
     constructor() {
         super();
-        if(localStorage.getItem("listOfTimeStamps") === null){
-            let newList = [["time stamp", "action", "view", "recipe"]];
-            localStorage.setItem("listOfTimeStamps", JSON.stringify(newList));
-        }
-
         this.state = {
             timesClicked: 0,
             foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
@@ -172,7 +166,6 @@ class Recommendations extends React.Component {
                   //  alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
-                    localStorage.setItem("kkk", JSON.stringify(translation))
                     this.setState({similar: translation.similar});
                     break;
                 case "Recipe":
