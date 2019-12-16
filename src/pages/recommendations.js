@@ -953,7 +953,7 @@ class Recommendations extends React.Component {
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
                 }
-                badges.push(<InfoPopup  position='top center' content={item} trigger={<button className={badgeName}> </button>} />);
+                badges.push(<InfoPopup  position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
 
             });
         }}
@@ -983,7 +983,7 @@ class Recommendations extends React.Component {
                     if (item === "15-minutes-or-less") {
                         badgeName = "FoodBadge fifteen-minutes-or-less";
                     }
-                    badges.push(<InfoPopup content={item} trigger={<button className={badgeName}> </button>} />);
+                    badges.push(<InfoPopup position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
                 });
             }
 
