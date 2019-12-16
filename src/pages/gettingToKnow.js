@@ -91,7 +91,7 @@ class GettingToKnow extends React.Component {
 
         this.state = {
             timesClicked: 0,
-            foods: ["Spicy rice", "Curry chicken", "Thai noodles", "Veggie Burritos", "Fish pie"],
+            foods: [],
             tags: [],
             images: [],
             recipe: [],
