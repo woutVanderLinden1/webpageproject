@@ -771,6 +771,15 @@ class Recommendations extends React.Component {
         return this.state.tags;
     }
 
+    saveAlert() {
+        Swal.fire({
+            title: 'Saved!',
+            text: "Your liked and disliked meals are saved.",
+            icon: 'success',
+            confirmButtonText: 'Great!'
+        });
+    }
+
 
 
     swipeItem(action) {
@@ -816,7 +825,6 @@ class Recommendations extends React.Component {
                     Times clicked: {this.state.timesClicked}
                     <div className="buttons">
                         <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
-                        <button className="NextButton Green" onClick={()=> alert('hi')}>Recommendations</button>
                     </div>
                 </div>
             )
@@ -831,8 +839,7 @@ class Recommendations extends React.Component {
                         </div>
                         Times clicked: {this.state.timesClicked}
                         <div className="buttons">
-                            <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
-                            <button className="NextButton Green" onClick={this.getRecommendations}>Test</button>
+                            <button className="NextButton Green" onClick={this.saveAlert}><b>SAVE</b></button>
                         </div>
                     </div>)
             }
