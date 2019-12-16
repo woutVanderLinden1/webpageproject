@@ -289,3 +289,10 @@ input:checked + .slider:before {
   margin-right: 30px;
   float: right;
 }
+
+h5{
+  color: white;
+  font-size: 12px;
+  font-family: Avenir, sans-serif;
+  margin-top: 1px;
+}
