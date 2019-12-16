@@ -845,7 +845,7 @@ class GettingToKnow extends React.Component {
                         </div>
                         Times clicked: {this.state.timesClicked}
                         <div className="buttons">
-                            <Link to="/"><button className="NextButton Green"><b>Recommend</b></button></Link>
+                            <Link to="/recommendations"><button className="NextButton Green"><b>Recommend</b></button></Link>
                         </div>
                     </div>)
             }
