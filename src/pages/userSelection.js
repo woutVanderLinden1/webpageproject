@@ -33,7 +33,8 @@ class UserProfile extends React.Component {
                 Allergies: [],
                 Log: [],
                 Liked: [],
-                Disliked: []
+                Disliked: [],
+                FirstTime: true
             };
             tempUsers.push(emptyDict);
             localStorage.setItem('users', JSON.stringify(tempUsers));

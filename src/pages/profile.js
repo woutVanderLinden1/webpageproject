@@ -50,12 +50,22 @@ class Profile extends React.Component {
     }
 
     getRender() {
-        Swal.fire({
-            title: 'Welcome!',
-            text: "Let's set you up! First, choose your preferences and your allergies if you have some.",
-            icon: 'info',
-            confirmButtonText: 'Okay!'
-        });
+        let users = JSON.parse(localStorage.getItem('users'));
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                if (users[i].FirstTime){
+                    Swal.fire({
+                        title: 'Welcome!',
+                        text: "Let's set you up! First, choose your preferences and your allergies if you have some.",
+                        icon: 'info',
+                        confirmButtonText: 'Okay!'
+                    });
+                    users[i].FirstTime = false;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+            }
+        }
+
         let returnVal = [];
         let returnList = [];
         returnVal.push(<div className="newclass"> <h3> Preferences </h3></div>);
