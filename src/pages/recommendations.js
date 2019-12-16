@@ -1263,15 +1263,17 @@ class Recommendations extends React.Component {
             <div className="App">
                 <header className="App-header">
                     <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
-                        <div className="sliderBox" >
-                            <label className="switch">
-                                <input type="checkbox"></input>
-                                <span className="slider round" onClick={this.switchViews}></span>
-                            </label>
-                        </div>
+                        <Link to="/profile"><button className="profile" ><b> </b></button></Link>
                     </div>
                         {this.generateView()}
+                    <div className="sliderBox" >
+                        <label className="switch">
+                            <input type="checkbox"></input>
+                            <span className="slider round" onClick={this.switchViews}></span>
+                        </label>
+                    </div>
                 </header>
+
             </div>
         );
     }

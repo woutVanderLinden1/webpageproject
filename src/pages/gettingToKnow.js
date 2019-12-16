@@ -1253,6 +1253,7 @@ class GettingToKnow extends React.Component {
             <div className="App">
                 <header className="App-header">
                     <div className="PageHeader"> <b className="PageTitle">Let's get to know you!</b>
+                        <Link to="/profile"><button className="profile" ><b> </b></button></Link>
                         <div className="sliderBox" >
                             <label className="switch">
                                 <input type="checkbox"></input>
