@@ -84,6 +84,7 @@ p {
   height: 55px;
   font-size: 22px;
   font-family: Avenir, sans-serif;
+  margin-bottom: 40px;
 }
 
 .NextButton:hover {
@@ -300,6 +301,6 @@ h5{
 }
 
 .Listing {
-  margin-top: 100px;
+  margin-top: 50px;
   z-index: -3;
 }
