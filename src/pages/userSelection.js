@@ -52,14 +52,14 @@ class UserProfile extends React.Component {
                             <input
                                 type="text"
                                 name="username"
-                                className={"textBox"}
+                                className={"textBox fadeInLeft2"}
                                 placeholder={"Your name"}
                                 value={this.state.username}
                                 onChange={this.handleChange}
                             />
 
                         </div>
-                        <Link to="/home"><button className="NextButton White"
+                        <Link to="/home"><button className="NextButton White fadeInLeft3"
                              onClick={
                                 ()=>{this.updateUsers()}
                              }>

@@ -77,7 +77,7 @@ class Profile extends React.Component {
     success() {
         Swal.fire({
             title: 'Saved!',
-            text: "Great, now let's choose some of your liked or disliked meals, so we can get a small glimpse into your preferences.",
+            text: "Great, now let's choose some of your liked or disliked meals, so we can get a small glimpse into your preferences. Drag an item left to dislike it, or right to like it.",
             icon: 'success',
             confirmButtonText: 'Okay!'
         });
