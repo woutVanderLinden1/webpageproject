@@ -110,7 +110,7 @@ class Profile extends React.Component {
         return (
 
             <div className="App">
-                <div className="PageHeader"> <b className="PageTitle">Let's set you up.</b>
+                <div className="PageHeader"> <b className="PageTitle">Your profile</b>
                 </div>
                 <header className="App-header">
                     {this.getRender()}
