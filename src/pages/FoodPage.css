@@ -90,14 +90,10 @@
 
     grid-gap: 0px;
     padding: 10px;
-    background-image: linear-gradient(135deg,lightgreen 0%, green 30%, darkgreen 100%);
-
+    background-color: darkgreen;
     transition: transform 1s ease;
-
-
     border: none;
     color: white;
-
     width: 500px;
     margin: 10px;
     text-align: center;
@@ -125,21 +121,16 @@
 .columbuttonimage{
     width: 20%;
     margin:2px;
-
     padding: 0px;
 }
 .columtitle{
     width: 60%;
-
     display: table-cell;
-
     padding: 0px;
 }
 .informationbuttonscolum{
     width: 20%;
-
     display: table-cell;
-
     padding: 0px;
 }
 
@@ -153,10 +144,10 @@
 .BadgeBox{
     grid-area: badge;
     display: grid;
+    margin-bottom: 10px;
 }
 .FoodBadge {
     grid-row: 2;
-
     background-size: 65% 65%;
     background-repeat: no-repeat;
     background-position: center;
@@ -222,7 +213,6 @@
 
 .FoodPhoto {
     grid-area: image;
-
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -245,11 +235,12 @@
 }
 
 .FoodTitle {
-    font-family: "Lucida Calligraphy";
+    font-family: "Avenir", sans-serif;
     text-shadow: 1px 1px darkblue;
     font-weight: bold;
     font-size: 20px;
     float: left;
-
+    margin-bottom: 10px;
+    margin-top:0px
 }
 

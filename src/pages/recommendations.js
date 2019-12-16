@@ -815,7 +815,7 @@ class Recommendations extends React.Component {
             return(
                 <div>
 
-                    <div>
+                    <div className="Listing">
                         favoritestate
                         {this.generateFavorites()}
                     </div>
@@ -831,7 +831,7 @@ class Recommendations extends React.Component {
                 return (
                     <div>
 
-                        <div>
+                        <div className="Listing">
                             {this.generateMeal()}
                         </div>
                         Times clicked: {this.state.timesClicked}
