@@ -49,6 +49,8 @@ class UserProfile extends React.Component {
                 <header className="App-header">
                     <div className="DarkBackground">
                         <div>
+                            <h4 className="fadeInLeft0">Hello there! Thank you for wanting to participate in our test.</h4>
+                            <h4 className="fadeInLeft1"> Before we start, can we please get your name?</h4>
                             <input
                                 type="text"
                                 name="username"
