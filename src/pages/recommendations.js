@@ -110,6 +110,7 @@ class Recommendations extends React.Component {
         this.goToFavorites=this.goToFavorites.bind(this);
         this.generateBadges=this.generateBadges.bind(this);
         this.swipeItem = this.swipeItem.bind(this);
+        this.saveAlert = this.saveAlert.bind(this);
 
         let payload={
             action: "initialise"
@@ -373,7 +374,6 @@ class Recommendations extends React.Component {
             this.socket.send(JSON.stringify(payload));
 
         }
-
     }
 
     getRecommendations(){
@@ -488,9 +488,9 @@ class Recommendations extends React.Component {
                         <br/>
 
                     </div>);
-
             }
         }
+
         if(similarMeals!==undefined){
             for (let i = 0; i < similarMeals.length; i++) {
                 let number=Math.floor(similarMeals[i]["matchfactor"]*100);
@@ -509,8 +509,6 @@ class Recommendations extends React.Component {
                     }
             }
         }
-
-
 
         nutritionalInfoHtml.push(
             <div className="row">
@@ -535,8 +533,6 @@ class Recommendations extends React.Component {
             </div>
 
         );
-
-
 
         let html = [
             <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
@@ -778,6 +774,7 @@ class Recommendations extends React.Component {
             icon: 'success',
             confirmButtonText: 'Great!'
         });
+        this.getRecommendations();
     }
 
 
