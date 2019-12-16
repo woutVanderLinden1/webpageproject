@@ -110,10 +110,23 @@ class Profile extends React.Component {
     }
 
     renderButton() {
-        if (localStorage.getItem("likedItems") === null)
-            return <Link to="/gettingToKnow"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
-        else
-            return <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+        let users = JSON.parse(localStorage.getItem('users'));
+        for (let i = users.length -1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                if (users[i].FirstTime1){
+                    users[i].FirstTime1 = false;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    return <Link to="/gettingToKnow"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+
+                }
+                else
+                    return <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>NEXT</b></button></Link>
+            }
+        }
+
+
+
+
     }
 
     render() {

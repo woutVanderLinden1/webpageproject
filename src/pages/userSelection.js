@@ -34,7 +34,8 @@ class UserProfile extends React.Component {
                 Log: [],
                 Liked: [],
                 Disliked: [],
-                FirstTime: true
+                FirstTime: true,
+                FirstTime1: true
             };
             tempUsers.push(emptyDict);
             localStorage.setItem('users', JSON.stringify(tempUsers));
