@@ -848,15 +848,15 @@ class Recommendations extends React.Component {
                                     <Swipeable
                                         buttons={({left, right}) => (
                                             <div style={actionsStyles}>
-                                                <button className="tinderButton dislike" onClick={left}><b>Reject</b></button>
-                                                <button className="tinderButton like" onClick={right}><b>Accept</b></button>
+                                                <button className="tinderButton dislike fadeInLeft1" onClick={left}><b>Reject</b></button>
+                                                <button className="tinderButton like fadeInLeft1" onClick={right}><b>Accept</b></button>
                                             </div>
                                         )}
                                         onAfterSwipe={this.remove}
                                         onSwipe={this.swipeItem}
                                     >
 
-                                        <div className="FoodCard">
+                                        <div className="FoodCard fadeInLeft0">
                                             <div className="FoodHeader">
                                                 <b>{this.getname(this.state.swipednumber)}</b>
                                             </div>
