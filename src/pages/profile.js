@@ -228,7 +228,6 @@ class Profile extends React.Component {
                     }
                     items.splice(this.items.indexOf(item),1);
                     this.items = items
-                    localStorage.setItem("j", JSON.stringify(this.items))
 
                     break;
                 }

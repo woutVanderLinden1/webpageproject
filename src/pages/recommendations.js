@@ -129,7 +129,6 @@ class Recommendations extends React.Component {
         this.socket.onmessage=((message) => {
             let translation=JSON.parse(message.data);
             console.log(translation);
-
             switch(translation.action){
                 case "Recommends":
                     if(this.loading){
@@ -411,9 +410,10 @@ class Recommendations extends React.Component {
 
         payload.amount=amount;
         let names = users[tempUserIndex].Preferences;
-
-
         let likes = users[tempUserIndex].booleansPreferences;
+        for (let k = 0; k<names.length; k++){
+            names[k] = names[k].toLowerCase();
+        }
 
         let account = {};
         // Creating account
@@ -447,6 +447,8 @@ class Recommendations extends React.Component {
         console.log(prolist);
         payload.account = account;
         console.log(payload);
+
+        console.log(payload)
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
             Swal.fire({

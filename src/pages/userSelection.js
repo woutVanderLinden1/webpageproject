@@ -29,8 +29,8 @@ class UserProfile extends React.Component {
         if (!alreadyInUsers){
             let emptyDict = {
                 Name: this.state.name,
-                Preferences: ["Vegan", "Vegetarian", "Apples"],
-                Allergies: ["Candy", "sugar", "fries"],
+                Preferences: ["vegan", "vegetarian", "easy"],
+                Allergies: ["candy", "sugar", "fries"],
                 Log: [],
                 Liked: [],
                 Disliked: [],

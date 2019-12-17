@@ -28,7 +28,6 @@ class Checkbox extends React.Component {
                 }
                 else {
                         all[-this.state.id -1] = !all[-this.state.id -1];
-                        localStorage.setItem('al', all)
                         users[i].booleanAllergies = all;
 
                 }
