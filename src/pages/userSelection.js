@@ -29,13 +29,15 @@ class UserProfile extends React.Component {
         if (!alreadyInUsers){
             let emptyDict = {
                 Name: this.state.name,
-                Preferences: [],
-                Allergies: [],
+                Preferences: ["Vegan", "Vegetarian", "Apples"],
+                Allergies: ["Candy", "sugar", "fries"],
                 Log: [],
                 Liked: [],
                 Disliked: [],
                 FirstTime: true,
-                FirstTime1: true
+                FirstTime1: true,
+                booleansPreferences: [false, false, false],
+                booleanAllergies: [false, false, false]
             };
             tempUsers.push(emptyDict);
             localStorage.setItem('users', JSON.stringify(tempUsers));

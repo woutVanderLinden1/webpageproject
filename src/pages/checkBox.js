@@ -7,21 +7,37 @@ class Checkbox extends React.Component {
         this.state = {
             isChecked: props.checked,
             name: props.name,
-            id: props.id
+            id: props.id,
+            prefs : props.prefs
         };
     }
     toggleChange = () => {
         this.setState({
             isChecked: !this.state.isChecked,
         });
-        let boxesCopy = JSON.parse(localStorage.getItem("boxes"));
-        for(let i = 0; i<boxesCopy.length;i++){
+        let users = JSON.parse(localStorage.getItem('users'));
+        for(let i = 0; i<users.length; i++) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                let prefs = users[i].booleansPreferences;
+                let all = users[i].booleanAllergies;
+                if (this.state.prefs === true) {
 
-                boxesCopy[this.state.id] = !boxesCopy[this.state.id];
-                break;
+                        prefs[this.state.id] = !prefs[this.state.id];
+                        users[i].booleansPreferences = prefs;
 
+                }
+                else {
+                        all[-this.state.id -1] = !all[-this.state.id -1];
+                        localStorage.setItem('al', all)
+                        users[i].booleanAllergies = all;
+
+                }
+
+
+            }
         }
-        localStorage.setItem("boxes", JSON.stringify(boxesCopy))
+
+        localStorage.setItem("users", JSON.stringify(users))
     }
     render() {
         return (

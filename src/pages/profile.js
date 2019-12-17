@@ -4,25 +4,20 @@ import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
 import Swal from 'sweetalert2';
 
-
-let namesPref = ["Vegetarian", "Gluten free", "Low Carb", "Vegan","Lactose Free","Low Cholesterol","Kosher","Halal", "Low Protein"];
-let namesAllergies = ["Shrimp", "Cherries", "Nuts", "Shellfish","Plums","Mushrooms","Fish","Avocado", "Gelatin"];
-let amountOfPref = namesPref.length;
-let amountOfAllergies = namesAllergies.length;
 class Profile extends React.Component {
     constructor() {
         super();
         let alreadySet = false;
-
+        this.amountOfLikes = 0;
+        this.amountOfDislikes = 0;
         if(localStorage.getItem('users') != null){
             let users = JSON.parse(localStorage.getItem('users'));
             for(let i = 0; i<users.length; i++){
-                let a = localStorage.getItem('currentUser');
                 if(users[i].Name === localStorage.getItem('currentUser')){
-
                     if(users[i].Preferences && users[i].Preferences.length && users[i].Allergies&& users[i].Preferences){
-                        localStorage.setItem("boxes", JSON.stringify(users[i].Preferences.concat(users[i].Allergies)));
                         alreadySet = true;
+                        this.amountOfDislikes = users[i].Allergies.length;
+                        this.amountOfLikes = users[i].Preferences.length;
                         break;
                     }
 
@@ -31,17 +26,16 @@ class Profile extends React.Component {
         }
         if(!alreadySet){
             let list = [];
-            for (let i = 0; i<amountOfAllergies+amountOfPref;i++){
-                list[i] = false;
-            }
-            localStorage.setItem("boxes", JSON.stringify(list));
         }
-        this.items = ['Test', 'NewTest', 'OldTest', 'Tttttt', 'TTttTTTTtt'];
+        this.items = ["Vegetarian", "Gluten free", "Low Carb", "Vegan","Lactose Free","Low Cholesterol","Kosher","Halal", "Low Protein","Shrimp", "Cherries", "Nuts", "Shellfish","Plums","Mushrooms","Fish","Avocado", "Gelatin"];
+
 
         this.state = {
             boxes: this.getItemLocal("boxes"),
-            suggestions: [],
-            text: ''
+            suggestionsLiked: [],
+            suggestionsDisliked: [],
+            textLiked: '',
+            textDisliked: ''
         };
 
         this.success = this.success.bind(this);
@@ -56,8 +50,10 @@ class Profile extends React.Component {
 
     getRender() {
         let users = JSON.parse(localStorage.getItem('users'));
+        let tempIndex = -1;
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
+                tempIndex = i;
                 if (users[i].FirstTime){
                     Swal.fire({
                         title: 'Welcome!',
@@ -65,8 +61,11 @@ class Profile extends React.Component {
                         icon: 'info',
                         confirmButtonText: 'Okay!'
                     });
+
                     users[i].FirstTime = false;
                     localStorage.setItem('users', JSON.stringify(users));
+
+                    break;
                 }
             }
         }
@@ -74,17 +73,28 @@ class Profile extends React.Component {
         let returnVal = [];
         let returnList = [];
         returnVal.push( <h3> Preferences </h3>);
-        for (let i = 0; i < amountOfPref; i++) {
-            returnList.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
+        const {textLiked} = this.state;
+        const {textDisliked} = this.state;
+
+        for (let i = 0; i < this.amountOfLikes; i++) {
+            returnList.push(<Checkbox name={users[tempIndex].Preferences[i]} checked={users[tempIndex].booleansPreferences[i]} id={i} prefs={true}/>)
+        }
+
+
+        returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
+        returnVal.push( <input value={textLiked}  onChange={this.onTextChangedLiked}  type={'text'}/>);
+        returnVal.push(this.renderSuggestionsLiked());
+        returnVal.push(<input type={"submit"} value={"Add something you like"} onClick={() =>this.doChange(textLiked, 1)}/>);
+        returnVal.push(<h3> Allergies </h3>);
+        returnList = [];
+        for (let i = 0; i <  this.amountOfDislikes; i++) {
+            returnList.push(<Checkbox name={users[tempIndex].Allergies[i]} checked={users[tempIndex].booleanAllergies[i]} id={-i-1} prefs={false}/>)
         }
 
         returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
-        returnVal.push(<h3> Allergies </h3>);
-        returnList = [];
-        for (let i = amountOfPref; i < this.state.boxes.length; i++) {
-            returnList.push(<Checkbox name={namesAllergies[i-amountOfPref]} checked={this.state.boxes[i]} id={i}/>)
-        }
-        returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
+        returnVal.push( <input value={textDisliked}  onChange={this.onTextChangedDisliked}  type={'text'}/>);
+        returnVal.push(this.renderSuggestionsDisliked());
+        returnVal.push(<input type={"submit"} value={"Add something you dislike"} onClick={() =>this.doChange(textDisliked, 2)}/>);
         return returnVal
 
     }
@@ -100,12 +110,10 @@ class Profile extends React.Component {
     updateAccount(){
         let users = JSON.parse(localStorage.getItem('users'));
         for(let i = 0; i<users.length; i++){
-
-
             if(users[i].Name === localStorage.getItem('currentUser')){
-                let prefAndAllergies = JSON.parse(localStorage.getItem('boxes'));
-                users[i].Preferences = prefAndAllergies.slice(0, amountOfPref);
-                users[i].Allergies = prefAndAllergies.slice(9, amountOfAllergies+amountOfPref)
+                //let prefAndAllergies = JSON.parse(localStorage.getItem('boxes'));
+                //users[i].booleanAllergies = prefAndAllergies.slice(0, this.amountOfLikes);
+                //users[i].booleansPreferences = prefAndAllergies.slice(this.amountOfLikes+1, this.amountOfLikes+this.amountOfDislikes);
                 break;
 
             }
@@ -134,43 +142,103 @@ class Profile extends React.Component {
 
     }
 
-    onTextChanged = (e) => {
+    onTextChangedLiked = (e) => {
         const value = e.target.value;
         let suggestions = [];
         if(value.length > 0){
             const regex = new RegExp(`^${value}`, 'i');
             suggestions = this.items.sort().filter(v => regex.test(v));
-
-
+        }
+        this.setState(() => ({suggestionsLiked: suggestions, textLiked: value}));
+    }
+    onTextChangedDisliked = (e) => {
+        const value = e.target.value;
+        let suggestions = [];
+        if(value.length > 0){
+            const regex = new RegExp(`^${value}`, 'i');
+            suggestions = this.items.sort().filter(v => regex.test(v));
         }
 
-        this.setState(() => ({suggestions: suggestions, text: value}))
+        this.setState(() => ({suggestionsDisliked: suggestions, textDisliked: value}));
     }
-    suggestionSelected(value){
+    suggestionSelectedLiked(value){
+
         this.setState(()=>({
-            text: value,
-            suggestions: []
+            textLiked: value,
+            suggestionsLiked: []
         }))
+        this.state.textLiked = value;
     }
-    renderSuggestions(){
+    suggestionSelectedDisliked(value){
+        this.setState(()=>({
+            textDisliked: value,
+            suggestionsDisliked: []
+        }))
+        this.state.textDisliked = value;
+    }
+    renderSuggestionsLiked(){
 
-        const {suggestions} = this.state;
-        localStorage.setItem("s", JSON.stringify(suggestions))
+        const {suggestionsLiked} = this.state;
 
-        if(suggestions.length === 0 ){
+        if(suggestionsLiked.length === 0 ){
             return null;
         }
         return(
             <div className={"AutoCompleteText"}>
             <ul>
-                {suggestions.map((i) => <li onClick={() =>this.suggestionSelected(i)}>{i}</li>)}
+                {suggestionsLiked.map((i) => <li onClick={() =>this.suggestionSelectedLiked(i)}>{i}</li>)}
             </ul>
             </div>
         );
     }
+    renderSuggestionsDisliked(){
 
+        const {suggestionsDisliked} = this.state;
+
+        if(suggestionsDisliked.length === 0 ){
+            return null;
+        }
+        return(
+            <div className={"AutoCompleteText"}>
+                <ul>
+                    {suggestionsDisliked.map((i) => <li onClick={() =>this.suggestionSelectedDisliked(i)}>{i}</li>)}
+                </ul>
+            </div>
+        );
+    }
+    doChange(item, buttonNb){
+        let items = this.items;
+        let users = JSON.parse(localStorage.getItem('users'));
+        for(let i = 0; i<users.length; i++) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                if(items.includes(item)){
+                    if(buttonNb === 1){
+                        users[i].Preferences.push(item);
+                        users[i].booleansPreferences.push(true);
+                        this.amountOfLikes = this.amountOfLikes + 1;
+                        this.setState(() => ({textLiked: item}));
+
+                    }
+                    else if(buttonNb === 2){
+                        users[i].Allergies.push(item);
+                        users[i].booleanAllergies.push(true);
+                        this.amountOfDislikes = this.amountOfDislikes + 1;
+                        this.setState(() => ({textDisliked: item}));
+
+                    }
+                    items.splice(this.items.indexOf(item),1);
+                    this.items = items
+                    localStorage.setItem("j", JSON.stringify(this.items))
+
+                    break;
+                }
+            }
+
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+    }
     render() {
-        const {text} = this.state;
+
         return (
 
             <div className="App">
@@ -179,8 +247,7 @@ class Profile extends React.Component {
                 <header className="App-header">
                     {this.getRender()}
                     {this.renderButton()}
-                    <input value={text} onChange={this.onTextChanged}  type={'text'}/>
-                        {this.renderSuggestions()}
+
 
                 </header>
             </div>
