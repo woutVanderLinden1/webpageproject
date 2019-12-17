@@ -13,6 +13,7 @@ class Profile extends React.Component {
     constructor() {
         super();
         let alreadySet = false;
+
         if(localStorage.getItem('users') != null){
             let users = JSON.parse(localStorage.getItem('users'));
             for(let i = 0; i<users.length; i++){
@@ -35,10 +36,14 @@ class Profile extends React.Component {
             }
             localStorage.setItem("boxes", JSON.stringify(list));
         }
+        this.items = ['Test', 'NewTest', 'OldTest', 'Tttttt', 'TTttTTTTtt'];
 
         this.state = {
             boxes: this.getItemLocal("boxes"),
+            suggestions: [],
+            text: ''
         };
+
         this.success = this.success.bind(this);
         this.updateAccount = this.updateAccount.bind(this);
 
@@ -68,7 +73,7 @@ class Profile extends React.Component {
 
         let returnVal = [];
         let returnList = [];
-        returnVal.push(<div className="newclass"> <h3> Preferences </h3></div>);
+        returnVal.push( <h3> Preferences </h3>);
         for (let i = 0; i < amountOfPref; i++) {
             returnList.push(<Checkbox name={namesPref[i]} checked={this.state.boxes[i]} id={i}/>)
         }
@@ -129,7 +134,43 @@ class Profile extends React.Component {
 
     }
 
+    onTextChanged = (e) => {
+        const value = e.target.value;
+        let suggestions = [];
+        if(value.length > 0){
+            const regex = new RegExp(`^${value}`, 'i');
+            suggestions = this.items.sort().filter(v => regex.test(v));
+
+
+        }
+
+        this.setState(() => ({suggestions: suggestions, text: value}))
+    }
+    suggestionSelected(value){
+        this.setState(()=>({
+            text: value,
+            suggestions: []
+        }))
+    }
+    renderSuggestions(){
+
+        const {suggestions} = this.state;
+        localStorage.setItem("s", JSON.stringify(suggestions))
+
+        if(suggestions.length === 0 ){
+            return null;
+        }
+        return(
+            <div className={"AutoCompleteText"}>
+            <ul>
+                {suggestions.map((i) => <li onClick={() =>this.suggestionSelected(i)}>{i}</li>)}
+            </ul>
+            </div>
+        );
+    }
+
     render() {
+        const {text} = this.state;
         return (
 
             <div className="App">
@@ -138,10 +179,12 @@ class Profile extends React.Component {
                 <header className="App-header">
                     {this.getRender()}
                     {this.renderButton()}
-
+                    <input value={text} onChange={this.onTextChanged}  type={'text'}/>
+                        {this.renderSuggestions()}
 
                 </header>
             </div>
+
 
         );
     }
