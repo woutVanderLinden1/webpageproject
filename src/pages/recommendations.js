@@ -496,12 +496,14 @@ class Recommendations extends React.Component {
                     </div>);
             }
         }
-
+        let empty = true;
         if(similarMeals!==undefined){
+
             for (let i = 0; i < similarMeals.length; i++) {
                 let number=Math.floor(similarMeals[i]["matchfactor"]*100);
                 let color=perc2color(number);
                 if (number >= 60){
+                    empty= false;
                     explanationHtmlTemp.push(
                         <div className="popupText2">
                             <div className="container2">
@@ -514,8 +516,33 @@ class Recommendations extends React.Component {
                         </div>);
                     }
             }
+           
         }
+        if (empty){
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
 
+                    </div>
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            You did not try anything like this! Try it out!
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+
+            );
+        }
+        else{
         nutritionalInfoHtml.push(
             <div className="row">
                 <div className="Nutritioncolumn">
@@ -538,8 +565,7 @@ class Recommendations extends React.Component {
                 </div>
             </div>
 
-        );
-
+        );}
         let html = [
             <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
             </button>} >
