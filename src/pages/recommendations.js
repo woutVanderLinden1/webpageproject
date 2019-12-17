@@ -378,10 +378,12 @@ class Recommendations extends React.Component {
 
     getRecommendations(){
         let users = JSON.parse(localStorage.getItem('users'));
+        let tempUserIndex = -1;
         let likedItems = null;
         let dislikedItems = null;
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
+                tempUserIndex = i;
                 likedItems = users[i].Liked;
                 dislikedItems = users[i].Disliked;
             }
@@ -408,8 +410,10 @@ class Recommendations extends React.Component {
         }
 
         payload.amount=amount;
-        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
-        const likes = JSON.parse(localStorage.getItem('boxes'));
+        let names = users[tempUserIndex].Preferences;
+
+
+        let likes = users[tempUserIndex].booleansPreferences;
 
         let account = {};
         // Creating account
