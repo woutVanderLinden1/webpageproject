@@ -516,7 +516,7 @@ class Recommendations extends React.Component {
                         </div>);
                     }
             }
-           
+
         }
         if (empty){
             nutritionalInfoHtml.push(
