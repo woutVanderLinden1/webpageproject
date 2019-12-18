@@ -1,22 +1,26 @@
-.likedimagewithshadow{
+.likedimagewithshadow {
     background-image: url(../assets/dislike.png);
 
-    filter: drop-shadow(0rem 0rem 2rem  green);
-    transform: rotate(180deg) translate(0%, -80px);
+    filter: drop-shadow(0rem 0rem 2rem green);
 
-    position: absolute;
+    transform: rotate(180deg) translate(10px, -80px);
+    position: relative;
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: right;
-    background-color: transparent;
-    color: transparent;
-    border:3px solid black;
+
+    color: lightgreen;
+    border: 3px solid black;
     outline: none;
 
-    left:65%;
+    left: 65%;
     width: 125px;
-    height:125px;
+    height: 125px;
+    margin-left: 180px;
     margin-right: 20px;
+    margin-bottom: -135px;
+
+
     object-fit: cover;
     border-radius: 80px;
     background-color: lightgreen;
@@ -24,51 +28,11 @@
 
 .dislikedimagewithshadow{
 
-    background-color: maroon;
     filter: drop-shadow(0rem 0rem 2rem  maroon);
-    background-image: url(../assets/dislike.png);
-    transform: translate(0%, 75px);
-    position:absolute;
-    left:25%;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: left;
-    color: white;
-    border:3px solid black;
-    outline: none;
-    border-radius: 80px;
-    width: 125px;
-    height:125px;
-    margin-right: 200px;
-    object-fit: cover;
-
-}
-.likedimage{
-    background-image: url(../assets/dislike.png);
-    transform: rotate(180deg) translate(0%, -80px);
-    position: absolute;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: right;
-    background-color: transparent;
-    color: transparent;
-    border:3px solid black;
-    outline: none;
-
-    left:65%;
-    width: 125px;
-    height:125px;
-    margin-right: 20px;
-    object-fit: cover;
-    border-radius: 80px;
-    background-color: lightgreen;
-
-}
-.dislikedimage{
     background-color: maroon;
     background-image: url(../assets/dislike.png);
-    transform: translate(0%, 75px);
-    position:absolute;
+    transform: translate(-550px, 80px);
+    position: relative;
     left:25%;
     background-size: 100%;
     background-repeat: no-repeat;
@@ -79,7 +43,53 @@
     border-radius: 90px;
     width: 125px;
     height:125px;
-    margin-right: 200px;
+    margin-right: 220px;
+    margin-bottom: -135px;
+    object-fit: cover;
+
+}
+.likedimage{
+    background-image: url(../assets/dislike.png);
+    transform: rotate(180deg) translate(10px,  -80px);
+    position:relative;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+
+    color: lightgreen;
+    border:3px solid black;
+    outline: none;
+
+    left:65%;
+    width: 125px;
+    height:125px;
+    margin-left: 180px;
+    margin-right: 20px;
+    margin-bottom: -135px;
+
+
+    object-fit: cover;
+    border-radius: 80px;
+    background-color: lightgreen;
+
+}
+.dislikedimage{
+    background-color: maroon;
+    background-image: url(../assets/dislike.png);
+    transform: translate(-550px, 80px);
+    position: relative;
+    left:25%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    color: white;
+    border:5px solid black;
+    outline: none;
+    border-radius: 90px;
+    width: 125px;
+    height:125px;
+    margin-right: 220px;
+    margin-bottom: -135px;
     object-fit: cover;
 
 }
