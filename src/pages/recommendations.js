@@ -516,7 +516,7 @@ class Recommendations extends React.Component {
                         </div>);
                     }
             }
-           
+
         }
         if (empty){
             nutritionalInfoHtml.push(
@@ -1280,23 +1280,48 @@ class Recommendations extends React.Component {
 
     //RENDER
     render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
-                        <Link to="/profile"><button className="profile" ><b> </b></button></Link>
-                    </div>
+        if(this.state.favorite){
+            return (
+                <div className="App">
+                    <header className="App-header">
+                        <div className="PageHeader"> <b className="PageTitle">Favorites</b>
+                            <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
+                            <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
+                        </div>
                         {this.generateView()}
-                    <div className="sliderBox" >
-                        <label className="switch">
-                            <input type="checkbox"></input>
-                            <span className="slider round" onClick={this.switchViews}></span>
-                        </label>
-                    </div>
-                </header>
+                        <div className="sliderBox" >
+                            <label className="switch">
+                                <input type="checkbox"></input>
+                                <span className="slider round" onClick={this.switchViews}></span>
+                            </label>
+                        </div>
+                    </header>
 
-            </div>
-        );
+                </div>
+            );
+        }
+        else{
+            return (
+                <div className="App">
+                    <header className="App-header">
+                        <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
+                            <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
+                            <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
+                        </div>
+                        {this.generateView()}
+                        <div className="sliderBox" >
+                            <label className="switch">
+                                <input type="checkbox"></input>
+                                <span className="slider round" onClick={this.switchViews}></span>
+                            </label>
+                        </div>
+                    </header>
+
+                </div>
+            );
+
+        }
+
     }
 }
 
