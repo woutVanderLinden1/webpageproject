@@ -148,6 +148,7 @@ class GettingToKnow extends React.Component {
 
                     let initialfoods = translation.recommends;
                     let initialtags = translation.tags;
+
                     let initialimages = translation.images;
                     let shuffled=this.filterfoods(initialfoods,initialtags,initialimages);
                     let filteredfoods=shuffled[0];
@@ -156,6 +157,7 @@ class GettingToKnow extends React.Component {
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
+
                     break;
                 case "favorites":
                     if(this.loading){
@@ -960,6 +962,7 @@ class GettingToKnow extends React.Component {
         let badges = [];
         let assets = this.getAssets();
 
+
         if(assets!=undefined && assets.length>0){
             if(assets[food]!=undefined){
                 assets[food].forEach(function (item, i) {
@@ -991,14 +994,18 @@ class GettingToKnow extends React.Component {
 
 
             let badges = [];
-            if(assets!=undefined && assets.length>0){
-                assets[i].forEach(function (item, i) {
-                    let badgeName = "FoodBadge " + item;
-                    if (item === "15-minutes-or-less") {
-                        badgeName = "FoodBadge fifteen-minutes-or-less";
-                    }
-                    badges.push(<button className={badgeName}> </button>);
-                });
+
+            if(assets!=undefined && assets.length>1){
+                if (assets[i]!=undefined){
+                    assets[i].forEach(function (item, i) {
+                        let badgeName = "FoodBadge " + item;
+                        if (item === "15-minutes-or-less") {
+                            badgeName = "FoodBadge fifteen-minutes-or-less";
+                        }
+                        badges.push(<button className={badgeName}> </button>);
+                    });
+                }
+
             }
 
             const config = {

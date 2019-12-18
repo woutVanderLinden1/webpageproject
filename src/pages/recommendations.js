@@ -108,6 +108,7 @@ class Recommendations extends React.Component {
         this.resetSwipes=this.resetSwipes.bind(this);
         this.generateFavorites=this.generateFavorites.bind(this);
         this.goToFavorites=this.goToFavorites.bind(this);
+        this.goToRecommends=this.goToRecommends.bind(this);
         this.generateBadges=this.generateBadges.bind(this);
         this.swipeItem = this.swipeItem.bind(this);
         this.saveAlert = this.saveAlert.bind(this);
@@ -121,7 +122,7 @@ class Recommendations extends React.Component {
                 this.loading=false;
                 this.sendable=true;
                 this.getRecommendations();
-                this.state.tags=undefined;
+
             }
 
             // do something after connection is opened
@@ -842,6 +843,10 @@ class Recommendations extends React.Component {
         this.getFavorites();
         this.setState({favorite: true});
     }
+    goToRecommends(){
+        this.getRecommendations();
+        this.setState({favorite: false});
+    }
 
     generateView() {
         if(this.state.favorite){
@@ -940,12 +945,14 @@ class Recommendations extends React.Component {
         if(favorites==null||favorites==undefined){
             return;
         }
+
         let html = [];
 
 
         for (let i = 0; i < favorites.length; i++) {
             let currentfavorite=favorites[i];
-
+            let name =currentfavorite["name"];
+            let image=currentfavorite["image"];
             let badges = [];
             currentfavorite["tags"].forEach(function (item, index) {
 
@@ -957,18 +964,80 @@ class Recommendations extends React.Component {
 
             });
             let className = "FoodItem fadeInLeft" + i;
-            html.push(<div>
-                <button className={className} onClick={() => this.getInfo(currentfavorite["name"])}  >
 
-                    <img className="FoodPhoto" align="left" src={currentfavorite["image"]} alt="Food"/>
+            const config = {
+                onSwiped: ()=>this.endSwipe(),
 
-                    <b className="FoodTitle">{currentfavorite["name"]}</b> <br/>
-                    {badges}
+                onSwipedLeft:()=>this.dislike(name),
+                display:"flex",
+                preventDefaultTouchmoveEvent: true,
+                trackMouse: true,
+                transition: "transform 1s ease",
+                delta:10
+            };
+            let tryouy=1;
+            let swipingspecials=[];
+            if(this.state.showThumbs==name||this.state.translation!=undefined) {
+                if (this.state.showThumbs == name || this.state.translation[name] != undefined) {
+                    if (Math.abs(this.state.shadownr) > 10) {
+                        if (this.state.shadownr > 0) {
+                            swipingspecials.push(
+                                <div>
 
-                    {this.recipePopup(currentfavorite["name"],currentfavorite["image"])}
-                    {this.nutritionalPopup(currentfavorite["name"])}
-                </button>
-            </div>)
+                                    <img className="dislikedimagewithshadow"/>
+                                </div>
+                            );
+                        } else {
+                            swipingspecials.push(
+                                <div>
+
+                                    <img className="dislikedimage"/>
+                                </div>
+                            );
+                        }
+                    } else {
+                        swipingspecials.push(
+                            <div>
+
+                                <img className="dislikedimage"/>
+                            </div>
+                        );
+                    }
+                }
+            }
+            html.push(<div className="icanswipe"  >
+                {swipingspecials}
+                <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
+                    <button   onMouseEnter={()=>this.setState({showThumbs:name})}
+                              onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
+                        , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(name)}  >
+                        <div className="rowbutton">
+                            <div className="columbuttonimage">
+                                <img className="FoodPhoto" align="left" src={image} alt="Food"/>
+                            </div>
+                            <div className="columtitle">
+                                <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
+                                <div className="foodtags2">
+                                    <div className="badgesContainer">
+                                        {badges}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="informationbuttonscolum">
+                                <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
+                                    {this.recipePopup(name,image)}
+                                </div>
+                                <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
+                                    {this.nutritionalPopup(name)}
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </Swiping>
+            </div>);
+
+
+
 
         }
 
@@ -1011,15 +1080,22 @@ class Recommendations extends React.Component {
 
             let badges = [];
             if(assets!=undefined && assets.length>0){
-                assets[i].forEach(function (item, i) {
-                    let badgeName = "FoodBadge " + item;
-                    if (item === "15-minutes-or-less") {
-                        badgeName = "FoodBadge fifteen-minutes-or-less";
-                    }
-                    badges.push(<InfoPopup position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
-                });
+                if(assets[i]!=undefined){
+                    assets[i].forEach(function (item, i) {
+                        let badgeName = "FoodBadge " + item;
+                        if (item === "15-minutes-or-less") {
+                            badgeName = "FoodBadge fifteen-minutes-or-less";
+                        }
+                        badges.push(<InfoPopup position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
+                    });
+                }
+
             }
 
+
+            //this.setState({translation: "translate(500%,10%)"});
+
+            let className = "FoodItem fadeInLeft" + i;
             const config = {
                 onSwiped: ()=>this.endSwipe(),
                 onSwipedRight:()=>this.like(name),
@@ -1030,9 +1106,6 @@ class Recommendations extends React.Component {
                 transition: "transform 1s ease",
                 delta:10
             };
-            //this.setState({translation: "translate(500%,10%)"});
-
-            let className = "FoodItem fadeInLeft" + i;
             let tryouy=1;
             let swipingspecials=[];
             if(this.state.showThumbs==name||this.state.translation!=undefined){
@@ -1129,15 +1202,18 @@ class Recommendations extends React.Component {
                 let foods = this.state.foods;
                 let tags = this.state.tags;
                 let images = this.state.images;
-
+                alert(foods);
                 let t=0;
 
                 for(let j=0;j<foods.length;j++){
-                    let f1 = foods[j].toLowerCase();
+                    if(foods[j]!=undefined){
+                        let f1 = foods[j].toLowerCase();
 
-                    if(f1===f2){
-                        t=j;
+                        if(f1===f2){
+                            t=j;
+                        }
                     }
+
                 }
                 if(liked==null){
                     liked=[];
@@ -1179,9 +1255,11 @@ class Recommendations extends React.Component {
                 let images = this.state.images;
                 let t = 0;
                 for (let j = 0; j < foods.length; j++) {
-                    let f1 = foods[j].toLowerCase();
-                    if (f1 === f2) {
-                        t = j;
+                    if(foods[j]!=undefined) {
+                        let f1 = foods[j].toLowerCase();
+                        if (f1 === f2) {
+                            t = j;
+                        }
                     }
                 }
                 foods.splice(t, 1);
@@ -1288,6 +1366,7 @@ class Recommendations extends React.Component {
                         <div className="PageHeader"> <b className="PageTitle">Favorites</b>
                             <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
                             <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
+                            <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
                         </div>
                         {this.generateView()}
                         <div className="sliderBox" >
@@ -1308,6 +1387,7 @@ class Recommendations extends React.Component {
                         <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
                             <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
                             <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
+                            <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
                         </div>
                         {this.generateView()}
                         <div className="sliderBox" >
