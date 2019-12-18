@@ -121,6 +121,7 @@ class Recommendations extends React.Component {
                 this.loading=false;
                 this.sendable=true;
                 this.getRecommendations();
+                this.state.tags=undefined;
             }
 
             // do something after connection is opened
