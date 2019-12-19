@@ -277,14 +277,28 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 .table{
-  display: table-cell;
+
   clear:both;
+  display: inline;
 }
-.tablecolumn{
-  height: 30%;
+.tablerow1{
+
+    height: 50%;
+
+  }
+.tablerow2{
+  margin: 5px;
+  height: 8%;
+}
+.tablerow3 {
+
+  height: 60px;
+  float: center;
+  display:inline;
+
 }
 .tablerow{
-  
+
 }
 .toRecommendButton{
   background-image: url(assets/dish.png);

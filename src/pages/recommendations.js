@@ -743,7 +743,7 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="IconLayout RecipeIcon" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                <button  title= "recipe" className="IconLayout2 RecipeIcon" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
 
                 </button>
                 <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
@@ -974,7 +974,7 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="IconLayout NutritionIcon" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({open: true});}} src={image} >
+                <button  title= "recipe" className="IconLayout2 NutritionIcon" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({open: true});}} src={image} >
 
                 </button>
                 <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
@@ -1137,14 +1137,14 @@ class Recommendations extends React.Component {
                                             </div>
                                             <div className="table">
 
-                                                    <div className="tablerow">
+                                                    <div className="tablerow1">
                                                         {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
                                                     </div>
-                                                    <div className="tablerow">
+                                                    <div className="tablerow2">
                                                         {this.generateBadges(this.state.swipednumber)}
                                                     </div>
 
-                                                    <div className="tablerow">
+                                                    <div className="tablerow3">
                                                         {this.recipePopupForTinder(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
                                                         {this.nutritionalPopupForTinder(this.state.foods[this.state.swipednumber])}
                                                     </div>
