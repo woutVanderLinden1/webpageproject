@@ -115,10 +115,22 @@ class Recommendations extends React.Component {
         this.swipeItem = this.swipeItem.bind(this);
         this.saveAlert = this.saveAlert.bind(this);
 
-        let payload={
-            action: "initialise"
-        };
+
         this.socket.onopen = () => {
+            let users = JSON.parse(localStorage.getItem('users'));
+            let payload= {
+                action: "initialise"
+            };
+            for (let i = users.length-1; i>=0; i--) {
+                if (users[i].Name === localStorage.getItem('currentUser')) {
+                    let liked=users[i].Liked;
+                     payload={
+                        action: "initialise",
+                        favorites:liked,
+                         name: localStorage.getItem('currentUser')
+                    };
+                }
+            }
             this.socket.send(JSON.stringify(payload));
             if (!this.sendable){
                 this.loading=false;
@@ -209,9 +221,10 @@ class Recommendations extends React.Component {
         let newinitialimages=shuffled[2];
 
         //initialfoods shuffle
-        let users = JSON.parse(localStorage.getItem('users'));
+
         let likedItems = null;
         let dislikedItems = null;
+        let users = JSON.parse(localStorage.getItem('users'));
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 likedItems = users[i].Liked;
@@ -449,14 +462,14 @@ class Recommendations extends React.Component {
 
         for (let i = 0; i < likedItems.length; i++) {
             let item = {};
-            item['name'] = likedItems[i];
+            item['name'] = likedItems[i].toLowerCase();
             item['rating'] = 1.0;
             prolist.push(item)
         }
 
         for (let i = 0; i < dislikedItems.length; i++) {
             let item = {};
-            item['name'] = dislikedItems[i];
+            item['name'] = dislikedItems[i].toLowerCase();
             item['rating'] = -1.0;
             prolist.push(item)
         }
