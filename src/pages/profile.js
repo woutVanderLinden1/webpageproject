@@ -241,6 +241,10 @@ class Profile extends React.Component {
 
             <div className="App">
                 <div className="PageHeader"> <b className="PageTitle">Your profile</b>
+                    <Link to="/profile"><button className="profile" ><b> </b></button></Link>
+                    <Link to="/recommendations"><button onClick={() => {localStorage.setItem("favorite", JSON.stringify(true));}} title="favorites" className="favorites" ><b> </b></button></Link>
+                    <Link to="/recommendations"><button onClick={() => localStorage.setItem("favorite", JSON.stringify(false))} title="recommends" className="toRecommendButton" ><b> </b></button></Link>
+
                 </div>
                 <header className="App-header">
                     {this.getRender()}

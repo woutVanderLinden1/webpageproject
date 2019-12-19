@@ -1266,6 +1266,8 @@ class GettingToKnow extends React.Component {
                 <header className="App-header">
                     <div className="PageHeader"> <b className="PageTitle">Let's get to know you!</b>
                         <Link to="/profile"><button className="profile" ><b> </b></button></Link>
+                        <Link to="/recommendations"><button onClick={() => {localStorage.setItem("favorite", JSON.stringify(true));}} title="favorites" className="favorites" ><b> </b></button></Link>
+                        <Link to="/recommendations"><button onClick={() => localStorage.setItem("favorite", JSON.stringify(false))} title="recommends" className="toRecommendButton" ><b> </b></button></Link>
                         <div className="sliderBox" >
                             <label className="switch">
                                 <input type="checkbox"></input>

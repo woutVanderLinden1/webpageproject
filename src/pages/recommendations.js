@@ -98,6 +98,7 @@ class Recommendations extends React.Component {
         };
         this.state.view=1;
 
+
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
@@ -122,12 +123,22 @@ class Recommendations extends React.Component {
             if (!this.sendable){
                 this.loading=false;
                 this.sendable=true;
-                this.getRecommendations();
+                if(this.state.favorite){
+                    this.goToFavorites()
+                }
+                else{
+                    this.getRecommendations();
+                }
+
+
 
             }
 
             // do something after connection is opened
         };
+
+        this.state.favorite=JSON.parse(localStorage.getItem('favorite'));
+
 
         this.socket.onmessage=((message) => {
             let translation=JSON.parse(message.data);
@@ -184,6 +195,10 @@ class Recommendations extends React.Component {
         });
         if(this.state.swipednumber==undefined){
             this.state.swipednumber=0;
+        }
+
+        if(this.state.favorite){
+            this.goToFavorites()
         }
     }
 
@@ -1074,11 +1089,15 @@ class Recommendations extends React.Component {
 
     goToFavorites(){
         this.getFavorites();
+        localStorage.setItem("favorite", JSON.stringify(true));
         this.setState({favorite: true});
+
     }
     goToRecommends(){
         this.getRecommendations();
+        localStorage.setItem("favorite", JSON.stringify(false));
         this.setState({favorite: false});
+
     }
 
     generateView() {
@@ -1691,6 +1710,7 @@ class Recommendations extends React.Component {
             );
 
         }
+        //<Link to="/recommendations"><button onclick={() => localStorage.setItem("favorite", JSON.stringify(true)} title="recommends" className="toRecommendButton" ><b> </b></button></Link>
 
     }
 }
