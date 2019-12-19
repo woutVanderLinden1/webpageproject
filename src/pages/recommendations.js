@@ -992,12 +992,12 @@ class Recommendations extends React.Component {
                 <button  title= "recipe" className="IconLayout2 NutritionIcon" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({open: true});}} src={image} >
 
                 </button>
-                <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                <Popup  open={this.state.nutritionopen} onClick={() => this.setState({nutritionopen: false})} closeOnDocumentClick
                         position="right center" >
 
-                    <div className="popUp3" onClick={() => this.setState({open: false})}>
+                    <div className="popUp3" onClick={() => this.setState({nutritionopen: false})}>
 
-                        <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                        <div className="popupHeader" onClick={() => this.setState({nutritionopen: false})}>Recipe for
                             <br/>
                             {title}</div>
                         <br/>
