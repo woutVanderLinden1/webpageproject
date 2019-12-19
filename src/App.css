@@ -276,6 +276,16 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.table{
+  display: table-cell;
+  clear:both;
+}
+.tablecolumn{
+  height: 30%;
+}
+.tablerow{
+  
+}
 .toRecommendButton{
   background-image: url(assets/dish.png);
   width: 60px;

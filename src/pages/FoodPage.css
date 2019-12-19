@@ -26,12 +26,12 @@
     background-color: lightgreen;
 }
 
-.dislikedimagewithshadow{
+.dislikedimagewithshadow2{
 
     filter: drop-shadow(0rem 0rem 2rem  maroon);
     background-color: maroon;
     background-image: url(../assets/dislike.png);
-    transform: translate(-550px, 80px);
+    transform: translate(-350px, 80px);
     position: relative;
     left:25%;
     background-size: 100%;
@@ -71,6 +71,26 @@
     object-fit: cover;
     border-radius: 80px;
     background-color: lightgreen;
+
+}
+.dislikedimage2{
+    background-color: maroon;
+    background-image: url(../assets/dislike.png);
+    transform: translate(-350px, 80px);
+    position: relative;
+    left:25%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    color: white;
+    border:5px solid black;
+    outline: none;
+    border-radius: 90px;
+    width: 125px;
+    height:125px;
+    margin-right: 220px;
+    margin-bottom: -135px;
+    object-fit: cover;
 
 }
 .dislikedimage{

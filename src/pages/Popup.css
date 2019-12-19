@@ -29,16 +29,18 @@
     background-color: transparent;
 }
 
+
 .popUp3{
     position: sticky;
+    transform: translate(-35%,-20%);
     border-radius: 8px;
     background-color: darkgreen;
     border: 15px solid darkgreen;
     overflow:hidden;
     overflow-y: scroll;
     clear:both;
-    top:50%;
-    left:40%;
+    top:0%;
+    left:0%;
     height: 700px;
     width: 800px;
 }
