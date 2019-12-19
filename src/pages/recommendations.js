@@ -1704,6 +1704,8 @@ class Recommendations extends React.Component {
                                 <span className="slider round" onClick={this.switchViews}></span>
                             </label>
                         </div>
+                        <div> <input type="checkbox" name="switchViews" value="switchViews" onClick={this.switchViews}/> </div>
+
                     </header>
 
                 </div>
