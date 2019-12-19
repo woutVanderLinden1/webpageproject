@@ -110,6 +110,18 @@
     margin-left: 10px;
 }
 .IconLayout {
+     background-size: 65% 65%;
+     background-repeat: no-repeat;
+     background-position: center;
+     border: 1px solid white;
+     outline: none;
+     border-radius: 12px;
+     width: 50px;
+     height: 50px;
+     margin:5px;
+
+ }
+.IconLayout2 {
     background-size: 65% 65%;
     background-repeat: no-repeat;
     background-position: center;
@@ -118,7 +130,11 @@
     border-radius: 12px;
     width: 50px;
     height: 50px;
-    margin:5px;
+
+    float:left;
+    margin-left:145px;
+    margin-right:-135px;
+
 }
 
 .RecipeIcon{
