@@ -771,7 +771,7 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="IconLayout2 RecipeIcon" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
 
                 </button>
                 <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
@@ -1002,7 +1002,7 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="IconLayout2 NutritionIcon" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopen: true});}} src={image} >
+                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopen: true});}} src={image} >
 
                 </button>
                 <Popup  open={this.state.nutritionopen} onClick={() => this.setState({nutritionopen: false})} closeOnDocumentClick

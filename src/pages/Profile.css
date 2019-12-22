@@ -67,6 +67,10 @@ ul.ks-cboxtags li label{
     width: 25%;
 }
 
+ul.ks-cboxtags li label:hover{
+    box-shadow: 0 0 0 3px rgba(0,0,0,.1), 0 2px 4px 1px rgba(0,0,0,.18);
+}
+
 ul.ks-cboxtags li label {
     padding: 8px 12px;
     cursor: pointer;
@@ -83,13 +87,13 @@ ul.ks-cboxtags li label::before {
     font-size: 12px;
     padding: 2px 6px 2px 2px;
     content: "\f067";
-    font-family: "FontAwesome";
+    font-family: "FontAwesome", Verdana, sans-serif;
     transition: transform .3s ease-in-out;
 }
 
 ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
     content: "\f00c";
-    font-family: "FontAwesome";
+    font-family: "FontAwesome", Verdana, sans-serif;
     transform: rotate(-360deg);
     transition: transform .3s ease-in-out;
 
@@ -119,9 +123,10 @@ body {
     width: 200px;
     border: 1px solid gray;
     box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px 1px rgba(0,0,0,.18);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Verdana, Helvetica, sans-serif;
     font-size: 14px;
     color: rgba(0,0,0,0.73);
+    border-radius: 5px;
 }
 input{
     width: 200px;
@@ -129,6 +134,7 @@ input{
     font-size: 14px;
 }
 .AutoCompleteText input{
+    font-family: Avenir, sans-serif;
     width: 40%;
     border: none;
     box-sizing: border-box;
@@ -152,5 +158,41 @@ input{
 }
 .AutoCompleteText li:hover{
     text-decoration: underline;
-    background-color: rgba(128,128,128,0.20);
+    background-color: darkgreen;
+    color: white;
+}
+
+.addButton {
+    font-size: 14px;
+    background-color: darkgreen;
+    border-radius: 20px;
+    color: white;
+    font-family: Verdana, sans-serif;
+    border: 2px solid white;
+    margin: 10px;
+    transition: all .2s;
+    width: 230px;
+    height: 35px;
+}
+
+.addButton:hover {
+    background-color: white;
+    color: darkgreen;
+    border: 2px solid darkgreen;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px 1px rgba(0,0,0,.18);
+}
+
+.textBoxAdd {
+    font-size: 14px;
+    background-color: white;
+    border-radius: 20px;
+    color: darkgreen;
+    font-family: Verdana, sans-serif;
+    border: 2px solid darkgreen;
+    margin: 10px;
+    transition: all .2s;
+    width: 430px;
+    height: 35px;
+    outline: none;
+    padding-left: 20px;
 }

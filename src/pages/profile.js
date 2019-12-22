@@ -81,9 +81,9 @@ class Profile extends React.Component {
 
 
         returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
-        returnVal.push( <input value={textLiked}  onChange={this.onTextChangedLiked}  type={'text'}/>);
+        returnVal.push( <input className="textBoxAdd" value={textLiked}  onChange={this.onTextChangedLiked}  type={'text'}/>);
         returnVal.push(this.renderSuggestionsLiked());
-        returnVal.push(<input type={"submit"} value={"Add something you like"} onClick={() =>this.doChange(textLiked, 1)}/>);
+        returnVal.push(<input className="addButton" type={"submit"} value={"Add something you like"} onClick={() =>this.doChange(textLiked, 1)}/>);
         returnVal.push(<h3> Allergies </h3>);
         returnList = [];
         for (let i = 0; i <  this.amountOfDislikes; i++) {
@@ -91,9 +91,9 @@ class Profile extends React.Component {
         }
 
         returnVal.push(<div class={"container"}><ul class={"ks-cboxtags"}> {returnList} </ul></div>);
-        returnVal.push( <input value={textDisliked}  onChange={this.onTextChangedDisliked}  type={'text'}/>);
+        returnVal.push( <input className="textBoxAdd" value={textDisliked}  onChange={this.onTextChangedDisliked}  type={'text'}/>);
         returnVal.push(this.renderSuggestionsDisliked());
-        returnVal.push(<input type={"submit"} value={"Add something you dislike"} onClick={() =>this.doChange(textDisliked, 2)}/>);
+        returnVal.push(<input className="addButton" type={"submit"} value={"Add something you dislike"} onClick={() =>this.doChange(textDisliked, 2)}/>);
         return returnVal
 
     }
