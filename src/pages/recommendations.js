@@ -9,6 +9,7 @@ import './tinderCards.css';
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import {  Popup as InfoPopup } from "semantic-ui-react";
+import ReactSwing from "react-swing";
 let lastItem = null;
 let lastAction  = null;
 export const icanswipe = styled.div`
@@ -83,7 +84,6 @@ class Recommendations extends React.Component {
     constructor() {
         super();
         this.state = {
-            timesClicked: 0,
             foods: [],
             tags: [],
             images: [],
@@ -92,10 +92,10 @@ class Recommendations extends React.Component {
             ingredients: [],
             similar: [],
             view: 0,
+            stack: null,
 
         };
-        this.state.view=1;
-
+        this.state.view=0;
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
@@ -110,6 +110,7 @@ class Recommendations extends React.Component {
         this.generateBadges=this.generateBadges.bind(this);
         this.swipeItem = this.swipeItem.bind(this);
         this.saveAlert = this.saveAlert.bind(this);
+        this.createCards = this.createCards.bind(this);
 
 
         this.socket.onopen = () => {
@@ -196,7 +197,7 @@ class Recommendations extends React.Component {
                     break
             }
         });
-        if(this.state.swipednumber==undefined){
+        if(this.state.swipednumber===undefined){
             this.state.swipednumber=0;
         }
 
@@ -249,10 +250,10 @@ class Recommendations extends React.Component {
     }
 
     initialiseSocket() {
-        if(this.socket!=undefined){
+        if(this.socket!==undefined){
             return this.socket;
         }
-        this.state.favorite=false;
+        this.setState({favorite: false});
         return new WebSocket("ws://localhost:9000");
     }
 
@@ -731,7 +732,6 @@ class Recommendations extends React.Component {
                     <div className = "popupText">
                         {ingredients[i]}
                         <br/>
-
                     </div>)
             }
         }
@@ -1014,6 +1014,7 @@ class Recommendations extends React.Component {
 
     }
 
+/*
     generateView() {
         if(this.state.favorite){
             return(
@@ -1108,6 +1109,71 @@ class Recommendations extends React.Component {
                 }
             }
 
+        }
+    } */
+
+    createCards() {
+        let html = [];
+        for (let i = 0; i < this.state.foods.length; i++) {
+            const refName = "card"+ i;
+            html.push(<div className="card" ref={refName}>
+                <div className="FoodHeader"><b>{capitalizeFLetter(this.state.foods[i])}</b></div>
+                {this.recipePopupFromImage(this.getname(i),this.getimage(i))}
+                {this.generateBadges(i)}
+                <div className="tablerow3">
+                    {this.recipePopupForTinder(this.state.foods[i],this.getimage(i))}
+                    {this.nutritionalPopupForTinder(this.state.foods[i])}
+                </div>
+            </div>)
+        }
+        return html
+    }
+
+    generateView() {
+        if(this.state.favorite){
+            return(
+                <div>
+                    <div className="Listing">
+                        favoritestate
+                        {this.generateFavorites()}
+                    </div>
+                    <div className="buttons">
+                        <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            if (this.state.view === 0) {
+                return (
+                    <div>
+
+                        <div className="Listing">
+                            {this.generateMeal()}
+                        </div>
+                        <div className="buttons">
+                            <button className="NextButton Green" onClick={this.saveAlert}><b>SAVE</b></button>
+                        </div>
+                    </div>)
+            }
+            else {
+                return (
+                    <div>
+                        <div id="viewport">
+                            <div className="dislikeStack"><b>Dislike</b></div>
+                            <div className="likeStack"><b>Like</b></div>
+                            <ReactSwing
+                                className="stack"
+                                tagName="div"
+                                setStack={stack => this.setState({ stack })}
+                                ref={this.stackEl}
+                            >
+                                {this.createCards()}
+                            </ReactSwing>
+                        </div>
+                    </div>
+                )
+            }
         }
     }
 
@@ -1464,7 +1530,6 @@ class Recommendations extends React.Component {
                 break;
             }
         }
-
     }
 
     endSwipe(){
@@ -1474,13 +1539,12 @@ class Recommendations extends React.Component {
         this.setState({translation: item, transparency: item});
 
     }
+
     swiped(eventData,name) {
         this.setState({swiping: true});
         this.setState({shadownr: eventData.deltaX});
-
         //show smiles
         let number=-1*eventData.deltaX;
-        let transit=this.state.transparency;
         let item = {};
         item[name] = "translate("+number+"px,0%)";
         //alert(item[name]);
@@ -1526,6 +1590,7 @@ class Recommendations extends React.Component {
                 </div>
             );
         }
+        // Favorites view
         else{
             return (
                 <div className="App">

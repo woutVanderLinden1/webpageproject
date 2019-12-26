@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import "../pages/SwipeTest.css"
 
 import ReactSwing from "react-swing";
 
