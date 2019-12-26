@@ -51,6 +51,7 @@ function perc2color(perc) {
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
 }
+
 function shuffle(array,array2,array3) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -1017,7 +1018,6 @@ class Recommendations extends React.Component {
         if(this.state.favorite){
             return(
                 <div>
-
                     <div className="Listing">
                         favoritestate
                         {this.generateFavorites()}
@@ -1075,14 +1075,10 @@ class Recommendations extends React.Component {
                                                     <div className="tablerow2">
                                                         {this.generateBadges(this.state.swipednumber)}
                                                     </div>
-
                                                     <div className="tablerow3">
                                                         {this.recipePopupForTinder(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
                                                         {this.nutritionalPopupForTinder(this.state.foods[this.state.swipednumber])}
                                                     </div>
-
-
-
                                             </div>
 
                                         </div>
@@ -1116,23 +1112,17 @@ class Recommendations extends React.Component {
     }
 
     generateFavorites() {
-
-
         let favorites = this.state.favorites;
         if(favorites==null||favorites==undefined){
             return;
         }
-
         let html = [];
-
-
         for (let i = 0; i < favorites.length; i++) {
             let currentfavorite=favorites[i];
             let name =currentfavorite["name"];
             let image=currentfavorite["image"];
             let badges = [];
             currentfavorite["tags"].forEach(function (item, index) {
-
                 let badgeName = "FoodBadge " + item;
                 if (item === "15-minutes-or-less") {
                     badgeName = "FoodBadge fifteen-minutes-or-less";
@@ -1141,10 +1131,8 @@ class Recommendations extends React.Component {
 
             });
             let className = "FoodItem fadeInLeft" + i;
-
             const config = {
                 onSwiped: ()=>this.endSwipe(),
-
                 onSwipedLeft:()=>this.unlike(name),
                 display:"flex",
                 preventDefaultTouchmoveEvent: true,
@@ -1160,14 +1148,12 @@ class Recommendations extends React.Component {
                         if (this.state.shadownr > 0) {
                             swipingspecials.push(
                                 <div>
-
                                     <img className="dislikedimagewithshadow2"/>
                                 </div>
                             );
                         } else {
                             swipingspecials.push(
                                 <div>
-
                                     <img className="dislikedimage2"/>
                                 </div>
                             );
@@ -1175,7 +1161,6 @@ class Recommendations extends React.Component {
                     } else {
                         swipingspecials.push(
                             <div>
-
                                 <img className="dislikedimage2"/>
                             </div>
                         );
@@ -1212,12 +1197,7 @@ class Recommendations extends React.Component {
                     </button>
                 </Swiping>
             </div>);
-
-
-
-
         }
-
         return html
     }
 
@@ -1241,20 +1221,15 @@ class Recommendations extends React.Component {
 
     //GENERATE MEAL
     generateMeal() {
-
         if (this.state.foods === undefined) {
             return
         }
         let foods = this.state.foods;
-
         let assets = this.getAssets();
         let html = [];
 
-
         for (let i = 0; i < foods.length; i++) {
             let name=capitalizeFLetter(foods[i]);
-
-
             let badges = [];
             if(assets!=undefined && assets.length>0){
                 if(assets[i]!=undefined){
@@ -1268,10 +1243,7 @@ class Recommendations extends React.Component {
                 }
 
             }
-
-
             //this.setState({translation: "translate(500%,10%)"});
-
             let className = "FoodItem fadeInLeft" + i;
             const config = {
                 onSwiped: ()=>this.endSwipe(),
@@ -1355,7 +1327,6 @@ class Recommendations extends React.Component {
 
     transformfunc(name) {
         if(this.state.translation!=undefined){
-
             return this.state.translation[name];
         }
         return "";
@@ -1363,11 +1334,9 @@ class Recommendations extends React.Component {
     }
     transparfunc(name){
         if(this.state.transparency!=undefined){
-
             return this.state.transparency[name];
         }
         return 1;
-
     }
 
     like(name){
@@ -1379,47 +1348,32 @@ class Recommendations extends React.Component {
                 let foods = this.state.foods;
                 let tags = this.state.tags;
                 let images = this.state.images;
-
                 let t=0;
-
                 for(let j=0;j<foods.length;j++){
                     if(foods[j]!=undefined){
                         let f1 = foods[j].toLowerCase();
-
                         if(f1===f2){
                             t=j;
                         }
                     }
-
                 }
                 if(liked==null){
                     liked=[];
                 }
                 foods.splice(t,1);
-                this.state.foods=foods;
+                this.setState({foods: foods});
                 tags.splice(t,1);
-                this.state.tags=tags;
+                this.setState({tags: tags});
                 images.splice(t,1);
-                this.state.images=images;
-
-
+                this.setState({images: images});
                 liked.push(name);
-
-
-                this.state.likedItems = liked;
-
                 this.setState({likedItems: liked});
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.logAction("like", name);
                 break;
             }
-
         }
-
-
-
-
     }
 
     unlike(name){
@@ -1427,9 +1381,7 @@ class Recommendations extends React.Component {
         let users = JSON.parse(localStorage.getItem('users'));
         for (let i = users.length -1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
-
                 let liked = users[i].Liked;
-
 
                 let t = 0;
                 for (let j = 0; j < liked.length; j++) {
@@ -1441,20 +1393,8 @@ class Recommendations extends React.Component {
                     }
                 }
                 liked.splice(t, 1);
-
-                this.state.liked = liked;
-                this.state.favorites=liked;
-
-
-
-
-
-
-
-
-
-
-
+                this.setState({liked: liked});
+                this.setState({favorites: liked});
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.setState({likedItems: liked});
@@ -1484,22 +1424,16 @@ class Recommendations extends React.Component {
                     }
                 }
                 foods.splice(t, 1);
-                this.state.foods = foods;
+                this.setState({foods: foods});
                 tags.splice(t, 1);
-                this.state.tags = tags;
+                this.setState({tags: tags});
                 images.splice(t, 1);
-                this.state.images = images;
-
-
+                this.setState({images: images});
 
                 if (disliked == null) {
                     disliked = [];
                 }
-
                 disliked.push(name);
-
-
-                this.state.dislikedItems = disliked;
                 this.setState({dislikedItems: disliked});
                 users[i].Disliked = disliked;
                 localStorage.setItem("users", JSON.stringify(users));
@@ -1507,7 +1441,6 @@ class Recommendations extends React.Component {
                 break;
             }
         }
-
     }
 
     logAction(thisAction, thisItem){
@@ -1535,15 +1468,15 @@ class Recommendations extends React.Component {
     }
 
     endSwipe(){
-        this.state.swiping=false;
-        this.state.shadownr=0;
+        this.setState({swiping: false});
+        this.setState({shadownr: 0});
         let item = {};
         this.setState({translation: item, transparency: item});
 
     }
     swiped(eventData,name) {
-        this.state.swiping=true;
-        this.state.shadownr=eventData.deltaX;
+        this.setState({swiping: true});
+        this.setState({shadownr: eventData.deltaX});
 
         //show smiles
         let number=-1*eventData.deltaX;
@@ -1553,16 +1486,8 @@ class Recommendations extends React.Component {
         //alert(item[name]);
         let item2 = {};
         item2[name] = 10/Math.abs(eventData.deltaX);
-
-
-
-
-
-
         this.setState({translation: item, transparency: item2});
-
     }
-
 
     getname(i){
         if(this.state.foods!==undefined) {
@@ -1618,9 +1543,7 @@ class Recommendations extends React.Component {
                             </label>
                         </div>
                         <div> <input type="checkbox" name="switchViews" value="switchViews" onClick={this.switchViews}/> </div>
-
                     </header>
-
                 </div>
             );
 
