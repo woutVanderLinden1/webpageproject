@@ -6,6 +6,7 @@ import Recommendations from './pages/recommendations';
 import TinderCards from './pages/tinderCards';
 import UserSelection from './pages/userSelection';
 import GettingToKnow from './pages/gettingToKnow';
+import SwipeTest from './pages/SwipeTest';
 
 import './App.css';
 import Profile from "./pages/profile";
@@ -87,6 +88,7 @@ class App extends Component {
             <Router basename="/react-auth-ui/">
                 <div className="App">
                     <Switch>
+                        <Route exact path="/test" component={SwipeTest}></Route>
                         <Route exact path="/" component={UserSelection}></Route>
                         <Route exact path="/recommendations" component={Recommendations}></Route>
                         <Route exact path="/profile" component={Profile}></Route>

@@ -21,9 +21,6 @@ export const icanswipe = styled.div`
 }};
 `;
 
-
-
-
 const wrapperStyles = {position: "relative", width: "250px", height: "300px"};
 const actionsStyles = {
     display: "flex",
@@ -98,11 +95,9 @@ class Recommendations extends React.Component {
         };
         this.state.view=1;
 
-
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
-        this.increaseCounter=this.increaseCounter.bind(this);
         this.generateMeal=this.generateMeal.bind(this);
         this.getRecommendations=this.getRecommendations.bind(this);
         this.switchViews=this.switchViews.bind(this);
@@ -141,16 +136,11 @@ class Recommendations extends React.Component {
                 else{
                     this.getRecommendations();
                 }
-
-
-
             }
-
             // do something after connection is opened
         };
 
         this.state.favorite=JSON.parse(localStorage.getItem('favorite'));
-
 
         this.socket.onmessage=((message) => {
             let translation=JSON.parse(message.data);
@@ -251,50 +241,35 @@ class Recommendations extends React.Component {
                 filteredimages.push((newinitialimages[i]));
                 //alert(initialfoods[i]);
             }
-
         }
-        let answer=[]
+        let answer=[];
         answer.push(filteredFoods,filteredtags,filteredimages);
-
         return answer;
     }
 
     initialiseSocket() {
-
         if(this.socket!=undefined){
-
             return this.socket;
         }
         this.state.favorite=false;
         return new WebSocket("ws://localhost:9000");
     }
 
-    increaseCounter() {
-
-        console.log("increased");
-        let clicked = this.state.timesClicked + 1;
-        this.setState({timesClicked: clicked})
-    }
     getInfo(string) {
         this.sendRecipe(string);
         this.sendNuttritionSimilar(string);
-
     }
     sendRecipe(name) {
-
         console.log("send recipe");
         this.socket=this.initialiseSocket();
         let payload = {
             action: "Recipe",
             recipe: name
         };
-
-
         let ingredipayload = {
             action: "Ingredients",
             name: name
         };
-
         //  this.socket.close();
         if(this.sendable!==undefined&&this.sendable){
             this.socket.send(JSON.stringify(payload));
@@ -352,12 +327,10 @@ class Recommendations extends React.Component {
         similarpayload.prolist = prolist;
         if(this.sendable!==undefined&&this.sendable) {
             this.socket.send(JSON.stringify(similarpayload));
-
         }
     }
 
     getFavorites(){
-
         let users = JSON.parse(localStorage.getItem('users'));
         let likedItems = null;
         for (let i = users.length-1; i>=0; i--) {
@@ -371,16 +344,11 @@ class Recommendations extends React.Component {
 
         let payload = {
             action: "Favorites",
-
-
             prolist: [{name:"hot tamale  burgers", rating:0.5}]
         };
 
-
-
         const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
         const likes = JSON.parse(localStorage.getItem('boxes'));
-
 
         // Creating prolist
         let prolist = [];
@@ -392,11 +360,8 @@ class Recommendations extends React.Component {
             prolist.push(item)
         }
 
-
-
         payload.prolist = prolist;
         console.log(prolist);
-
 
         console.log(payload);
 
@@ -490,9 +455,6 @@ class Recommendations extends React.Component {
             });
             this.loading=true;
         }
-
-
-
     }
 
     //POPUP CODE
@@ -506,24 +468,17 @@ class Recommendations extends React.Component {
         let explanationHtmlTemp = [];
         let similarMeals = this.getExplanation();
         let title=capitalizeFLetter(name);
-
         if(nutritionalInfo!==undefined){
-
             for (let i = 0; i < nutritionalInfo.length; i++){
-
                 nutritionalInfoHtmlTemp.push(
                     <div className = "popupText">
-
                         {nutritionLabels[i]}
                         <br/>
-
                     </div>);
                 nutritionalInfoHtmlTemp2.push(
                     <div className = "popupText">
-
                         {nutritionalInfo[i]}
                         <br/>
-
                     </div>);
             }
         }
@@ -547,7 +502,6 @@ class Recommendations extends React.Component {
                         </div>);
                     }
             }
-
         }
         if (empty){
             nutritionalInfoHtml.push(
@@ -561,7 +515,6 @@ class Recommendations extends React.Component {
                             <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
                             <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
                         </div>
-
                     </div>
                     <div className="column">
                         <div className="popupTextTitle2">
@@ -611,8 +564,8 @@ class Recommendations extends React.Component {
 
         return html;
     }
-    recipePopup(name,image){
 
+    recipePopup(name,image){
         //Recipe list
         let recept = this.getRecipe();
         let recipeHtmlTemp = [];
@@ -620,7 +573,6 @@ class Recommendations extends React.Component {
         let popUpHtml = [];
         let ingredientsHtmlTemp = [];
         let title=capitalizeFLetter(name);
-
 
         if(ingredients!==undefined){
             for (let i = 0; i < ingredients.length; i++){
@@ -634,20 +586,13 @@ class Recommendations extends React.Component {
         }
         if(recept!==undefined){
             for (let i = 0; i < recept.length; i++){
-
                 recipeHtmlTemp.push(
                     <div className = "popupRecipeText">
                         {i + 1}. {recept[i]}
                         <br/>
-
                     </div>)
             }
         }
-
-
-
-
-
         //, width: "30%" vs 70%
         //add an extra element to the column that includes the image
         popUpHtml.push(
@@ -676,28 +621,21 @@ class Recommendations extends React.Component {
             </div>
 
         );
-
-
-
-
         let html = [];
         html.push(
             <Popup className="poptry" modal trigger={<button  title= "recipe" className="IconLayout RecipeIcon" onClick={() => this.sendRecipe(name)}>
-
             </button>} position="right center" >
                 <div className="popUp2">
                     <div className="popupHeader">Recipe for
                         <br/>
                         {title}</div>
                     <br/>
-
                     {popUpHtml}
                 </div>
-
             </Popup>);
-
         return html;
     }
+
     recipePopupForTinder(name,image){
         //Recipe list
         let recept = this.getRecipe();
@@ -707,32 +645,24 @@ class Recommendations extends React.Component {
         let ingredientsHtmlTemp = [];
         let title=capitalizeFLetter(name);
 
-
         if(ingredients!==undefined){
             for (let i = 0; i < ingredients.length; i++){
                 ingredientsHtmlTemp.push(
                     <div className = "popupText">
                         {ingredients[i]}
                         <br/>
-
                     </div>)
             }
         }
         if(recept!==undefined){
             for (let i = 0; i < recept.length; i++){
-
                 recipeHtmlTemp.push(
                     <div className = "popupRecipeText">
                         {i + 1}. {recept[i]}
                         <br/>
-
                     </div>)
             }
         }
-
-
-
-
 
         //, width: "30%" vs 70%
         //add an extra element to the column that includes the image
@@ -748,7 +678,6 @@ class Recommendations extends React.Component {
                         {ingredientsHtmlTemp}
                     </div>
                     <div className="row2">
-
                         <img className="FoodPhotoLarge3" onClick={() => this.setState({open: false})} align="left" src={image} alt="Food"/>
                     </div>
                 </div>
@@ -764,31 +693,21 @@ class Recommendations extends React.Component {
             </div>
 
         );
-
-
         let html = [];
-
 
         html.push(
             <div>
                 <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
-
                 </button>
                 <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
                         position="right center" >
-
                     <div className="popUp3" onClick={() => this.setState({open: false})}>
-
                         <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
                             <br/>
                             {title}</div>
                         <br/>
-
                         {popUpHtml}
                     </div>
-
-
-
                 </Popup>
             </div>
         );
@@ -796,9 +715,7 @@ class Recommendations extends React.Component {
         return html;
     }
 
-
     recipePopupFromImage(name,image){
-
         //Recipe list
         let recept = this.getRecipe();
         let recipeHtmlTemp = [];
@@ -807,7 +724,6 @@ class Recommendations extends React.Component {
         let ingredientsHtmlTemp = [];
         let title=capitalizeFLetter(name);
 
-
         if(ingredients!==undefined){
             for (let i = 0; i < ingredients.length; i++){
                 ingredientsHtmlTemp.push(
@@ -818,21 +734,15 @@ class Recommendations extends React.Component {
                     </div>)
             }
         }
-        if(recept!==undefined){
+        if(recept!==undefined) {
             for (let i = 0; i < recept.length; i++){
-
                 recipeHtmlTemp.push(
                     <div className = "popupRecipeText">
                         {i + 1}. {recept[i]}
                         <br/>
-
                     </div>)
             }
         }
-
-
-
-
 
         //, width: "30%" vs 70%
         //add an extra element to the column that includes the image
@@ -862,39 +772,31 @@ class Recommendations extends React.Component {
                     </div>
                 </div>
             </div>
-
         );
 
 
         let html = [];
 
-
         html.push(
             <div>
             <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
-
             </img>
             <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
                       position="right center" >
-
                 <div className="popUp3" onClick={() => this.setState({open: false})}>
-
                     <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
                         <br/>
                         {title}</div>
                     <br/>
-
                     {popUpHtml}
                 </div>
-
-
-
             </Popup>
             </div>
         );
 
         return html;
     }
+
     nutritionalPopupForTinder(name,image){
         //Recipe list
         let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
@@ -1026,8 +928,6 @@ class Recommendations extends React.Component {
 
         return html;
     }
-
-
 
     //GET DATA
     getIngredients(gerecht){
