@@ -730,12 +730,12 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({opened: name});}} src={image} >
                 </button>
-                <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                <Popup  open={this.state.opened==name} onClick={() => this.setState({opened: "none"})} closeOnDocumentClick
                         position="right center" >
-                    <div className="popUp3" onClick={() => this.setState({open: false})}>
-                        <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                    <div className="popUp3" onClick={() => this.setState({opened: "none"})}>
+                        <div className="popupHeader" onClick={() => this.setState({opened: "none"})}>Recipe for
                             <br/>
                             {title}</div>
                         <br/>
@@ -936,15 +936,15 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopen: true});}} src={image} >
+                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopened: name});}} src={image} >
 
                 </button>
-                <Popup  open={this.state.nutritionopen} onClick={() => this.setState({nutritionopen: false})} closeOnDocumentClick
+                <Popup  open={this.state.nutritionopened==name} onClick={() => this.setState({nutritionopened: 'none'})} closeOnDocumentClick
                         position="right center" >
 
-                    <div className="popUp3" onClick={() => this.setState({nutritionopen: false})}>
+                    <div className="popUp3" onClick={() => this.setState({nutritionopened: "none"})}>
 
-                        <div className="popupHeader" onClick={() => this.setState({nutritionopen: false})}>Recipe for
+                        <div className="popupHeader" onClick={() => this.setState({nutritionopened: "none"})}>Recipe for
                             <br/>
                             {title}</div>
                         <br/>
