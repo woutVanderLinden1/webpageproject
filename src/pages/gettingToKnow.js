@@ -756,6 +756,84 @@ class GettingToKnow extends React.Component {
 
         return html;
     }
+    recipePopupForTinder(name,image){
+        //Recipe list
+        let recept = this.getRecipe();
+        let recipeHtmlTemp = [];
+        let ingredients = this.getIngredients();
+        let popUpHtml = [];
+        let ingredientsHtmlTemp = [];
+        let title=capitalizeFLetter(name);
+
+        if(ingredients!==undefined){
+            for (let i = 0; i < ingredients.length; i++){
+                ingredientsHtmlTemp.push(
+                    <div className = "popupText">
+                        {ingredients[i]}
+                        <br/>
+                    </div>)
+            }
+        }
+        if(recept!==undefined){
+            for (let i = 0; i < recept.length; i++){
+                recipeHtmlTemp.push(
+                    <div className = "popupRecipeText">
+                        {i + 1}. {recept[i]}
+                        <br/>
+                    </div>)
+            }
+        }
+
+        //, width: "30%" vs 70%
+        //add an extra element to the column that includes the image
+
+        popUpHtml.push(
+            <div className="row:after">
+                <div className="column">
+                    <div className="rowingredi">
+                        <div className="popupTextTitle">
+                            Ingredients:
+                            <br/>
+                        </div>
+                        {ingredientsHtmlTemp}
+                    </div>
+                    <div className="row2">
+                        <img className="FoodPhotoLarge3" onClick={() => this.setState({open: false})} align="left" src={image} alt="Food"/>
+                    </div>
+                </div>
+                <div className="column2">
+                    <div className="reciperow">
+                        <div className="popupTextTitleRecipe">
+                            Steps:
+                            <br/>
+                        </div>
+                        {recipeHtmlTemp}
+                    </div>
+                </div>
+            </div>
+
+        );
+        let html = [];
+
+        html.push(
+            <div>
+                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                </button>
+                <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                        position="right center" >
+                    <div className="popUp3" onClick={() => this.setState({open: false})}>
+                        <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                            <br/>
+                            {title}</div>
+                        <br/>
+                        {popUpHtml}
+                    </div>
+                </Popup>
+            </div>
+        );
+
+        return html;
+    }
 
 
 
@@ -817,6 +895,137 @@ class GettingToKnow extends React.Component {
         this.setState({view: value});
         this.setState({favorite: false});
         localStorage.setItem("view", value.toString());
+    }
+    nutritionalPopupForTinder(name,image){
+        //Recipe list
+        let nutritionLabels = ['Carbs','Total Fats', 'Sugar', 'Sodium', 'Protein', 'Saturated Fats', 'Carbohydrates'];
+        let nutritionalInfo = this.getNutritionInfo(name);
+        let nutritionalInfoHtml = [];
+        let nutritionalInfoHtmlTemp = [];
+        let nutritionalInfoHtmlTemp2 = [];
+        let explanationHtmlTemp = [];
+        let similarMeals = this.getExplanation();
+        let title=capitalizeFLetter(name);
+
+        if(nutritionalInfo!==undefined){
+
+            for (let i = 0; i < nutritionalInfo.length; i++){
+
+                nutritionalInfoHtmlTemp.push(
+                    <div className = "popupText">
+
+                        {nutritionLabels[i]}
+                        <br/>
+
+                    </div>);
+                nutritionalInfoHtmlTemp2.push(
+                    <div className = "popupText">
+
+                        {nutritionalInfo[i]}
+                        <br/>
+
+                    </div>);
+            }
+        }
+        let empty = true;
+        if(similarMeals!==undefined){
+
+            for (let i = 0; i < similarMeals.length; i++) {
+                let number=Math.floor(similarMeals[i]["matchfactor"]*100);
+                let color=perc2color(number);
+                if (number >= 60){
+                    empty= false;
+                    explanationHtmlTemp.push(
+                        <div className="popupText2">
+                            <div className="container2">
+                                <img className="FoodPhotoLarge3" onClick={this.goToFavorites} title={similarMeals[i]["name"]} align="left" src={similarMeals[i]["image"]} alt="Food"/>
+                                <button className="OnTopButton" style={{backgroundColor: color}}>{number}%</button>
+                            </div>
+
+                            <br/>
+
+                        </div>);
+                }
+            }
+
+        }
+        if (empty){
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
+
+                    </div>
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            You did not try anything like this! Try it out!
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+
+            );
+        }
+        else{
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
+
+                    </div>
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            Because you liked:
+                            <br/>
+                        </div>
+                        {explanationHtmlTemp}
+                    </div>
+                </div>
+
+            );}
+
+        let html = [];
+
+
+        html.push(
+            <div>
+                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopen: true});}} src={image} >
+
+                </button>
+                <Popup  open={this.state.nutritionopen} onClick={() => this.setState({nutritionopen: false})} closeOnDocumentClick
+                        position="right center" >
+
+                    <div className="popUp3" onClick={() => this.setState({nutritionopen: false})}>
+
+                        <div className="popupHeader" onClick={() => this.setState({nutritionopen: false})}>Recipe for
+                            <br/>
+                            {title}</div>
+                        <br/>
+
+                        {nutritionalInfoHtml}
+                    </div>
+
+
+
+                </Popup>
+            </div>
+        );
+
+        return html;
     }
 
 
@@ -884,8 +1093,8 @@ class GettingToKnow extends React.Component {
 
                                                 {this.generateBadges(this.state.swipednumber)}
                                                 <div>
-                                                    {this.recipePopup(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
-                                                    {this.nutritionalPopup(this.state.foods[this.state.swipednumber])}
+                                                    {this.recipePopupForTinder(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
+                                                    {this.nutritionalPopupForTinder(this.state.foods[this.state.swipednumber])}
                                                 </div>
 
                                             </div>

@@ -113,6 +113,33 @@
     object-fit: cover;
 
 }
+.dislikedimagewithshadow {
+    background-image: url(../assets/dislike.png);
+    background-color: maroon;
+    filter: drop-shadow(0rem 0rem 2rem maroon);
+
+    transform: translate(-1000px, 80px);
+    position: relative;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+
+    color: maroon;
+    border: 3px solid black;
+    outline: none;
+
+    left: 65%;
+    width: 125px;
+    height: 125px;
+    margin-left: 180px;
+    margin-right: 20px;
+    margin-bottom: -135px;
+
+
+    object-fit: cover;
+    border-radius: 80px;
+
+}
 .FoodItem {
     grid-template-areas:
             'image image name name name '

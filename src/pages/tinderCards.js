@@ -8,7 +8,7 @@ const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
 const actionsStyles = {
     display: "flex",
     justifyContent: "space-between",
-    marginTop: 12,
+    marginTop: 12
 };
 
 class TinderCards extends Component {
