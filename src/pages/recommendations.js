@@ -268,7 +268,8 @@ class Recommendations extends React.Component {
     }
 
     getInfo(string) {
-        alert('hi');
+
+
         this.sendRecipe(string);
         this.sendNuttritionSimilar(string);
     }
@@ -327,10 +328,13 @@ class Recommendations extends React.Component {
         }
         let prolist = [];
         for (let i = 0; i < likedItems.length; i++) {
-            let item = {};
-            item['name'] = likedItems[i];
-            item['rating']= 1.0;
-            prolist.push(item)
+           if(likedItems[i]!=name){
+               let item = {};
+               item['name'] = likedItems[i];
+               item['rating']= 1.0;
+               prolist.push(item);
+           }
+
         }
 
         for (let i = 0; i < dislikedItems.length; i++) {
@@ -460,14 +464,14 @@ class Recommendations extends React.Component {
 
         for (let i = 0; i < likedItems.length; i++) {
             let item = {};
-            item['name'] = likedItems[i].toLowerCase();
+            item['name'] = likedItems[i];
             item['rating'] = 1.0;
             prolist.push(item)
         }
 
         for (let i = 0; i < dislikedItems.length; i++) {
             let item = {};
-            item['name'] = dislikedItems[i].toLowerCase();
+            item['name'] = dislikedItems[i];
             item['rating'] = -1.0;
             prolist.push(item)
         }
@@ -1220,20 +1224,34 @@ class Recommendations extends React.Component {
         if(favorites==null||favorites==undefined){
             return;
         }
+       // alert(JSON.stringify(favorites));
         let html = [];
         for (let i = 0; i < favorites.length; i++) {
             let currentfavorite=favorites[i];
             let name =currentfavorite["name"];
             let image=currentfavorite["image"];
             let badges = [];
-            currentfavorite["tags"].forEach(function (item, index) {
-                let badgeName = "FoodBadge " + item;
-                if (item === "15-minutes-or-less") {
-                    badgeName = "FoodBadge fifteen-minutes-or-less";
-                }
-                badges.push(<saveAlert content={item} trigger={<button className={badgeName}> </button>} />);
+       
+            if(currentfavorite["tags"]==undefined){
 
-            });
+            }
+            else{
+                if(currentfavorite["tags"].length<=1){
+                    badges.push(<button className={"FoodBadge "+currentfavorite["tags"]}> </button> )
+                }
+                else{
+                    currentfavorite["tags"].forEach(function (item, index) {
+                        let badgeName = "FoodBadge " + item;
+                        if (item === "15-minutes-or-less") {
+                            badgeName = "FoodBadge fifteen-minutes-or-less";
+                        }
+                        badges.push(<button className={badgeName}> </button>);
+
+                    });
+                }
+            }
+
+
             let className = "FoodItem fadeInLeft" + i;
             const config = {
                 onSwiped: ()=>this.endSwipe(),
@@ -1335,6 +1353,7 @@ class Recommendations extends React.Component {
         for (let i = 0; i < foods.length; i++) {
             let name=capitalizeFLetter(foods[i]);
             let badges = [];
+
             if(assets!=undefined && assets.length>0){
                 if(assets[i]!=undefined){
                     assets[i].forEach(function (item, i) {
@@ -1391,6 +1410,7 @@ class Recommendations extends React.Component {
                     }
                 }
             }
+
 
 
             // <button className={className} onClick={this.increaseCounter}
@@ -1462,23 +1482,38 @@ class Recommendations extends React.Component {
                         }
                     }
                 }
-                if(liked==null){
-                    liked=[];
+
+                alert(liked.length);
+                if( liked.length==undefined){
+                    let newliked=[];
+                    if(liked!=undefined){
+                        newliked.push(liked);
+                    }
+
+                    newliked.push(f2);
+                    liked=newliked;
                 }
+                else{
+
+                    liked.push(f2);
+                }
+
                 foods.splice(t,1);
                 this.setState({foods: foods});
                 tags.splice(t,1);
                 this.setState({tags: tags});
                 images.splice(t,1);
                 this.setState({images: images});
-                liked.push(name);
+
                 this.setState({likedItems: liked});
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.logAction("like", name);
+                alert(users[i].Liked);
                 break;
             }
         }
+
     }
 
     unlike(name){
@@ -1497,16 +1532,23 @@ class Recommendations extends React.Component {
                         }
                     }
                 }
+                if (liked==undefined){
+                    liked=[];
+                }
+
                 liked.splice(t, 1);
+                let favorites=this.state.favorites;
+                favorites.splice(t,1);
                 this.setState({liked: liked});
-                this.setState({favorites: liked});
+                this.setState({favorites: favorites});
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.setState({likedItems: liked});
                 this.logAction("unlike", name);
+
                 break;
             }
-            this.setState({favorites:true});
+            this.setState({favorite:true});
         }
 
     }
