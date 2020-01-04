@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 class UserProfile extends React.Component {
     constructor() {
         super();
+        localStorage.setItem("view", 1);
         if(localStorage.getItem("users")===null){
             let tempList = [];
             localStorage.setItem("users", JSON.stringify(tempList));
@@ -29,8 +30,8 @@ class UserProfile extends React.Component {
         if (!alreadyInUsers){
             let emptyDict = {
                 Name: this.state.name,
-                Preferences: ["vegan", "vegetarian", "easy"],
-                Allergies: ["candy", "sugar", "fries"],
+                Preferences: ["vegan", "vegetarian", "gluten-free"],
+                Allergies: ["nuts", "lactose", "seafood"],
                 Log: [],
                 Liked: [],
                 Disliked: [],

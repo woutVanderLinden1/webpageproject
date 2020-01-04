@@ -210,7 +210,7 @@ class Profile extends React.Component {
         let users = JSON.parse(localStorage.getItem('users'));
         for(let i = 0; i<users.length; i++) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
-                if(items.includes(item)){
+                if(items.includes(item) && item!==''){
                     if(buttonNb === 1){
                         users[i].Preferences.push(item);
                         users[i].booleansPreferences.push(true);
