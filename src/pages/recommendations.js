@@ -171,6 +171,7 @@ class Recommendations extends React.Component {
                     this.setState({images: filteredImages});
                     break;
                 case "favorites":
+
                     if(this.loading){
                        // alert("this favorites");
                         this.loading=false;
@@ -184,6 +185,15 @@ class Recommendations extends React.Component {
                   //  alert('favorites set '+ translation.favorites);
                     break;
                 case "Similar":
+
+                        // alert("this favorites");
+                        this.loading=false;
+                        Swal.fire({
+                            title: "Finished!",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+
                     this.setState({similar: translation.similar});
                     break;
                 case "Recipe":
@@ -258,10 +268,12 @@ class Recommendations extends React.Component {
     }
 
     getInfo(string) {
+        alert('hi');
         this.sendRecipe(string);
         this.sendNuttritionSimilar(string);
     }
     sendRecipe(name) {
+        name=name.toLowerCase();
         console.log("send recipe");
         this.socket=this.initialiseSocket();
         let payload = {
@@ -281,6 +293,7 @@ class Recommendations extends React.Component {
 
 
     sendNuttritionSimilar(name) {
+        name=name.toLowerCase();
         this.socket=this.initialiseSocket();
         let payload = {
             action: "Nutrition",
@@ -316,7 +329,7 @@ class Recommendations extends React.Component {
         for (let i = 0; i < likedItems.length; i++) {
             let item = {};
             item['name'] = likedItems[i];
-            item['rating'] = 1.0;
+            item['rating']= 1.0;
             prolist.push(item)
         }
 
@@ -327,9 +340,21 @@ class Recommendations extends React.Component {
             prolist.push(item)
         }
         similarpayload.prolist = prolist;
-        if(this.sendable!==undefined&&this.sendable) {
-            this.socket.send(JSON.stringify(similarpayload));
+        this.state.proto=!this.state.proto;
+        if(this.sendable) {
+            if(this.state.proto){
+                this.socket.send(JSON.stringify(similarpayload));
+                Swal.fire({
+                    title: "Loading...",
+                    text: "Please wait",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            }
+
         }
+
+
     }
 
     getFavorites(){
@@ -369,7 +394,13 @@ class Recommendations extends React.Component {
 
         if(this.sendable) {
             this.socket.send(JSON.stringify(payload));
-
+            Swal.fire({
+                title: "Loading...",
+                text: "Please wait",
+                showConfirmButton: false,
+                allowOutsideClick: false,
+            });
+            this.loading=true;
         }
     }
 
@@ -1238,7 +1269,7 @@ class Recommendations extends React.Component {
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
                     <button   onMouseEnter={()=>this.setState({showThumbs:name})}
                               onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
-                        , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(name)}  >
+                        , opacity: this.transparfunc(name)} }  >
                         <div className="rowbutton">
                             <div className="columbuttonimage">
                                 <img className="FoodPhoto" align="left" src={image} alt="Food"/>
@@ -1252,12 +1283,12 @@ class Recommendations extends React.Component {
                                 </div>
                             </div>
                             <div className="informationbuttonscolum">
-                                <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
-                                    {this.recipePopup(name,image)}
+                                <div className="informationbutton1" onClick={() => {this.logAction("get recipe",name);this.sendRecipe(name)}}>
+                                    {this.recipePopup(name,this.getimage(i))}
                                 </div>
-                                <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
-                                    {this.nutritionalPopup(name)}
-                                </div>
+                                <div className="informationbutton2" onClick={() => {this.logAction("get nutritional values",name);this.sendNuttritionSimilar(name)}}>
+                                {this.nutritionalPopup(name)}
+                                    </div>
                             </div>
                         </div>
                     </button>
@@ -1361,7 +1392,7 @@ class Recommendations extends React.Component {
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
                             <button   onMouseEnter={()=>this.setState({showThumbs:name})}
                                       onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
-                               , opacity: this.transparfunc(name)} } onClick={() => this.getInfo(foods[i])}  >
+                               , opacity: this.transparfunc(name)} } onClick={() => {}}  >
                                 <div className="rowbutton">
                                     <div className="columbuttonimage">
                                         <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
@@ -1375,10 +1406,10 @@ class Recommendations extends React.Component {
                                         </div>
                                     </div>
                                     <div className="informationbuttonscolum">
-                                        <div className="informationbutton1" onClick={() => this.logAction("get recipe",name)}>
+                                        <div className="informationbutton1" onClick={() => {this.logAction("get recipe",name);this.sendRecipe(name)}}>
                                             {this.recipePopup(foods[i],this.getimage(i))}
                                         </div>
-                                        <div className="informationbutton2" onClick={() => this.logAction("get nutritional values",name)}>
+                                        <div className="informationbutton2" onClick={() => {this.logAction("get nutritional values",name);this.sendNuttritionSimilar(name)}} >
                                             {this.nutritionalPopup(foods[i])}
                                         </div>
                                     </div>
