@@ -813,7 +813,7 @@ class Recommendations extends React.Component {
             <div>
             <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
             </img>
-            <Popup  open={this.state.open} onClick={() => this.setState({open: false})} closeOnDocumentClick
+            <Popup  open={false} onClick={() => this.setState({open: false})} closeOnDocumentClick
                       position="right center" >
                 <div className="popUp3" onClick={() => this.setState({open: false})}>
                     <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
