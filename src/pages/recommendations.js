@@ -998,7 +998,8 @@ class Recommendations extends React.Component {
         const value = (this.state.view + 1) % 2;
         this.setState({view: value});
         this.setState({favorite: false});
-        localStorage.setItem("view", value.toString());
+       ;
+        localStorage.setItem("view", ((JSON.parse( localStorage.getItem("view")))+1)%2);
     }
 
 
