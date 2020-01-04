@@ -91,7 +91,7 @@ class Recommendations extends React.Component {
             nutrition: [],
             ingredients: [],
             similar: [],
-            view: 0,
+            view: 1,
             stack: null,
 
         };
@@ -990,6 +990,7 @@ class Recommendations extends React.Component {
         this.getRecommendations();
         this.setState({view: 1});
         this.setState({favorite: false});
+        localStorage.setItem("view", 1);
     }
 
     switchViews() {
@@ -1156,7 +1157,10 @@ class Recommendations extends React.Component {
                         </div>
                     </div>)
             }
+
+
             else {
+
                 return (
                     <div>
                         <div id="viewport">
@@ -1167,6 +1171,8 @@ class Recommendations extends React.Component {
                                 tagName="div"
                                 setStack={stack => this.setState({ stack })}
                                 ref={this.stackEl}
+                                throwoutleft={()=>this.dislike("")}
+                                throwoutright={()=>this.like("")}
                             >
                                 {this.createCards()}
                             </ReactSwing>
@@ -1406,6 +1412,7 @@ class Recommendations extends React.Component {
     }
 
     like(name){
+        if(name==="") name = this.state.foods[this.state.foods.length-1];
         let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
         for (let i = users.length-1; i>=0; i--) {
@@ -1472,6 +1479,7 @@ class Recommendations extends React.Component {
 
     }
     dislike(name){
+        if(name==="") name = this.state.foods[this.state.foods.length-1];
         let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
         for (let i = users.length -1; i>=0; i--) {
@@ -1485,6 +1493,8 @@ class Recommendations extends React.Component {
                     if(foods[j]!=undefined) {
                         let f1 = foods[j].toLowerCase();
                         if (f1 === f2) {
+                            localStorage.setItem("n", "kked")
+
                             t = j;
                         }
                     }
