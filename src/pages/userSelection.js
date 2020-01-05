@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 class UserProfile extends React.Component {
     constructor() {
         super();
-        localStorage.setItem("view", 1);
         if(localStorage.getItem("users")===null){
             let tempList = [];
             localStorage.setItem("users", JSON.stringify(tempList));
@@ -45,6 +44,15 @@ class UserProfile extends React.Component {
         }
 
         localStorage.setItem('currentUser', this.state.name);
+
+    }
+    handleTest(e) {
+        if(localStorage.getItem("viewInit") ==null){
+            localStorage.setItem("viewInit", "1")
+        }
+        if (e.ctrlKey && e.charCode == 13 ) {
+            localStorage.setItem("viewInit", ((JSON.parse( localStorage.getItem("viewInit")))+1)%2);
+        }
     }
     render() {
 
@@ -63,6 +71,7 @@ class UserProfile extends React.Component {
                                 placeholder={"Your name"}
                                 value={this.state.username}
                                 onChange={this.handleChange}
+                                onKeyPress={this.handleTest}
                             />
 
                         </div>

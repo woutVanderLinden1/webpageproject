@@ -94,7 +94,7 @@ class App extends Component {
                         <Route exact path="/profile" component={Profile}></Route>
                         <Route exact path="/tinderCards" component={TinderCards}></Route>
                         <Route exact path="/home" component={Home}></Route>
-                        <Route exact path="/gettingToKnow" component={GettingToKnow}></Route>
+                        <Route exact path="/gettingToKnow" component={Recommendations}></Route>
 
                     </Switch>
                 </div>

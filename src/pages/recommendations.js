@@ -214,6 +214,7 @@ class Recommendations extends React.Component {
         if(this.state.favorite){
             this.goToFavorites()
         }
+
     }
 
     filterfoods(initialfoods,initialtags,initialimages){
@@ -1167,6 +1168,8 @@ class Recommendations extends React.Component {
     }
 
     generateView() {
+        
+
         if(this.state.favorite){
             return(
                 <div>
@@ -1651,6 +1654,7 @@ class Recommendations extends React.Component {
         return "";
     }
 
+
     //RENDER
     render() {
         if(this.state.favorite){
@@ -1674,6 +1678,8 @@ class Recommendations extends React.Component {
                 </div>
             );
         }
+
+
         // Favorites view
         else{
             return (
@@ -1691,7 +1697,7 @@ class Recommendations extends React.Component {
                                 <span className="slider round" onClick={this.switchViews}></span>
                             </label>
                         </div>
-                        <div> <input type="checkbox" name="switchViews" value="switchViews" onClick={this.switchViews}/> </div>
+                        <div> <input  type="checkbox" name="switchViews" value="switchViews"   onClick={this.switchViews}/> </div>
                     </header>
                 </div>
             );

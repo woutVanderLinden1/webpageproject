@@ -205,7 +205,9 @@ p {
   top:25px;
   right:155px;
 }
-
+.invisible{
+  opacity: 0;
+}
 /* The switch - the box around the slider */
 .switch {
   position: absolute;
