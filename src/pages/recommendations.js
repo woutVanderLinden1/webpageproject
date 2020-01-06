@@ -1168,7 +1168,7 @@ class Recommendations extends React.Component {
     }
 
     generateView() {
-        
+
 
         if(this.state.favorite){
             return(

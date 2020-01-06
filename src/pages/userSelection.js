@@ -50,9 +50,34 @@ class UserProfile extends React.Component {
         if(localStorage.getItem("viewInit") ==null){
             localStorage.setItem("viewInit", "1")
         }
+
         if (e.ctrlKey && e.charCode == 13 ) {
             localStorage.setItem("viewInit", ((JSON.parse( localStorage.getItem("viewInit")))+1)%2);
         }
+        else if( e.charCode==13){
+            localStorage.setItem("k","jdskdfkl")
+            let users = JSON.parse(localStorage.getItem("users"));
+            let logForUser = users[1].Log;
+            let s = "";
+            let k = "";
+            for(let j = 0; j<users.length;j++){
+                k = k+users[j].Name;
+                if(j!=users.length-1) {
+                    k = k+", ";
+                }
+                for(let i = 0; i< logForUser.length; i++){
+                    s = s + logForUser[i];
+                    if(i!=logForUser.length -1) s =s +", "
+                }
+                if(j!=users.length-1) {
+                    s= s+"; ";
+                }
+            }
+
+            localStorage.setItem("logForUser", s);
+            localStorage.setItem("usersString", k);
+        }
+
     }
     render() {
 
