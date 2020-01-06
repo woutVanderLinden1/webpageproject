@@ -55,7 +55,6 @@ class UserProfile extends React.Component {
             localStorage.setItem("viewInit", ((JSON.parse( localStorage.getItem("viewInit")))+1)%2);
         }
         else if( e.charCode==13){
-            localStorage.setItem("k","jdskdfkl")
             let users = JSON.parse(localStorage.getItem("users"));
             let logForUser = users[1].Log;
             let s = "";
