@@ -53,7 +53,9 @@ class Profile extends React.Component {
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 tempIndex = i;
+                localStorage.setItem("favorite", JSON.stringify(false));
                 if (users[i].FirstTime){
+
                     Swal.fire({
                         title: 'Welcome!',
                         text: "Let's set you up! First, choose your preferences and your allergies if you have some.",
@@ -122,7 +124,7 @@ class Profile extends React.Component {
         for (let i = users.length -1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 if (users[i].FirstTime1){
-                    users[i].FirstTime1 = false;
+
                     localStorage.setItem('users', JSON.stringify(users));
                    return <Link to="/recommendationsA"><button className="NextButton Green" onClick={this.updateAccount}><b>Recommend!</b></button></Link>
 

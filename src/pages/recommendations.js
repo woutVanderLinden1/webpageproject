@@ -166,7 +166,35 @@ class Recommendations extends React.Component {
                     let users = JSON.parse(localStorage.getItem('users'));
                     for (let i = users.length-1; i>=0; i--) {
                         if (users[i].Name === localStorage.getItem('currentUser')) {
-                            if(users[i].FirstTime2){
+                            if(users[i].FirstTime1){
+                                Swal.fire({
+
+                                    text: "Drag an item left to dislike it, or right to like it.",
+                                    icon: 'info',
+                                    confirmButtonText: 'Okay!'
+                                }).then(() => {{
+                                    if (clickConfirm) {
+                                        Swal.fire({
+                                            text: "To see the recipe of the dish or the nutritional values, press the small buttons on the cards.",
+
+                                            icon: 'info',
+                                            confirmButtonText: 'Okay!'
+                                        }).then(() => {
+                                            if (clickConfirm) {
+                                                Swal.fire({
+                                                    text: "You can navigate to your profile and to your liked items by clicking on the icons on top of the page. ",
+                                                    icon: 'info',
+                                                    confirmButtonText: 'Okay!'
+                                                })
+                                            }
+                                        })
+                                    }
+                                }});
+                                users[i].FirstTime1 = false;
+                                users[i].FirstTime2 = false;
+                                localStorage.setItem("users", JSON.stringify(users));
+                            }
+                            else if(users[i].FirstTime2){
                                 Swal.fire({
                                     title: "You're getting the hang of this!",
                                     icon: 'success',
@@ -232,6 +260,20 @@ class Recommendations extends React.Component {
                             showConfirmButton: false,
                             timer: 1000
                         });
+                        let users = JSON.parse(localStorage.getItem('users'));
+                        for (let i = users.length-1; i>=0; i--) {
+                            if (users[i].Name === localStorage.getItem('currentUser')) {
+                               if(users[i].FirstTime3){
+                                   Swal.fire({
+                                       title: "Do not lose any of your liked recipes!",
+                                       text: "You can find them here!",
+                                       icon:"info"
+                                   });
+                                   users[i].FirstTime3 = false;
+                                   localStorage.setItem('users', JSON.stringify(users));
+                               }
+                            }
+                        }
                     }
                     this.setState({favorites: translation.favorites});
                   //  alert('favorites set '+ translation.favorites);

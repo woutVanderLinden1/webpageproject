@@ -37,6 +37,7 @@ class UserProfile extends React.Component {
                 FirstTime: true,
                 FirstTime1: true,
                 FirstTime2: true,
+                FirstTime3: true,
                 booleansPreferences: [false, false, false],
                 booleanAllergies: [false, false, false]
             };

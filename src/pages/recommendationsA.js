@@ -6,7 +6,7 @@ import Popup from "reactjs-popup";
 import Swipeable from "react-swipy";
 import {Swipeable as Swiping} from "react-swipeable";
 import './tinderCards.css';
-import Swal from "sweetalert2";
+import Swal, {clickConfirm} from "sweetalert2";
 import styled from "styled-components";
 import {  Popup as InfoPopup } from "semantic-ui-react";
 import ReactSwing from "react-swing";
@@ -125,6 +125,9 @@ class RecommendationsA extends React.Component {
             };
             for (let i = users.length-1; i>=0; i--) {
                 if (users[i].Name === localStorage.getItem('currentUser')) {
+                               users[i].FirstTime1 = false;
+                               localStorage.setItem("users", JSON.stringify(users));
+
                     let liked=users[i].Liked;
                     payload={
                         action: "initialise",
@@ -165,10 +168,26 @@ class RecommendationsA extends React.Component {
                     }
                     Swal.fire({
                         title: 'Great!',
-                        text: "Now let's choose some meals you like or dislike, so we can get a small glimpse into your preferences. Drag an item left to dislike it, or right to like it.",
+                        text: "Now let's choose some meals you like or dislike, so we can get a small glimpse into your preferences.",
                         icon: 'success',
                         confirmButtonText: 'Okay!'
-                    })
+                    }).then(() => {
+                        if (clickConfirm) {
+                            Swal.fire({
+                                text: " Drag an item left to dislike it, or right to like it.",
+                                icon: 'info',
+                                confirmButtonText: 'Okay!'
+                            }).then(() => {
+                                if (clickConfirm) {
+                                    Swal.fire({
+                                        text: " If you're ready, press the button down bellow for some personalized recommendations!",
+                                        icon: 'info',
+                                        confirmButtonText: 'Okay!'
+                                    });
+                                }
+                            })
+                        }});
+
 
                     let initialfoods = translation.recommends;
                     let initialtags = translation.tags;
@@ -1719,9 +1738,7 @@ class RecommendationsA extends React.Component {
                 <div className="App">
                     <header className="App-header">
                         <div className="PageHeader"> <b className="PageTitle">Let's get to know you!</b>
-                            <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
-                            <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
-                            <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
+
                         </div>
                         {this.generateView()}
 
