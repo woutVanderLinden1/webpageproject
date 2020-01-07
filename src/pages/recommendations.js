@@ -1345,18 +1345,21 @@ class Recommendations extends React.Component {
 
             }
             else{
-                if(currentfavorite["tags"].length<=1){
-                    badges.push(<button className={"FoodBadge "+currentfavorite["tags"]}> </button> )
-                }
-                else{
-                    currentfavorite["tags"].forEach(function (item, index) {
-                        let badgeName = "FoodBadge " + item;
-                        if (item === "15-minutes-or-less") {
-                            badgeName = "FoodBadge fifteen-minutes-or-less";
-                        }
-                        badges.push(<button className={badgeName}> </button>);
+                if(currentfavorite["tags"].length!=0) {
 
-                    });
+
+                    if (currentfavorite["tags"].length <= 1) {
+                        badges.push(<button className={"FoodBadge " + currentfavorite["tags"]}></button>)
+                    } else {
+                        currentfavorite["tags"].forEach(function (item, index) {
+                            let badgeName = "FoodBadge " + item;
+                            if (item === "15-minutes-or-less") {
+                                badgeName = "FoodBadge fifteen-minutes-or-less";
+                            }
+                            badges.push(<button className={badgeName}></button>);
+
+                        });
+                    }
                 }
             }
 
