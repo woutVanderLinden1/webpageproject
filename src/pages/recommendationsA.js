@@ -180,7 +180,7 @@ class RecommendationsA extends React.Component {
                             }).then(() => {
                                 if (clickConfirm) {
                                     Swal.fire({
-                                        text: " If you're ready, press the button down bellow for some personalized recommendations!",
+                                        text: " If you're ready, press the recommend button down below for some personalized recommendations!",
                                         icon: 'info',
                                         confirmButtonText: 'Okay!'
                                     });
