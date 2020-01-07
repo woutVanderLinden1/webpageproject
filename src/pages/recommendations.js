@@ -79,10 +79,14 @@ function shuffle(array,array2,array3) {
 
     return answer;
 }
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 class Recommendations extends React.Component {
     constructor() {
         super();
+
         this.state = {
             foods: [],
             tags: [],
@@ -91,11 +95,12 @@ class Recommendations extends React.Component {
             nutrition: [],
             ingredients: [],
             similar: [],
-            view: 1,
-            stack: null,
+
 
         };
-        this.state.view=0;
+
+
+
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
@@ -169,6 +174,21 @@ class Recommendations extends React.Component {
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
+                    if(JSON.parse(localStorage.getItem('viewInit'))==1 && this.state.initialised!=true){
+                        this.state.view=0;
+                        sleep(5).then(() => {
+                            this.state.view= JSON.parse(localStorage.getItem('viewInit'));
+                            if(this.state.view==1){
+                                this.state.swipednumber=0;
+                                const value = (this.state.view + 1) % 2;
+                                localStorage.setItem("view", value);
+                                this.state.initialised=true;
+                                this.setState({view: 1});
+                            }
+                        })
+
+
+                    }
                     break;
                 case "favorites":
 
@@ -214,6 +234,10 @@ class Recommendations extends React.Component {
         if(this.state.favorite){
             this.goToFavorites()
         }
+        if(this.state.initialised==undefined||this.state.initialised==false){
+            this.state.view=0;
+        }
+
 
     }
 
@@ -484,6 +508,7 @@ class Recommendations extends React.Component {
 
         console.log(payload)
         if(this.sendable) {
+
             this.socket.send(JSON.stringify(payload));
             Swal.fire({
                 title: "Loading...",
@@ -491,6 +516,7 @@ class Recommendations extends React.Component {
                 showConfirmButton: false,
                 allowOutsideClick: false,
             });
+            this.state.initialised=false;
             this.loading=true;
         }
     }
@@ -1031,11 +1057,12 @@ class Recommendations extends React.Component {
 
     switchViews() {
         this.state.swipednumber=0;
-        const value = (this.state.view + 1) % 2;
+        let  value = (this.state.view + 1) % 2;
+        localStorage.setItem("viewInit", value);
         this.setState({view: value});
         this.setState({favorite: false});
-       ;
-        localStorage.setItem("view", ((JSON.parse( localStorage.getItem("view")))+1)%2);
+
+        localStorage.setItem("view", value);
     }
 
 
@@ -1154,7 +1181,7 @@ class Recommendations extends React.Component {
         let html = [];
         for (let i = 0; i < this.state.foods.length; i++) {
             const refName = "card"+ i;
-            html.push(<div className="card" ref={refName}>
+            html.push(<div className="card"  ref={refName}>
                 <div className="FoodHeader"><b>{capitalizeFLetter(this.state.foods[i])}</b></div>
                 {this.recipePopupFromImage(this.getname(i),this.getimage(i))}
                 {this.generateBadges(i)}
@@ -1163,6 +1190,7 @@ class Recommendations extends React.Component {
                     {this.nutritionalPopupForTinder(this.state.foods[i])}
                 </div>
             </div>)
+
         }
         return html
     }
@@ -1183,6 +1211,7 @@ class Recommendations extends React.Component {
         }
         else {
             if (this.state.view === 0) {
+
                 return (
                     <div>
 
@@ -1237,7 +1266,7 @@ class Recommendations extends React.Component {
             let name =currentfavorite["name"];
             let image=currentfavorite["image"];
             let badges = [];
-       
+
             if(currentfavorite["tags"]==undefined){
 
             }
@@ -1660,6 +1689,7 @@ class Recommendations extends React.Component {
 
     //RENDER
     render() {
+
         if(this.state.favorite){
             return (
                 <div className="App">

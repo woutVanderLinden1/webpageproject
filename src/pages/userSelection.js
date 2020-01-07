@@ -47,7 +47,7 @@ class UserProfile extends React.Component {
 
     }
     handleTest(e) {
-        if(localStorage.getItem("viewInit") ==null){
+        if(localStorage.getItem("viewInit") ==undefined){
             localStorage.setItem("viewInit", "1")
         }
 

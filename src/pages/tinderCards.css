@@ -13,7 +13,10 @@
     -o-user-select: none;
     user-select: none;
 }
-
+.card{
+    transform: translate(.1px, .1px);
+    position:absolute;
+}
 .FoodCard:hover {
     background-color: #f9f9f9;
 }
