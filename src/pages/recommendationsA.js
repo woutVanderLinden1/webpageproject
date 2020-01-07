@@ -83,7 +83,7 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-class Recommendations extends React.Component {
+class RecommendationsA extends React.Component {
     constructor() {
         super();
 
@@ -125,11 +125,14 @@ class Recommendations extends React.Component {
             };
             for (let i = users.length-1; i>=0; i--) {
                 if (users[i].Name === localStorage.getItem('currentUser')) {
+                               users[i].FirstTime1 = false;
+                               localStorage.setItem("users", JSON.stringify(users));
+
                     let liked=users[i].Liked;
-                     payload={
+                    payload={
                         action: "initialise",
                         favorites:liked,
-                         name: localStorage.getItem('currentUser')
+                        name: localStorage.getItem('currentUser')
                     };
                 }
             }
@@ -156,72 +159,34 @@ class Recommendations extends React.Component {
                 case "Recommends":
                     if(this.loading){
                         this.loading=false;
-                       // alert("this");
+                        // alert("this");
                         Swal.fire({
                             title: "Finished!",
                             showConfirmButton: false,
                             timer: 1000
                         });
                     }
-                    let users = JSON.parse(localStorage.getItem('users'));
-                    for (let i = users.length-1; i>=0; i--) {
-                        if (users[i].Name === localStorage.getItem('currentUser')) {
-                            if(users[i].FirstTime1){
-                                Swal.fire({
-
-                                    text: "Drag an item left to dislike it, or right to like it.",
-                                    icon: 'info',
-                                    confirmButtonText: 'Okay!'
-                                }).then(() => {{
-                                    if (clickConfirm) {
-                                        Swal.fire({
-                                            text: "To see the recipe of the dish or the nutritional values, press the small buttons on the cards.",
-
-                                            icon: 'info',
-                                            confirmButtonText: 'Okay!'
-                                        }).then(() => {
-                                            if (clickConfirm) {
-                                                Swal.fire({
-                                                    text: "You can navigate to your profile and to your liked items by clicking on the icons on top of the page. ",
-                                                    icon: 'info',
-                                                    confirmButtonText: 'Okay!'
-                                                })
-                                            }
-                                        })
-                                    }
-                                }});
-                                users[i].FirstTime1 = false;
-                                users[i].FirstTime2 = false;
-                                localStorage.setItem("users", JSON.stringify(users));
-                            }
-                            else if(users[i].FirstTime2){
-                                Swal.fire({
-                                    title: "You're getting the hang of this!",
-                                    icon: 'success',
-                                    confirmButtonText: 'Okay!'
-                                }).then(() => {
-                                    if (clickConfirm) {
-                                        Swal.fire({
-                                            text: "To see the recipe of the dish or the nutritional values, press the small buttons on the cards.",
-
-                                            icon: 'info',
-                                            confirmButtonText: 'Okay!'
-                                        }).then(() => {
-                                            if (clickConfirm) {
-                                                Swal.fire({
-                                                    text: "You can navigate to your profile and to your liked items by clicking on the icons on top of the page. ",
-                                                    icon: 'info',
-                                                    confirmButtonText: 'Okay!'
-                                                })
-                                            }
-                                        })
-                                    }
-                                });
-                                users[i].FirstTime2 = false;
-                                localStorage.setItem('users', JSON.stringify(users));
-                            }
-                        }
-                        }
+                    Swal.fire({
+                        title: 'Great!',
+                        text: "Now let's choose some meals you like or dislike, so we can get a small glimpse into your preferences.",
+                        icon: 'success',
+                        confirmButtonText: 'Okay!'
+                    }).then(() => {
+                        if (clickConfirm) {
+                            Swal.fire({
+                                text: " Drag an item left to dislike it, or right to like it.",
+                                icon: 'info',
+                                confirmButtonText: 'Okay!'
+                            }).then(() => {
+                                if (clickConfirm) {
+                                    Swal.fire({
+                                        text: " If you're ready, press the recommend button down below for some personalized recommendations!",
+                                        icon: 'info',
+                                        confirmButtonText: 'Okay!'
+                                    });
+                                }
+                            })
+                        }});
 
 
                     let initialfoods = translation.recommends;
@@ -253,33 +218,6 @@ class Recommendations extends React.Component {
                 case "favorites":
 
                     if(this.loading){
-                       // alert("this favorites");
-                        this.loading=false;
-                        Swal.fire({
-                            title: "Finished!",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                        let users = JSON.parse(localStorage.getItem('users'));
-                        for (let i = users.length-1; i>=0; i--) {
-                            if (users[i].Name === localStorage.getItem('currentUser')) {
-                               if(users[i].FirstTime3){
-                                   Swal.fire({
-                                       title: "Do not lose any of your liked recipes!",
-                                       text: "You can find them here!",
-                                       icon:"info"
-                                   });
-                                   users[i].FirstTime3 = false;
-                                   localStorage.setItem('users', JSON.stringify(users));
-                               }
-                            }
-                        }
-                    }
-                    this.setState({favorites: translation.favorites});
-                  //  alert('favorites set '+ translation.favorites);
-                    break;
-                case "Similar":
-
                         // alert("this favorites");
                         this.loading=false;
                         Swal.fire({
@@ -287,6 +225,19 @@ class Recommendations extends React.Component {
                             showConfirmButton: false,
                             timer: 1000
                         });
+                    }
+                    this.setState({favorites: translation.favorites});
+                    //  alert('favorites set '+ translation.favorites);
+                    break;
+                case "Similar":
+
+                    // alert("this favorites");
+                    this.loading=false;
+                    Swal.fire({
+                        title: "Finished!",
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
 
                     this.setState({similar: translation.similar});
                     break;
@@ -427,12 +378,12 @@ class Recommendations extends React.Component {
         }
         let prolist = [];
         for (let i = 0; i < likedItems.length; i++) {
-           if(likedItems[i]!=name){
-               let item = {};
-               item['name'] = likedItems[i];
-               item['rating']= 1.0;
-               prolist.push(item);
-           }
+            if(likedItems[i]!=name){
+                let item = {};
+                item['name'] = likedItems[i];
+                item['rating']= 1.0;
+                prolist.push(item);
+            }
 
         }
 
@@ -638,7 +589,7 @@ class Recommendations extends React.Component {
                             <br/>
 
                         </div>);
-                    }
+                }
             }
         }
         if (empty){
@@ -665,29 +616,29 @@ class Recommendations extends React.Component {
             );
         }
         else{
-        nutritionalInfoHtml.push(
-            <div className="row">
-                <div className="Nutritioncolumn">
-                    <div className="popupTextTitle">
-                        Nutritional info:
-                        <br/>
-                    </div>
-                    <div className="textrow">
-                        <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
-                        <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
-                    </div>
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
 
-                </div>
-                <div className="column">
-                    <div className="popupTextTitle2">
-                        Because you liked:
-                        <br/>
                     </div>
-                    {explanationHtmlTemp}
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            Because you liked:
+                            <br/>
+                        </div>
+                        {explanationHtmlTemp}
+                    </div>
                 </div>
-            </div>
 
-        );}
+            );}
         let html = [
             <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
             </button>} >
@@ -739,7 +690,7 @@ class Recommendations extends React.Component {
                     <div className="rowingredi">
                         <div className="popupTextTitle">
                             Ingredients:
-                        <br/>
+                            <br/>
                         </div>
                         {ingredientsHtmlTemp}
                     </div>
@@ -916,18 +867,18 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-            <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
-            </img>
-            <Popup  open={false} onClick={() => this.setState({open: false})} closeOnDocumentClick
-                      position="right center" >
-                <div className="popUp3" onClick={() => this.setState({open: false})}>
-                    <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                <img className="FoodPhotoTinder" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({open: true});}} src={image} >
+                </img>
+                <Popup  open={false} onClick={() => this.setState({open: false})} closeOnDocumentClick
+                        position="right center" >
+                    <div className="popUp3" onClick={() => this.setState({open: false})}>
+                        <div className="popupHeader" onClick={() => this.setState({open: false})}>Recipe for
+                            <br/>
+                            {title}</div>
                         <br/>
-                        {title}</div>
-                    <br/>
-                    {popUpHtml}
-                </div>
-            </Popup>
+                        {popUpHtml}
+                    </div>
+                </Popup>
             </div>
         );
 
@@ -1100,12 +1051,12 @@ class Recommendations extends React.Component {
     }
 
     saveAlert() {
-       /* Swal.fire({
+        Swal.fire({
             title: 'Saved!',
             text: "Your liked and disliked meals are saved.",
             icon: 'success',
             confirmButtonText: 'Great!'
-        });*/
+        });
         this.getRecommendations();
     }
 
@@ -1153,103 +1104,103 @@ class Recommendations extends React.Component {
 
     }
 
-/*
-    generateView() {
-        if(this.state.favorite){
-            return(
-                <div>
-                    <div className="Listing">
-                        favoritestate
-                        {this.generateFavorites()}
-                    </div>
-                    Times clicked: {this.state.timesClicked}
-                    <div className="buttons">
-                        <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
-                    </div>
-                </div>
-            )
-        }
-        else{
-            if (this.state.view === 0) {
-                return (
+    /*
+        generateView() {
+            if(this.state.favorite){
+                return(
                     <div>
-
                         <div className="Listing">
-                            {this.generateMeal()}
+                            favoritestate
+                            {this.generateFavorites()}
                         </div>
                         Times clicked: {this.state.timesClicked}
                         <div className="buttons">
-                            <button className="NextButton Green" onClick={this.saveAlert}><b>SAVE</b></button>
+                            <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
                         </div>
-                    </div>)
+                    </div>
+                )
             }
-            else {
-                if (this.state.swipednumber < 6) {
+            else{
+                if (this.state.view === 0) {
                     return (
-                        <div className="Span">
-                        <div style={wrapperStyles}>
+                        <div>
 
-                            {this.state.foods.length > 0 ? (
-                                <div style={wrapperStyles}>
-
-                                    <Swipeable
-                                        buttons={({left, right}) => (
-                                            <div style={actionsStyles}>
-                                                <button className="tinderButton dislike fadeInLeft1" onClick={left}><b>Reject</b></button>
-                                                <button className="tinderButton like fadeInLeft1" onClick={right}><b>Accept</b></button>
-                                            </div>
-                                        )}
-                                        onAfterSwipe={this.remove}
-                                        onSwipe={this.swipeItem}
-                                    >
-
-                                        <div className="FoodCard fadeInLeft0">
-                                            <div className="FoodHeader">
-                                                <b>{capitalizeFLetter(this.getname(this.state.swipednumber))}</b>
-                                            </div>
-                                            <div className="table">
-
-                                                    <div className="tablerow1">
-                                                        {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
-                                                    </div>
-                                                    <div className="tablerow2">
-                                                        {this.generateBadges(this.state.swipednumber)}
-                                                    </div>
-                                                    <div className="tablerow3">
-                                                        {this.recipePopupForTinder(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
-                                                        {this.nutritionalPopupForTinder(this.state.foods[this.state.swipednumber])}
-                                                    </div>
-                                            </div>
-
-                                        </div>
-                                    </Swipeable>
-
-                                </div>
-                            ) : (
-                                <div >
-                                    <div className="FoodItem" zIndex={-2}>No more cards</div>
-                                    <button className="NextButton Green"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
-                                    <button className="NextButton Green"  onClick={this.resetSwipes}>New Cards</button>
-                                </div>
-                            )}
-                        </div>
-                        </div>
-
-                    )
+                            <div className="Listing">
+                                {this.generateMeal()}
+                            </div>
+                            Times clicked: {this.state.timesClicked}
+                            <div className="buttons">
+                                <button className="NextButton Green" onClick={this.saveAlert}><b>SAVE</b></button>
+                            </div>
+                        </div>)
                 }
-                else{
-                    return(
-                        <div >
-                            <div className="FoodItem" zIndex={-2}>No more cards</div>
-                            <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
-                            <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
-                        </div>
-                    )
+                else {
+                    if (this.state.swipednumber < 6) {
+                        return (
+                            <div className="Span">
+                            <div style={wrapperStyles}>
+
+                                {this.state.foods.length > 0 ? (
+                                    <div style={wrapperStyles}>
+
+                                        <Swipeable
+                                            buttons={({left, right}) => (
+                                                <div style={actionsStyles}>
+                                                    <button className="tinderButton dislike fadeInLeft1" onClick={left}><b>Reject</b></button>
+                                                    <button className="tinderButton like fadeInLeft1" onClick={right}><b>Accept</b></button>
+                                                </div>
+                                            )}
+                                            onAfterSwipe={this.remove}
+                                            onSwipe={this.swipeItem}
+                                        >
+
+                                            <div className="FoodCard fadeInLeft0">
+                                                <div className="FoodHeader">
+                                                    <b>{capitalizeFLetter(this.getname(this.state.swipednumber))}</b>
+                                                </div>
+                                                <div className="table">
+
+                                                        <div className="tablerow1">
+                                                            {this.recipePopupFromImage(this.getname(this.state.swipednumber),this.getimage(this.state.swipednumber))}
+                                                        </div>
+                                                        <div className="tablerow2">
+                                                            {this.generateBadges(this.state.swipednumber)}
+                                                        </div>
+                                                        <div className="tablerow3">
+                                                            {this.recipePopupForTinder(this.state.foods[this.state.swipednumber],this.getimage(this.state.swipednumber))}
+                                                            {this.nutritionalPopupForTinder(this.state.foods[this.state.swipednumber])}
+                                                        </div>
+                                                </div>
+
+                                            </div>
+                                        </Swipeable>
+
+                                    </div>
+                                ) : (
+                                    <div >
+                                        <div className="FoodItem" zIndex={-2}>No more cards</div>
+                                        <button className="NextButton Green"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                                        <button className="NextButton Green"  onClick={this.resetSwipes}>New Cards</button>
+                                    </div>
+                                )}
+                            </div>
+                            </div>
+
+                        )
+                    }
+                    else{
+                        return(
+                            <div >
+                                <div className="FoodItem" zIndex={-2}>No more cards</div>
+                                <button className="NextButton"  onClick={() => this.setState({view: 0}) }>Recommendations</button>
+                                <button className="NextButton"  onClick={this.resetSwipes}>New Cards</button>
+                            </div>
+                        )
+                    }
                 }
+
             }
-
-        }
-    } */
+        } */
 
     createCards() {
         let html = [];
@@ -1294,7 +1245,7 @@ class Recommendations extends React.Component {
                         </div>
                         <div className="buttons">
                             <br/>
-                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!</b></button>
+                            <Link to="/recommendations"><button className="NextButton Green"><b>Recommend!</b></button></Link>
                         </div>
                     </div>)
             }
@@ -1320,7 +1271,7 @@ class Recommendations extends React.Component {
                         </div>
                         <div className="buttons">
                             <br/>
-                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!</b></button>
+                            <Link to="/recommendations"><button className="NextButton Green" ><b>Recommend!</b></button></Link>
                         </div>
                     </div>
                 )
@@ -1333,7 +1284,7 @@ class Recommendations extends React.Component {
         if(favorites==null||favorites==undefined){
             return;
         }
-       // alert(JSON.stringify(favorites));
+        // alert(JSON.stringify(favorites));
         let html = [];
         for (let i = 0; i < favorites.length; i++) {
             let currentfavorite=favorites[i];
@@ -1421,8 +1372,8 @@ class Recommendations extends React.Component {
                                     {this.recipePopup(name,this.getimage(i))}
                                 </div>
                                 <div className="informationbutton2" onClick={() => {this.logAction("get nutritional values",name);this.sendNuttritionSimilar(name)}}>
-                                {this.nutritionalPopup(name)}
-                                    </div>
+                                    {this.nutritionalPopup(name)}
+                                </div>
                             </div>
                         </div>
                     </button>
@@ -1438,15 +1389,15 @@ class Recommendations extends React.Component {
 
         if(assets!=undefined && assets.length>0){
             if(assets[food]!=undefined){
-            assets[food].forEach(function (item, i) {
-                let badgeName = "FoodBadge " + item;
-                if (item === "15-minutes-or-less") {
-                    badgeName = "FoodBadge fifteen-minutes-or-less";
-                }
-                badges.push(<InfoPopup  position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
+                assets[food].forEach(function (item, i) {
+                    let badgeName = "FoodBadge " + item;
+                    if (item === "15-minutes-or-less") {
+                        badgeName = "FoodBadge fifteen-minutes-or-less";
+                    }
+                    badges.push(<InfoPopup  position='bottom center' content={<h5>{item}</h5>} trigger={<button className={badgeName}> </button>} />);
 
-            });
-        }}
+                });
+            }}
         return badges;
     }
 
@@ -1526,33 +1477,33 @@ class Recommendations extends React.Component {
             html.push(<div className="icanswipe"  >
                 {swipingspecials}
                 <Swiping onSwiping={(eventData => this.swiped(eventData,name))}  {...config}  >
-                            <button   onMouseEnter={()=>this.setState({showThumbs:name})}
-                                      onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
-                               , opacity: this.transparfunc(name)} } onClick={() => {}}  >
-                                <div className="rowbutton">
-                                    <div className="columbuttonimage">
-                                        <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
-                                    </div>
-                                    <div className="columtitle">
-                                        <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
-                                        <div className="foodtags2">
-                                            <div className="badgesContainer">
-                                                {badges}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="informationbuttonscolum">
-                                        <div className="informationbutton1" onClick={() => {this.logAction("get recipe",name);this.sendRecipe(name)}}>
-                                            {this.recipePopup(foods[i],this.getimage(i))}
-                                        </div>
-                                        <div className="informationbutton2" onClick={() => {this.logAction("get nutritional values",name);this.sendNuttritionSimilar(name)}} >
-                                            {this.nutritionalPopup(foods[i])}
-                                        </div>
+                    <button   onMouseEnter={()=>this.setState({showThumbs:name})}
+                              onMouseLeave={()=>this.setState({showThumbs:""})} className={className} style={{transform: this.transformfunc(name)
+                        , opacity: this.transparfunc(name)} } onClick={() => {}}  >
+                        <div className="rowbutton">
+                            <div className="columbuttonimage">
+                                <img className="FoodPhoto" align="left" src={this.getimage(i)} alt="Food"/>
+                            </div>
+                            <div className="columtitle">
+                                <div className="foodtitle2"> <b className="FoodTitle">{name}</b> <br/> </div>
+                                <div className="foodtags2">
+                                    <div className="badgesContainer">
+                                        {badges}
                                     </div>
                                 </div>
-                            </button>
+                            </div>
+                            <div className="informationbuttonscolum">
+                                <div className="informationbutton1" onClick={() => {this.logAction("get recipe",name);this.sendRecipe(name)}}>
+                                    {this.recipePopup(foods[i],this.getimage(i))}
+                                </div>
+                                <div className="informationbutton2" onClick={() => {this.logAction("get nutritional values",name);this.sendNuttritionSimilar(name)}} >
+                                    {this.nutritionalPopup(foods[i])}
+                                </div>
+                            </div>
+                        </div>
+                    </button>
                 </Swiping>
-                        </div>)
+            </div>)
         }
 
         return html
@@ -1592,7 +1543,7 @@ class Recommendations extends React.Component {
                     }
                 }
 
-               // alert(liked.length);
+                // alert(liked.length);
                 if( liked.length==undefined){
                     let newliked=[];
                     if(liked!=undefined){
@@ -1618,7 +1569,7 @@ class Recommendations extends React.Component {
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.logAction("like", name);
-               // alert(users[i].Liked);
+                // alert(users[i].Liked);
                 break;
             }
         }
@@ -1662,7 +1613,6 @@ class Recommendations extends React.Component {
 
     }
     dislike(name){
-
         if(name==="") name = this.state.foods[this.state.foods.length-1];
         let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
@@ -1677,7 +1627,6 @@ class Recommendations extends React.Component {
                     if(foods[j]!=undefined) {
                         let f1 = foods[j].toLowerCase();
                         if (f1 === f2) {
-                            localStorage.setItem("n", "kked")
 
                             t = j;
                         }
@@ -1693,11 +1642,11 @@ class Recommendations extends React.Component {
                 if (disliked == null) {
                     disliked = [];
                 }
-                disliked.push(f2);
+                disliked.push(name);
                 this.setState({dislikedItems: disliked});
                 users[i].Disliked = disliked;
                 localStorage.setItem("users", JSON.stringify(users));
-                this.logAction("dislike", f2);
+                this.logAction("dislike", name);
                 break;
             }
         }
@@ -1716,7 +1665,7 @@ class Recommendations extends React.Component {
                 if(JSON.parse(localStorage.getItem("viewInit")) === 0){
                     v = "list mode";
                 }
-                else v = "swipe mode";
+                else v = "tinder mode";
                 item.push(v);
                 item.push(thisItem);
                 users[i].Log.push(item);
@@ -1785,20 +1734,12 @@ class Recommendations extends React.Component {
 
         // Favorites view
         else{
-           let  estratext;
-            if(this.state.tutor==undefined){
-                estratext=(  <div className="PageHeader2" onClick={()=>this.setState({tutor:false})}> Slide to like or dislike, press recommend to get recommendations based on what you liked</div>
-                );
-            }
             return (
                 <div className="App">
                     <header className="App-header">
-                        <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
-                            <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
-                            <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
-                            <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
+                        <div className="PageHeader"> <b className="PageTitle">Let's get to know you!</b>
+
                         </div>
-                        {estratext}
                         {this.generateView()}
 
                     </header>
@@ -1811,4 +1752,4 @@ class Recommendations extends React.Component {
     }
 }
 
-export default Recommendations;
+export default RecommendationsA
