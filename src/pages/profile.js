@@ -58,7 +58,7 @@ class Profile extends React.Component {
 
                     Swal.fire({
                         title: 'Welcome!',
-                        text: "Let's set you up! First, choose your preferences and your allergies if you have some.",
+                        text: "Let's set you up! First, choose your preferences and things you dislike, like allergies for example.",
                         icon: 'info',
                         confirmButtonText: 'Okay!'
                     });
@@ -73,7 +73,7 @@ class Profile extends React.Component {
 
         let returnVal = [];
         let returnList = [];
-        returnVal.push( <h3> Preferences </h3>);
+        returnVal.push( <h3> Things you like </h3>);
         const {textLiked} = this.state;
         const {textDisliked} = this.state;
 
@@ -86,7 +86,7 @@ class Profile extends React.Component {
         returnVal.push( <input className="textBoxAdd" value={textLiked}  onChange={this.onTextChangedLiked}  type={'text'}/>);
         returnVal.push(this.renderSuggestionsLiked());
         returnVal.push(<input className="addButton" type={"submit"} value={"Add something you like"} onClick={() =>this.doChange(textLiked, 1)}/>);
-        returnVal.push(<h3> Allergies </h3>);
+        returnVal.push(<h3> Things you dislike </h3>);
         returnList = [];
         for (let i = 0; i <  this.amountOfDislikes; i++) {
             returnList.push(<Checkbox name={users[tempIndex].Allergies[i]} checked={users[tempIndex].booleanAllergies[i]} id={-i-1} prefs={false}/>)
