@@ -1246,7 +1246,7 @@ class Recommendations extends React.Component {
                         </div>
                         <div className="buttons">
                             <br/>
-                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!!</b></button>
+                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!</b></button>
                         </div>
                     </div>
                 )
