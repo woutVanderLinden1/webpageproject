@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 import { Link } from 'react-router-dom';
 import Checkbox from "./checkBox";
-import Swal from 'sweetalert2';
+import Swal, {clickCancel, clickConfirm} from 'sweetalert2';
 
 class Profile extends React.Component {
     constructor() {
@@ -99,12 +99,8 @@ class Profile extends React.Component {
     }
 
     success() {
-        Swal.fire({
-            title: 'Saved!',
-            text: "Great, now let's choose some of your liked or disliked meals, so we can get a small glimpse into your preferences. Drag an item left to dislike it, or right to like it.",
-            icon: 'success',
-            confirmButtonText: 'Okay!'
-        });
+
+
     }
     updateAccount(){
         let users = JSON.parse(localStorage.getItem('users'));
@@ -128,7 +124,7 @@ class Profile extends React.Component {
                 if (users[i].FirstTime1){
                     users[i].FirstTime1 = false;
                     localStorage.setItem('users', JSON.stringify(users));
-                    return <Link to="/gettingToKnow"><button className="NextButton Green" onClick={this.updateAccount}><b>Recommend!</b></button></Link>
+                   return <Link to="/recommendationsA"><button className="NextButton Green" onClick={this.updateAccount}><b>Recommend!</b></button></Link>
 
                 }
                 else

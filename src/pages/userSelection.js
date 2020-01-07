@@ -36,6 +36,7 @@ class UserProfile extends React.Component {
                 Disliked: [],
                 FirstTime: true,
                 FirstTime1: true,
+                FirstTime2: true,
                 booleansPreferences: [false, false, false],
                 booleanAllergies: [false, false, false]
             };
