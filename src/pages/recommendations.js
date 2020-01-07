@@ -735,11 +735,11 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({opened: name});}} src={image} >
+                <button  title= "recipe" className="RecipeButton" title="recipe" align="left" onClick={() => {this.sendRecipe(name); this.setState({opened: name});this.logAction("get recipe",name)}} src={image} >
                 </button>
                 <Popup  open={this.state.opened==name} onClick={() => this.setState({opened: "none"})} closeOnDocumentClick
                         position="right center" >
-                    <div className="popUp3" onClick={() => this.setState({opened: "none"})}>
+                    <div className="popUp3" onClick={() => {this.setState({opened: "none"});this.logAction("get recipe",name) }}>
                         <div className="popupHeader" onClick={() => this.setState({opened: "none"})}>Recipe for
                             <br/>
                             {title}</div>
@@ -941,7 +941,7 @@ class Recommendations extends React.Component {
 
         html.push(
             <div>
-                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopened: name});}} src={image} >
+                <button  title= "recipe" className="NutritionButton" title="Nutrition" align="left" onClick={() => {this.sendNuttritionSimilar(name); this.setState({nutritionopened: name});this.logAction("get nutritional values",name)}} src={image} >
 
                 </button>
                 <Popup  open={this.state.nutritionopened==name} onClick={() => this.setState({nutritionopened: 'none'})} closeOnDocumentClick
@@ -949,7 +949,7 @@ class Recommendations extends React.Component {
 
                     <div className="popUp3" onClick={() => this.setState({nutritionopened: "none"})}>
 
-                        <div className="popupHeader" onClick={() => this.setState({nutritionopened: "none"})}>Recipe for
+                        <div className="popupHeader" onClick={() => {this.setState({nutritionopened: "none"});this.logAction("get nutritional values",name)}}>Recipe for
                             <br/>
                             {title}</div>
                         <br/>
@@ -1177,9 +1177,7 @@ class Recommendations extends React.Component {
                         favoritestate
                         {this.generateFavorites()}
                     </div>
-                    <div className="buttons">
-                        <Link to="/"><button className="NextButton Green"><b>SAVE</b></button></Link>
-                    </div>
+
                 </div>
             )
         }
@@ -1192,7 +1190,8 @@ class Recommendations extends React.Component {
                             {this.generateMeal()}
                         </div>
                         <div className="buttons">
-                            <button className="NextButton Green" onClick={this.saveAlert}><b>SAVE</b></button>
+                            <br/>
+                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!</b></button>
                         </div>
                     </div>)
             }
@@ -1215,6 +1214,10 @@ class Recommendations extends React.Component {
                             >
                                 {this.createCards()}
                             </ReactSwing>
+                        </div>
+                        <div className="buttons">
+                            <br/>
+                            <button className="NextButton Green" onClick={this.saveAlert}><b>Recommend!!</b></button>
                         </div>
                     </div>
                 )
@@ -1486,7 +1489,7 @@ class Recommendations extends React.Component {
                     }
                 }
 
-                alert(liked.length);
+               // alert(liked.length);
                 if( liked.length==undefined){
                     let newliked=[];
                     if(liked!=undefined){
@@ -1512,7 +1515,7 @@ class Recommendations extends React.Component {
                 users[i].Liked = liked;
                 localStorage.setItem("users", JSON.stringify(users));
                 this.logAction("like", name);
-                alert(users[i].Liked);
+               // alert(users[i].Liked);
                 break;
             }
         }
