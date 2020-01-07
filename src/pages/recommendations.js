@@ -1588,6 +1588,7 @@ class Recommendations extends React.Component {
 
     }
     dislike(name){
+
         if(name==="") name = this.state.foods[this.state.foods.length-1];
         let f2 = name.toLowerCase();
         let users = JSON.parse(localStorage.getItem('users'));
@@ -1618,11 +1619,11 @@ class Recommendations extends React.Component {
                 if (disliked == null) {
                     disliked = [];
                 }
-                disliked.push(name);
+                disliked.push(f2);
                 this.setState({dislikedItems: disliked});
                 users[i].Disliked = disliked;
                 localStorage.setItem("users", JSON.stringify(users));
-                this.logAction("dislike", name);
+                this.logAction("dislike", f2);
                 break;
             }
         }
@@ -1715,6 +1716,11 @@ class Recommendations extends React.Component {
 
         // Favorites view
         else{
+           let  estratext;
+            if(this.state.tutor==undefined){
+                estratext=(  <div className="PageHeader2" onClick={()=>this.setState({tutor:false})}> Slide to like or dislike, press recommend to get recommendations based on what you liked</div>
+                );
+            }
             return (
                 <div className="App">
                     <header className="App-header">
@@ -1723,7 +1729,8 @@ class Recommendations extends React.Component {
                             <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
                             <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
                         </div>
-                        {this.generateView()}
+                        {estratext}
+                       {this.generateView()}
                         <div className="sliderBox" >
                             <label className="switch">
                                 <input type="checkbox"></input>
