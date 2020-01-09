@@ -515,8 +515,25 @@ class Recommendations extends React.Component {
         for (let i = users.length-1; i>=0; i--) {
             if (users[i].Name === localStorage.getItem('currentUser')) {
                 tempUserIndex = i;
-                likedItems = users[i].Liked;
-                dislikedItems = users[i].Disliked;
+                likedItems=[];
+                while(likedItems.size<users[i].Liked.Length||likedItems.size<7){
+                    let random=      Math.random(users[i].Liked.length);
+                    if(likedItems.includes(users[i].Liked[random],0)){
+                        likedItems.push(users[i].Liked[random])
+                    }
+
+
+                }
+                while(dislikedItems.size<users[i].Disliked.Length||dislikedItems.size<5){
+                    let random=      Math.random(users[i].DisLiked.length);
+                    if(dislikedItems.includes(users[i].Disliked[random],0)){
+                        dislikedItems.push(users[i].Disliked[random])
+                    }
+
+
+                }
+
+
             }
         }
         if(likedItems==null){
