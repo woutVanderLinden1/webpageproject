@@ -234,6 +234,7 @@ class Recommendations extends React.Component {
                     this.setState({tags: filteredTags});
                     this.setState({foods: filteredfoods});
                     this.setState({images: filteredImages});
+                    localStorage.setItem("viewInit", 1);
                     if(JSON.parse(localStorage.getItem('viewInit'))==1 && this.state.initialised!=true){
                         this.state.view=0;
                         sleep(5).then(() => {
@@ -524,6 +525,7 @@ class Recommendations extends React.Component {
 
 
                 }
+                dislikedItems=[];
                 while(dislikedItems.size<users[i].Disliked.Length||dislikedItems.size<5){
                     let random=      Math.random(users[i].DisLiked.length);
                     if(dislikedItems.includes(users[i].Disliked[random],0)){
@@ -1164,9 +1166,12 @@ class Recommendations extends React.Component {
 
     }
     goToRecommends(){
+
         this.getRecommendations();
+
         localStorage.setItem("favorite", JSON.stringify(false));
-        this.setState({favorite: false});
+        this.setState({view: 0,favorite: false, initialised: false});
+
 
     }
 
@@ -1818,7 +1823,7 @@ class Recommendations extends React.Component {
                             <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
                             <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
                         </div>
-                        {estratext}
+
                         {this.generateView()}
 
                     </header>
