@@ -2,8 +2,10 @@
   "name": "recommender",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://woutvanderlinden1.github.io/webpageproject/",
   "dependencies": {
     "@material/textfield": "^4.0.0",
+    "gh-pages": "^2.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-dropzone": "^10.2.1",
@@ -22,7 +24,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
