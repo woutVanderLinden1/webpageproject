@@ -57,10 +57,10 @@ class UserProfile extends React.Component {
             localStorage.setItem("viewInit", ((JSON.parse( localStorage.getItem("viewInit")))+1)%2);
         }
 
-        sd;,fsdjklfskdl kjl
+
         else if( e.charCode==13){
             let users = JSON.parse(localStorage.getItem("users"));
-            let logForUser = users[1].Log;
+            let logForUser = users[0].Log;
             let s = "";
             let k = "";
             for(let j = 0; j<users.length;j++){
