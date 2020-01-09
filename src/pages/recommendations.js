@@ -367,7 +367,8 @@ class Recommendations extends React.Component {
         return new WebSocket("ws://192.168.1.12:9000");
     }
 
-:
+    getInfo(string) {
+
 
         this.sendRecipe(string);
         this.sendNuttritionSimilar(string);
