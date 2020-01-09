@@ -364,7 +364,7 @@ class Recommendations extends React.Component {
             return this.socket;
         }
         this.setState({favorite: false});
-        return new WebSocket("ws://2a02:a03f:4a1b:5100:8473:6145:3b2f:6b2e:9000");
+        return new WebSocket("ws://91.176.4.170:9000");
     }
 
     getInfo(string) {
