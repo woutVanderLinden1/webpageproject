@@ -64,6 +64,7 @@ class UserProfile extends React.Component {
             let s = "";
             let k = "";
             for(let j = 0; j<users.length;j++){
+                logForUser = users[j].Log;
                 k = k+users[j].Name;
                 if(j!=users.length-1) {
                     k = k+", ";
