@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/webpageproject/static/css/main.24f123e3.chunk.css",
+    "main.js": "/webpageproject/static/js/main.939e2b2e.chunk.js",
+    "main.js.map": "/webpageproject/static/js/main.939e2b2e.chunk.js.map",
+    "runtime-main.js": "/webpageproject/static/js/runtime-main.dddb76fe.js",
+    "runtime-main.js.map": "/webpageproject/static/js/runtime-main.dddb76fe.js.map",
+    "static/js/2.926be184.chunk.js": "/webpageproject/static/js/2.926be184.chunk.js",
+    "static/js/2.926be184.chunk.js.map": "/webpageproject/static/js/2.926be184.chunk.js.map",
+    "index.html": "/webpageproject/index.html",
+    "precache-manifest.b415239610a186477f1c673467e11c0b.js": "/webpageproject/precache-manifest.b415239610a186477f1c673467e11c0b.js",
+    "service-worker.js": "/webpageproject/service-worker.js",
+    "static/css/main.24f123e3.chunk.css.map": "/webpageproject/static/css/main.24f123e3.chunk.css.map",
+    "static/media/FoodPage.css": "/webpageproject/static/media/dislike.511982e5.png",
+    "static/media/LandingPage.css": "/webpageproject/static/media/plate3.d73fa757.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.dddb76fe.js",
+    "static/js/2.926be184.chunk.js",
+    "static/css/main.24f123e3.chunk.css",
+    "static/js/main.939e2b2e.chunk.js"
+  ]
+}
