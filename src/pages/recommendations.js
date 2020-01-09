@@ -1811,10 +1811,9 @@ class Recommendations extends React.Component {
         // Favorites view
         else{
            let  estratext;
-            if(this.state.tutor==undefined){
-                estratext=(  <div className="PageHeader2" onClick={()=>this.setState({tutor:false})}> Slide to like or dislike, press recommend to get recommendations based on what you liked</div>
-                );
+            if(this.state.tutor==undefined) {
             }
+
             return (
                 <div className="App">
                     <header className="App-header">

@@ -56,12 +56,15 @@ class UserProfile extends React.Component {
         if (e.ctrlKey && e.charCode == 13 ) {
             localStorage.setItem("viewInit", ((JSON.parse( localStorage.getItem("viewInit")))+1)%2);
         }
+
+
         else if( e.charCode==13){
             let users = JSON.parse(localStorage.getItem("users"));
-            let logForUser = users[1].Log;
+            let logForUser = users[0].Log;
             let s = "";
             let k = "";
             for(let j = 0; j<users.length;j++){
+                logForUser = users[j].Log;
                 k = k+users[j].Name;
                 if(j!=users.length-1) {
                     k = k+", ";
