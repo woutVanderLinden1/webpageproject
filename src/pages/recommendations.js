@@ -304,7 +304,7 @@ class Recommendations extends React.Component {
                     break
             }
         });
-        
+
  */
         if(this.state.swipednumber===undefined){
             this.state.swipednumber=0;
@@ -321,7 +321,7 @@ class Recommendations extends React.Component {
     }
 
     fakemessage(message) {
-        let translation = JSON.parse(message.data);
+        let translation = message
         console.log(translation);
         switch (translation.action) {
             case "Recommends":
