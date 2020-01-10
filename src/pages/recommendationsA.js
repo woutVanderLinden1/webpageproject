@@ -340,6 +340,8 @@ class RecommendationsA extends React.Component {
             this.socket.send(JSON.stringify(payload));
             this.socket.send(JSON.stringify(ingredipayload));
         }
+
+
     }
 
 

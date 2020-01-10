@@ -316,6 +316,157 @@ class Recommendations extends React.Component {
 
     }
 
+    fakemessage(message) {
+        let translation = JSON.parse(message.data);
+        console.log(translation);
+        switch (translation.action) {
+            case "Recommends":
+                if (this.loading) {
+                    this.loading = false;
+                    // alert("this");
+                    Swal.fire({
+                        title: "Finished!",
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                }
+                let users = JSON.parse(localStorage.getItem('users'));
+                for (let i = users.length - 1; i >= 0; i--) {
+                    if (users[i].Name === localStorage.getItem('currentUser')) {
+                        if (users[i].FirstTime1) {
+                            Swal.fire({
+
+                                text: "Drag an item left to dislike it, or right to like it.",
+                                icon: 'info',
+                                confirmButtonText: 'Okay!'
+                            }).then(() => {
+                                if (clickConfirm) {
+                                    Swal.fire({
+                                        text: "To see the recipe of the dish or the nutritional values, press the small buttons on the cards.",
+                                        icon: 'info',
+                                        confirmButtonText: 'Okay!'
+                                    }).then(() => {
+                                        if (clickConfirm) {
+                                            Swal.fire({
+                                                text: "You can navigate to your profile and to your liked items by clicking on the icons on top of the page. ",
+                                                icon: 'info',
+                                                confirmButtonText: 'Okay!'
+                                            })
+                                        }
+                                    })
+                                }
+                            });
+                            users[i].FirstTime1 = false;
+                            users[i].FirstTime2 = false;
+                            localStorage.setItem("users", JSON.stringify(users));
+                        } else if (users[i].FirstTime2) {
+                            Swal.fire({
+                                title: "You're getting the hang of this!",
+                                icon: 'success',
+                                confirmButtonText: 'Okay!'
+                            }).then(() => {
+                                if (clickConfirm) {
+                                    Swal.fire({
+                                        text: "To see the recipe of the dish or the nutritional values, press the small buttons on the cards.",
+                                        icon: 'info',
+                                        confirmButtonText: 'Okay!'
+                                    }).then(() => {
+                                        if (clickConfirm) {
+                                            Swal.fire({
+                                                text: "You can navigate to your profile and to your liked items by clicking on the icons on top of the page. ",
+                                                icon: 'info',
+                                                confirmButtonText: 'Okay!'
+                                            })
+                                        }
+                                    })
+                                }
+                            });
+                            users[i].FirstTime2 = false;
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                    }
+                }
+
+
+                let initialfoods = translation.recommends;
+                let initialtags = translation.tags;
+                let initialimages = translation.images;
+                let shuffled = this.filterfoods(initialfoods, initialtags, initialimages);
+                let filteredfoods = shuffled[0];
+                let filteredTags = shuffled[1];
+                let filteredImages = shuffled[2];
+                this.setState({tags: filteredTags});
+                this.setState({foods: filteredfoods});
+                this.setState({images: filteredImages});
+                localStorage.setItem("viewInit", 1);
+                if (JSON.parse(localStorage.getItem('viewInit')) == 1 && this.state.initialised != true) {
+                    this.state.view = 0;
+                    sleep(5).then(() => {
+                        this.state.view = JSON.parse(localStorage.getItem('viewInit'));
+                        if (this.state.view == 1) {
+                            this.state.swipednumber = 0;
+                            const value = (this.state.view + 1) % 2;
+                            localStorage.setItem("view", value);
+                            this.state.initialised = true;
+                            this.setState({view: 1});
+                        }
+                    })
+
+
+                }
+                break;
+            case "favorites":
+
+                if (this.loading) {
+                    // alert("this favorites");
+                    this.loading = false;
+                    Swal.fire({
+                        title: "Finished!",
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    let users = JSON.parse(localStorage.getItem('users'));
+                    for (let i = users.length - 1; i >= 0; i--) {
+                        if (users[i].Name === localStorage.getItem('currentUser')) {
+                            if (users[i].FirstTime3) {
+                                Swal.fire({
+                                    title: "Do not lose any of your liked recipes!",
+                                    text: "You can find them here!",
+                                    icon: "info"
+                                });
+                                users[i].FirstTime3 = false;
+                                localStorage.setItem('users', JSON.stringify(users));
+                            }
+                        }
+                    }
+                }
+                this.setState({favorites: translation.favorites});
+//  alert('favorites set '+ translation.favorites);
+                break;
+            case "Similar":
+
+// alert("this favorites");
+                this.loading = false;
+                Swal.fire({
+                    title: "Finished!",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+
+                this.setState({similar: translation.similar});
+                break;
+            case "Recipe":
+                this.setState({recipe: translation.recipe});
+                break;
+            case "Nutrition":
+                this.setState({nutrition: translation.nutrition});
+                break;
+            case "Ingredients":
+                this.setState({ingredients: translation.ingredients});
+                break;
+        }
+    }
+
     filterfoods(initialfoods,initialtags,initialimages){
         let shuffled=shuffle(initialfoods,initialtags,initialimages);
         let newinitialfoods=shuffled[0];
@@ -364,8 +515,9 @@ class Recommendations extends React.Component {
             return this.socket;
         }
         this.setState({favorite: false});
+       this.state.noserver=true;
         //my public ip should work if my server is running
-        return new WebSocket("ws://[2a02:a03f:4a1b:5100:8473:6145:3b2f:6b2e]:9000");
+       // return new WebSocket("ws://[2a02:a03f:4a1b:5100:8473:6145:3b2f:6b2e]:9000");
     }
 
     getInfo(string) {
@@ -391,10 +543,22 @@ class Recommendations extends React.Component {
             this.socket.send(JSON.stringify(payload));
             this.socket.send(JSON.stringify(ingredipayload));
         }
+            let message2={
+                recipe:["Stir everything together in a 4 1\/2 quart or larger slow cooker.","Set power to low and cook for 6 hours or longer (we usually let this cook for 10 hours).","Serve with cheese or sour cream if you wish."],
+                action:"Recipe"
+            }
+            this.fakemessage(message2);
+
+
+            let message={
+                ingredients:["1 (15 ounce) can black beans, drained and rinsed (or 1 1\/2 - 2 cups cooked beans)","1 (15 ounce) can navy beans, drained and rinsed (or 1 1\/2 - 2 cups cooked beans)","1 (14 1\/2 ounce) can diced tomatoes","1 (14 1\/2 ounce) can diced tomatoes and green chilies or (14 1\/2 ounce) can diced tomatoes with jalapenos","1 cup onion, chopped","6 garlic cloves, minced","2 tablespoons chili powder","1 tablespoon sweet Hungarian paprika","1 tablespoon dried cilantro (optional)","1\/2 teaspoon fresh coarse ground black pepper","1 teaspoon chipotle chile, minced"],
+                action:"Ingredients"
+            }
+            this.fakemessage(message);
     }
 
 
-    sendNuttritionSimilar(name) {
+    sendNuttritionSimilar(name){
         name=name.toLowerCase();
         this.socket=this.initialiseSocket();
         let payload = {
@@ -458,55 +622,83 @@ class Recommendations extends React.Component {
             }
 
         }
+        let message={
+            nutrition:["123.1","2.0","16.0","0.0","11.0","1.0","8.0"],
+            action:"Nutrition"
+        }
+        this.fakemessage(message);
+        let message2={
+            similar:[{"image":"https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/11\/05\/46\/picMI3hkn.jpg","matchfactor":0.7333333333333333,"name":"black   white vegetarian chipotle chili  crock pot"},{"image":"https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/27\/17\/5\/27175.jpg","matchfactor":0.4666666666666667,"name":"chocolate raspberry cheesecake trifle"},{"image":"https:\/\/images.unsplash.com\/photo-1542384557-0824d90731ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80","matchfactor":0.4,"name":"oriental crunch burgers"},{"image":"https:\/\/images.unsplash.com\/photo-1552246098-2a991afa1c6c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80","matchfactor":-0.4,"name":"egg  ham and cheese open faced english muffin"},{"image":"https:\/\/images.unsplash.com\/photo-1550825570-8ae96cf12d87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80","matchfactor":-0.5333333333333333,"name":"easy mango salsa"}],
+            action:"Similar"
 
+        }
+        this.fakemessage(message2);
 
     }
 
     getFavorites(){
-        let users = JSON.parse(localStorage.getItem('users'));
-        let likedItems = null;
-        for (let i = users.length-1; i>=0; i--) {
-            if (users[i].Name === localStorage.getItem('currentUser')) {
-                likedItems = users[i].Liked;
+            let users = JSON.parse(localStorage.getItem('users'));
+            let likedItems = null;
+            for (let i = users.length - 1; i >= 0; i--) {
+                if (users[i].Name === localStorage.getItem('currentUser')) {
+                    likedItems = users[i].Liked;
+                }
             }
-        }
-        if(likedItems==null){
-            likedItems=[];
-        }
+            if (likedItems == null) {
+                likedItems = [];
+            }
 
-        let payload = {
-            action: "Favorites",
-            prolist: [{name:"hot tamale  burgers", rating:0.5}]
-        };
+            let payload = {
+                action: "Favorites",
+                prolist: [{name: "hot tamale  burgers", rating: 0.5}]
+            };
 
-        const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free","low-cholesterol","kosher","ramadan", "low-protein"];
-        const likes = JSON.parse(localStorage.getItem('boxes'));
+            const names = ["vegetarian", "gluten-free", "low-carb", "vegan", "dairy-free", "low-cholesterol", "kosher", "ramadan", "low-protein"];
+            const likes = JSON.parse(localStorage.getItem('boxes'));
 
-        // Creating prolist
-        let prolist = [];
+            // Creating prolist
+            let prolist = [];
 
-        for (let i = 0; i < likedItems.length; i++) {
-            let item = {};
-            item['name'] = likedItems[i];
-            item['rating'] = 1.0;
-            prolist.push(item)
-        }
+            for (let i = 0; i < likedItems.length; i++) {
+                let item = {};
+                item['name'] = likedItems[i];
+                item['rating'] = 1.0;
+                prolist.push(item)
+            }
 
-        payload.prolist = prolist;
-        console.log(prolist);
+            payload.prolist = prolist;
+            console.log(prolist);
 
-        console.log(payload);
+            console.log(payload);
 
-        if(this.sendable) {
-            this.socket.send(JSON.stringify(payload));
-            Swal.fire({
-                title: "Loading...",
-                text: "Please wait",
-                showConfirmButton: false,
-                allowOutsideClick: false,
-            });
-            this.loading=true;
-        }
+            if (this.sendable) {
+                this.socket.send(JSON.stringify(payload));
+                Swal.fire({
+                    title: "Loading...",
+                    text: "Please wait",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+                this.loading = true;
+            }
+            let message = {
+                favorites: [{
+                    "image": "https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/11\/05\/46\/picMI3hkn.jpg",
+                    "name": "black   white vegetarian chipotle chili  crock pot",
+                    "tags": ["vegan", "vegetarian", "inexpensive"]
+                }, {
+                    "image": "https:\/\/images.unsplash.com\/photo-1542384557-0824d90731ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+                    "name": "oriental crunch burgers",
+                    "tags": ["oven", "meat"]
+                }, {
+                    "image": "https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/27\/17\/5\/27175.jpg",
+                    "name": "chocolate raspberry cheesecake trifle",
+                    "tags": ["vegetarian", "desserts"]
+                }],
+                action: "favorites"
+            }
+            this.fakemessage(message);
+
     }
 
     getRecommendations(){
@@ -613,6 +805,14 @@ class Recommendations extends React.Component {
             this.state.initialised=false;
             this.loading=true;
         }
+        let message={
+            action: "Recommends",
+            images:["https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/18\/66\/50\/pic7Hlb5A.jpg","https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/26\/47\/02\/picTs7xCP.jpg","https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/68\/16\/0\/picHY17iL.jpg","https:\/\/images.unsplash.com\/photo-1467630144534-da2b634ce269?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80","https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/31\/95\/96\/picQRQQwF.jpg","https:\/\/images.unsplash.com\/photo-1464052259809-c19ec2ddfc5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80","https:\/\/img.sndimg.com\/food\/image\/upload\/w_555,h_416,c_fit,fl_progressive,q_95\/v1\/img\/recipes\/31\/16\/97\/piczU9Utc.jpg"],
+            recommends:["cocoa pebbles cereal cookies","ana s asian ny strip steak","pb j energy oat bars","pistachio pudding pie","kittencal s chicken parmesan  low fat and delicious","tilapia tatsuta age","wisconsin cheese soup"],
+            tags:[["desserts"],["meat"],["oven","vegetarian","desserts"],["desserts"],["oven","meat"],["fish"],["meat"]]
+        }
+        this.fakemessage(message);
+
     }
 
     //POPUP CODE

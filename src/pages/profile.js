@@ -126,7 +126,7 @@ class Profile extends React.Component {
                 if (users[i].FirstTime1){
 
                     localStorage.setItem('users', JSON.stringify(users));
-                   return <Link to="/recommendationsA"><button className="NextButton Green" onClick={this.updateAccount}><b>Recommend!</b></button></Link>
+                   return <Link to="/recommendations"><button className="NextButton Green" onClick={this.updateAccount}><b>Recommend!</b></button></Link>
 
                 }
                 else
