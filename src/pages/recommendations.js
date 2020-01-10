@@ -101,7 +101,7 @@ class Recommendations extends React.Component {
 
 
 
-        this.socket=this.initialiseSocket();
+        this.initialiseSocket();
         this.sendable=false;
 
         this.generateMeal=this.generateMeal.bind(this);
@@ -117,7 +117,7 @@ class Recommendations extends React.Component {
         this.saveAlert = this.saveAlert.bind(this);
         this.createCards = this.createCards.bind(this);
 
-
+    /*
         this.socket.onopen = () => {
             let users = JSON.parse(localStorage.getItem('users'));
             let payload= {
@@ -147,8 +147,10 @@ class Recommendations extends React.Component {
             // do something after connection is opened
         };
 
-        this.state.favorite=JSON.parse(localStorage.getItem('favorite'));
 
+     */
+        this.state.favorite=JSON.parse(localStorage.getItem('favorite'));
+/*
         this.socket.onmessage=((message) => {
             let translation=JSON.parse(message.data);
             console.log(translation);
@@ -302,6 +304,8 @@ class Recommendations extends React.Component {
                     break
             }
         });
+        
+ */
         if(this.state.swipednumber===undefined){
             this.state.swipednumber=0;
         }
@@ -529,7 +533,7 @@ class Recommendations extends React.Component {
     sendRecipe(name) {
         name=name.toLowerCase();
         console.log("send recipe");
-        this.socket=this.initialiseSocket();
+       // this.socket=this.initialiseSocket();
         let payload = {
             action: "Recipe",
             recipe: name
